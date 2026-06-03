@@ -1,0 +1,374 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+
+const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
+const DEFAULT_PROCESSES = ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Experimental', 'Wet Hulled'];
+const DEFAULT_ROAST_LEVELS = ['Light', 'Medium', 'Dark', 'Italian', 'French', 'City'];
+const DEFAULT_VARIETIES = ['Geisha', 'Bourbon', 'Typica', 'Caturra', 'SL28', 'Pacamara'];
+const DEFAULT_DRIPPERS = ['Hario V60', 'Kalita Wave', 'Origami', 'Hario Switch', 'Aeropress', 'Chemex', 'French Press'];
+
+export default function SettingsPanel() {
+    const [roasters, setRoasters] = useState<string[]>([]);
+    const [processes, setProcesses] = useState<string[]>([]);
+    const [roastLevels, setRoastLevels] = useState<string[]>([]);
+    const [varieties, setVarieties] = useState<string[]>([]);
+    const [drippers, setDrippers] = useState<string[]>([]);
+
+    const [newRoaster, setNewRoaster] = useState('');
+    const [newProcess, setNewProcess] = useState('');
+    const [newRoastLevel, setNewRoastLevel] = useState('');
+    const [newVariety, setNewVariety] = useState('');
+    const [newDripper, setNewDripper] = useState('');
+
+    // Load custom lists from LocalStorage on mount
+    useEffect(() => {
+        const savedRoasters = localStorage.getItem('kugcc_custom_roasters');
+        if (savedRoasters) setRoasters(JSON.parse(savedRoasters));
+        else saveRoasters(DEFAULT_ROASTERS);
+
+        const savedProcesses = localStorage.getItem('kugcc_custom_processes');
+        if (savedProcesses) setProcesses(JSON.parse(savedProcesses));
+        else saveProcesses(DEFAULT_PROCESSES);
+
+        const savedRoastLevels = localStorage.getItem('kugcc_custom_roast_levels');
+        if (savedRoastLevels) setRoastLevels(JSON.parse(savedRoastLevels));
+        else saveRoastLevels(DEFAULT_ROAST_LEVELS);
+
+        const savedVarieties = localStorage.getItem('kugcc_custom_varieties');
+        if (savedVarieties) setVarieties(JSON.parse(savedVarieties));
+        else saveVarieties(DEFAULT_VARIETIES);
+
+        const savedDrippers = localStorage.getItem('kugcc_custom_drippers');
+        if (savedDrippers) setDrippers(JSON.parse(savedDrippers));
+        else saveDrippers(DEFAULT_DRIPPERS);
+    }, []);
+
+    // Save helpers
+    const saveRoasters = (list: string[]) => {
+        setRoasters(list);
+        localStorage.setItem('kugcc_custom_roasters', JSON.stringify(list));
+    };
+
+    const saveProcesses = (list: string[]) => {
+        setProcesses(list);
+        localStorage.setItem('kugcc_custom_processes', JSON.stringify(list));
+    };
+
+    const saveRoastLevels = (list: string[]) => {
+        setRoastLevels(list);
+        localStorage.setItem('kugcc_custom_roast_levels', JSON.stringify(list));
+    };
+
+    const saveVarieties = (list: string[]) => {
+        setVarieties(list);
+        localStorage.setItem('kugcc_custom_varieties', JSON.stringify(list));
+    };
+
+    const saveDrippers = (list: string[]) => {
+        setDrippers(list);
+        localStorage.setItem('kugcc_custom_drippers', JSON.stringify(list));
+    };
+
+    // Add / Remove handlers
+    const addRoaster = () => {
+        const trimmed = newRoaster.trim();
+        if (trimmed && !roasters.includes(trimmed)) {
+            saveRoasters([...roasters, trimmed]);
+            setNewRoaster('');
+        }
+    };
+    const removeRoaster = (item: string) => saveRoasters(roasters.filter(r => r !== item));
+
+    const addProcess = () => {
+        const trimmed = newProcess.trim();
+        if (trimmed && !processes.includes(trimmed)) {
+            saveProcesses([...processes, trimmed]);
+            setNewProcess('');
+        }
+    };
+    const removeProcess = (item: string) => saveProcesses(processes.filter(p => p !== item));
+
+    const addRoastLevel = () => {
+        const trimmed = newRoastLevel.trim();
+        if (trimmed && !roastLevels.includes(trimmed)) {
+            saveRoastLevels([...roastLevels, trimmed]);
+            setNewRoastLevel('');
+        }
+    };
+    const removeRoastLevel = (item: string) => saveRoastLevels(roastLevels.filter(r => r !== item));
+
+    const addVariety = () => {
+        const trimmed = newVariety.trim();
+        if (trimmed && !varieties.includes(trimmed)) {
+            saveVarieties([...varieties, trimmed]);
+            setNewVariety('');
+        }
+    };
+    const removeVariety = (item: string) => saveVarieties(varieties.filter(v => v !== item));
+
+    const addDripper = () => {
+        const trimmed = newDripper.trim();
+        if (trimmed && !drippers.includes(trimmed)) {
+            saveDrippers([...drippers, trimmed]);
+            setNewDripper('');
+        }
+    };
+    const removeDripper = (item: string) => saveDrippers(drippers.filter(d => d !== item));
+
+    // Data Management
+    const handleExportData = () => {
+        const beansStr = localStorage.getItem('kugcc_beans');
+        const beans = beansStr ? JSON.parse(beansStr) : [];
+        const logsStr = localStorage.getItem('kugcc_logs');
+        const logs = logsStr ? JSON.parse(logsStr) : [];
+        
+        const payload = { beans, logs };
+        const dataStr = JSON.stringify(payload, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `kugcc_backup_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const rawData = JSON.parse(event.target?.result as string);
+                let importedBeans: any[] = [];
+                let importedLogs: any[] = [];
+
+                if (rawData && typeof rawData === 'object' && !Array.isArray(rawData)) {
+                    importedBeans = Array.isArray(rawData.beans) ? rawData.beans : [];
+                    importedLogs = Array.isArray(rawData.logs) ? rawData.logs : [];
+                } else if (Array.isArray(rawData)) {
+                    importedBeans = rawData;
+                } else {
+                    alert("Invalid backup file format.");
+                    return;
+                }
+
+                const beansStr = localStorage.getItem('kugcc_beans');
+                const currentBeans: any[] = beansStr ? JSON.parse(beansStr) : [];
+                const currentIds = new Set(currentBeans.map(b => b.id));
+                const newBeans = importedBeans.filter((b: any) => !currentIds.has(b.id));
+
+                const savedLogs = localStorage.getItem('kugcc_logs');
+                const currentLogs: any[] = savedLogs ? JSON.parse(savedLogs) : [];
+                const currentLogIds = new Set(currentLogs.map(l => l.id));
+                const newLogs = importedLogs.filter((l: any) => !currentLogIds.has(l.id));
+
+                if (newBeans.length > 0 || newLogs.length > 0) {
+                    localStorage.setItem('kugcc_beans', JSON.stringify([...currentBeans, ...newBeans]));
+                    localStorage.setItem('kugcc_logs', JSON.stringify([...currentLogs, ...newLogs]));
+                    alert(`Successfully imported data:\n- Beans: ${newBeans.length} added\n- Tasting Logs: ${newLogs.length} added`);
+                    window.location.reload();
+                } else {
+                    alert("No new data found. All imported items already exist.");
+                }
+            } catch (error) {
+                console.error("Import failed:", error);
+                alert("Failed to parse backup file.");
+            }
+            e.target.value = '';
+        };
+        reader.readAsText(file);
+    };
+
+    const handleResetAndLoadDemo = () => {
+        if (!confirm("⚠️ WARNING: This will completely delete all your beans and tasting logs, and restore default demo data.\n\nAre you sure you want to proceed?")) {
+            return;
+        }
+
+        const demoBeans = [
+            { id: '1', name: 'Ethiopia Yirgacheffe', roaster: 'Kurasu', origin: 'Ethiopia', roastLevel: 'Light', process: 'Washed', roastDate: new Date().toISOString(), recipeOverride: { beanWeight: 15, ratio: 16, temperature: 93, grindSize: '22', grinderModel: 'S3', dripper: 'Hario V60', steps: [{ id: '1', name: 'Bloom', waterPercentage: 20, duration: 45 }, { id: '2', name: 'First Pour', waterPercentage: 40, duration: 45 }, { id: '3', name: 'Second Pour', waterPercentage: 40, duration: 45 }] } },
+            { id: '2', name: 'Colombia Huila', roaster: 'Onibus', origin: 'Colombia', roastLevel: 'Medium', process: 'Honey', roastDate: new Date().toISOString(), recipeOverride: { beanWeight: 15, ratio: 16, temperature: 93, grindSize: '22', grinderModel: 'S3', dripper: 'Hario V60', steps: [{ id: '1', name: 'Bloom', waterPercentage: 20, duration: 45 }, { id: '2', name: 'First Pour', waterPercentage: 40, duration: 45 }, { id: '3', name: 'Second Pour', waterPercentage: 40, duration: 45 }] } },
+            { id: '3', name: 'Kenya AA', roaster: 'Glitch', origin: 'Kenya', roastLevel: 'Light', process: 'Washed', roastDate: new Date().toISOString(), recipeOverride: { beanWeight: 15, ratio: 16, temperature: 93, grindSize: '22', grinderModel: 'S3', dripper: 'Hario V60', steps: [{ id: '1', name: 'Bloom', waterPercentage: 20, duration: 45 }, { id: '2', name: 'First Pour', waterPercentage: 40, duration: 45 }, { id: '3', name: 'Second Pour', waterPercentage: 40, duration: 45 }] } },
+        ];
+
+        const demoLogs = [
+            { id: 'log_1', beanId: '1', rating: 4, notes: 'Very floral and bright citrus acidity. Clean cup with jasmine notes.', date: new Date(Date.now() - 86400000 * 2).toISOString() },
+            { id: 'log_2', beanId: '2', rating: 5, notes: 'Super sweet caramel body. Peach notes on the finish. Perfect morning brew.', date: new Date(Date.now() - 86400000).toISOString() }
+        ];
+
+        localStorage.setItem('kugcc_beans', JSON.stringify(demoBeans));
+        localStorage.setItem('kugcc_logs', JSON.stringify(demoLogs));
+        localStorage.setItem('kugcc_custom_roasters', JSON.stringify(DEFAULT_ROASTERS));
+        localStorage.setItem('kugcc_custom_processes', JSON.stringify(DEFAULT_PROCESSES));
+        localStorage.setItem('kugcc_custom_roast_levels', JSON.stringify(DEFAULT_ROAST_LEVELS));
+        localStorage.setItem('kugcc_custom_varieties', JSON.stringify(DEFAULT_VARIETIES));
+        localStorage.setItem('kugcc_custom_drippers', JSON.stringify(DEFAULT_DRIPPERS));
+        
+        alert("System database reset successfully. Demo seed data has been loaded.");
+        window.location.reload();
+    };
+
+    return (
+        <div className="h-full flex flex-col p-6 font-mono overflow-y-auto">
+            <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-6 text-gray-500 border-b border-gray-900 pb-2">
+                Preferences Settings
+            </h2>
+
+            {/* Roasters Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Roasters (店舗リスト)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {roasters.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeRoaster(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {roasters.length === 0 && <span className="text-[10px] text-gray-700 italic">No roasters configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Roaster..." 
+                        value={newRoaster}
+                        onChange={(e) => setNewRoaster(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addRoaster()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addRoaster} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Processes Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Processes (精製方法)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {processes.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeProcess(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {processes.length === 0 && <span className="text-[10px] text-gray-700 italic">No processes configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Process..." 
+                        value={newProcess}
+                        onChange={(e) => setNewProcess(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addProcess()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addProcess} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Roast Levels Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Roast Levels (焙煎度)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {roastLevels.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeRoastLevel(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {roastLevels.length === 0 && <span className="text-[10px] text-gray-700 italic">No roast levels configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Roast Level..." 
+                        value={newRoastLevel}
+                        onChange={(e) => setNewRoastLevel(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addRoastLevel()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addRoastLevel} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Varieties Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Varieties (品種)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {varieties.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeVariety(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {varieties.length === 0 && <span className="text-[10px] text-gray-700 italic">No varieties configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Variety..." 
+                        value={newVariety}
+                        onChange={(e) => setNewVariety(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addVariety()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addVariety} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Drippers Manager */}
+            <div className="mb-8">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Drippers (器具/ドリッパー)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {drippers.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeDripper(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {drippers.length === 0 && <span className="text-[10px] text-gray-700 italic">No drippers configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Dripper..." 
+                        value={newDripper}
+                        onChange={(e) => setNewDripper(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addDripper()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addDripper} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Data Management Section */}
+            <div className="mt-auto pt-6 border-t border-gray-900 space-y-3">
+                <h3 className="text-[10px] text-gray-600 uppercase tracking-widest">Backup & System</h3>
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleExportData}
+                        className="flex-1 py-2.5 text-[9px] text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 transition-colors uppercase tracking-wider text-center"
+                    >
+                        Export Backup
+                    </button>
+                    <label className="flex-1 py-2.5 text-[9px] text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 transition-colors uppercase tracking-wider text-center cursor-pointer">
+                        Import Data
+                        <input
+                            type="file"
+                            accept=".json"
+                            onChange={handleImportData}
+                            className="hidden"
+                        />
+                    </label>
+                </div>
+                <button
+                    onClick={handleResetAndLoadDemo}
+                    className="w-full py-2.5 text-[9px] text-red-900/60 hover:text-red-500 border border-gray-900/50 hover:border-red-900 transition-colors uppercase tracking-wider"
+                >
+                    Reset & Load Demo
+                </button>
+            </div>
+        </div>
+    );
+}
