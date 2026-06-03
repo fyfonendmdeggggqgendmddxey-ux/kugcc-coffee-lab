@@ -30,6 +30,9 @@ export type Bean = {
     isStarred?: boolean; // New: Favorite/Pin status
     recipeOverride?: Recipe; // Kept for backward compatibility or "active" state
     recipes?: Recipe[]; // New: List of saved recipes
+    idealAgingDays?: number; // Optional: Theoretical ideal aging days
+    shopRecommendedDays?: number; // Optional: Shop's recommended aging days
+    storageLocation?: string; // Optional: Storage location (e.g., Freezer, Wine Cellar)
 };
 
 // Default Recipe Template
@@ -44,4 +47,16 @@ export const DEFAULT_RECIPE: Recipe = {
         { id: '2', name: 'First Pour', waterPercentage: 40, duration: 45 },
         { id: '3', name: 'Second Pour', waterPercentage: 40, duration: 45 },
     ]
+};
+
+export type AgingThresholds = {
+    degas: number; // Days until Degas period ends
+    peak: number;  // Days until Peak period ends
+    good: number;  // Days until Good period ends
+};
+
+export const DEFAULT_AGING_THRESHOLDS: AgingThresholds = {
+    degas: 4,
+    peak: 14,
+    good: 30
 };

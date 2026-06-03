@@ -134,10 +134,10 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     ].filter((v): v is string => !!v)));
 
 
-    const getAgingBadge = (roastDateStr?: string) => {
-        if (!roastDateStr) return null;
+    const getAgingBadge = (bean: Bean) => {
+        if (!bean.roastDate) return null;
         try {
-            const roast = new Date(roastDateStr);
+            const roast = new Date(bean.roastDate);
             if (isNaN(roast.getTime())) return null;
             
             const roastDateOnly = new Date(roast.getFullYear(), roast.getMonth(), roast.getDate());
@@ -148,6 +148,10 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             if (isNaN(diffDays)) return null;
 
+            const degasEnd = bean.shopRecommendedDays ?? bean.idealAgingDays ?? 4;
+            const peakEnd = degasEnd + 10;
+            const goodEnd = peakEnd + 16;
+
             if (diffDays < 0) {
                 return (
                     <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-purple-900 bg-purple-950/20 text-purple-400 font-bold rounded-sm">
@@ -155,21 +159,21 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     </span>
                 );
             }
-            if (diffDays <= 4) {
+            if (diffDays <= degasEnd) {
                 return (
                     <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-amber-900 bg-amber-950/20 text-amber-500 font-bold rounded-sm">
                         Degas ({diffDays}d)
                     </span>
                 );
             }
-            if (diffDays <= 14) {
+            if (diffDays <= peakEnd) {
                 return (
                     <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-emerald-900 bg-emerald-950/20 text-emerald-400 font-bold rounded-sm animate-pulse">
                         Peak ({diffDays}d)
                     </span>
                 );
             }
-            if (diffDays <= 30) {
+            if (diffDays <= goodEnd) {
                 return (
                     <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-sky-900 bg-sky-950/20 text-sky-400 font-bold rounded-sm">
                         Good ({diffDays}d)
@@ -295,8 +299,19 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                         </div>
                         <div className="mt-2 text-[10px] text-gray-500 font-mono flex items-center">
                             <span>Roast: {bean.roastDate ? bean.roastDate.split('T')[0] : 'N/A'}</span>
-                            {getAgingBadge(bean.roastDate)}
+                            {getAgingBadge(bean)}
                         </div>
+                        {bean.storageLocation && (
+                            <div className="mt-1.5 text-[9px] text-gray-600 font-mono flex items-center gap-1 border border-gray-900/50 w-fit px-1 bg-gray-950/30">
+                                <span className="uppercase tracking-widest">Loc:</span> <span className="text-gray-400">{bean.storageLocation}</span>
+                            </div>
+                        )}
+                        {(bean.idealAgingDays !== undefined || bean.shopRecommendedDays !== undefined) && (
+                            <div className="mt-0.5 text-[9px] text-gray-600 font-mono flex items-center gap-1">
+                                <span className="uppercase tracking-widest">Peak starts:</span>
+                                <span className="text-gray-400">{bean.shopRecommendedDays ?? bean.idealAgingDays}d</span>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

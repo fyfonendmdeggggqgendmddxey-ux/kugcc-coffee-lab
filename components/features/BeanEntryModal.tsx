@@ -31,7 +31,10 @@ export default function BeanEntryModal({
         variety: initialBean?.variety || '',
         roastLevel: initialBean?.roastLevel || 'Light',
         process: initialBean?.process || 'Washed',
-        roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : new Date().toISOString().split('T')[0]
+        roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : new Date().toISOString().split('T')[0],
+        idealAgingDays: initialBean?.idealAgingDays?.toString() || '',
+        shopRecommendedDays: initialBean?.shopRecommendedDays?.toString() || '',
+        storageLocation: initialBean?.storageLocation || ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -53,7 +56,10 @@ export default function BeanEntryModal({
             roastLevel: formData.roastLevel,
             process: formData.process,
             roastDate: new Date(formData.roastDate).toISOString(),
-            recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE
+            recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
+            idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
+            shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
+            storageLocation: formData.storageLocation || undefined
         };
         onSave(newBean);
     };
@@ -163,6 +169,47 @@ export default function BeanEntryModal({
                         <datalist id="varieties-list">
                             {varieties.map(v => <option key={v} value={v} />)}
                         </datalist>
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-900 mt-2">
+                        <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-4">Aging Records (Optional)</h3>
+                        <div className="grid grid-cols-2 gap-6 mb-4">
+                            <div className="flex flex-col gap-2">
+                                <label className="text-[10px] uppercase text-gray-500 tracking-widest" title="Theoretical ideal days until peak">Ideal Peak (Days)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    name="idealAgingDays"
+                                    value={formData.idealAgingDays}
+                                    onChange={handleChange}
+                                    placeholder="e.g. 14"
+                                    className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label className="text-[10px] uppercase text-gray-500 tracking-widest" title="Shop recommended days until peak">Shop Rec (Days)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    name="shopRecommendedDays"
+                                    value={formData.shopRecommendedDays}
+                                    onChange={handleChange}
+                                    placeholder="e.g. 7"
+                                    className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Storage Location</label>
+                            <input
+                                type="text"
+                                name="storageLocation"
+                                value={formData.storageLocation}
+                                onChange={handleChange}
+                                placeholder="e.g. Freezer, Wine Cellar, Room Temp"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                            />
+                        </div>
                     </div>
                 </div>
 
