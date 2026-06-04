@@ -129,42 +129,21 @@ export default function BeanEntryModal({
         setIsAnalyzing(true);
         
         try {
-            // Compress image using Canvas
-            const compressedBase64 = await new Promise<{data: string, mime: string}>((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1024;
-                    const MAX_HEIGHT = 1024;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    if (!ctx) return reject('No context');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    // Use JPEG for smaller payload
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    const base64Data = dataUrl.split(',')[1];
-                    resolve({ data: base64Data, mime: 'image/jpeg' });
+            // Read image directly without canvas to avoid browser-specific loading errors
+            const base64Data = await new Promise<{data: string, mime: string}>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const result = reader.result as string;
+                    // result is in format: data:image/jpeg;base64,/9j/4AAQSkZJ...
+                    const mime = result.split(';')[0].split(':')[1];
+                    const data = result.split(',')[1];
+                    resolve({ data, mime });
                 };
-                img.onerror = reject;
-                img.src = URL.createObjectURL(file);
+                reader.onerror = () => reject(new Error('Failed to read file using FileReader'));
+                reader.readAsDataURL(file);
             });
 
-            const result = await analyzeCoffeeBagImage(compressedBase64.data, compressedBase64.mime, apiKey);
+            const result = await analyzeCoffeeBagImage(base64Data.data, base64Data.mime, apiKey);
             
             // Merge extracted data into formData
             setFormData(prev => {
