@@ -358,23 +358,23 @@ export default function SettingsPanel() {
             {/* Roaster Defaults Manager */}
             <div className="mb-6">
                 <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <span>Roaster Aging Defaults (焙煎日の自動設定)</span>
+                    <span>Roaster Aging Defaults (焙煎日の自動補完)</span>
                     <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
                 </h3>
                 <p className="text-[9px] text-gray-500 mb-2 leading-relaxed">
-                    Set a default "Days since roast" for specific roasters. If the AI cannot read the roast date from the photo, this default will be applied automatically (e.g. "Glitch: 7 days ago"). If not set, the roast date will be left blank.
+                    AIが写真から焙煎日を読み取れなかった場合に備えて、店舗ごとに「購入時点で大体何日前に焙煎されているか」のデフォルト日数を設定できます。（例：「Glitch」で「7」と設定すると、自動的に7日前の日付が入力されます）。未設定の店舗の場合は空欄になります。
                 </p>
                 <div className="flex flex-col gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
                     {Object.entries(roasterDefaults).map(([r, days]) => (
                         <div key={r} className="flex justify-between items-center text-[10px] bg-gray-900 border border-gray-800 text-gray-300 rounded px-2 py-1">
                             <span>{r}</span>
                             <div className="flex items-center gap-3">
-                                <span className="text-gray-400">{days} days ago</span>
+                                <span className="text-gray-400">{days} 日前</span>
                                 <button onClick={() => removeRoasterDefault(r)} className="text-gray-600 hover:text-red-500 font-bold text-xs">×</button>
                             </div>
                         </div>
                     ))}
-                    {Object.keys(roasterDefaults).length === 0 && <span className="text-[10px] text-gray-700 italic">No defaults configured.</span>}
+                    {Object.keys(roasterDefaults).length === 0 && <span className="text-[10px] text-gray-700 italic">未設定</span>}
                 </div>
                 <div className="flex gap-2">
                     <select 
@@ -382,19 +382,19 @@ export default function SettingsPanel() {
                         onChange={(e) => setNewDefaultRoaster(e.target.value)}
                         className="flex-[2] bg-gray-900/50 border-none text-[10px] p-2 text-white focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     >
-                        <option value="">Select Roaster...</option>
+                        <option value="">店舗を選択...</option>
                         {roasters.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
                     <input 
                         type="number" 
                         min="0"
-                        placeholder="Days ago..." 
+                        placeholder="何日前..." 
                         value={newDefaultDays}
                         onChange={(e) => setNewDefaultDays(e.target.value === '' ? '' : parseInt(e.target.value))}
                         onKeyDown={(e) => e.key === 'Enter' && addRoasterDefault()}
                         className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
-                    <button onClick={addRoasterDefault} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                    <button onClick={addRoasterDefault} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">追加</button>
                 </div>
             </div>
 
