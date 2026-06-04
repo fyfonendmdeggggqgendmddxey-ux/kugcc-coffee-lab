@@ -68,7 +68,9 @@ Ensure the output is ONLY valid JSON.
     const data = await response.json();
     
     try {
-        const jsonString = data.candidates[0].content.parts[0].text;
+        let jsonString = data.candidates[0].content.parts[0].text;
+        // Sometimes Gemini still wraps JSON in markdown blocks despite response_mime_type
+        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
         const parsed = JSON.parse(jsonString) as ExtractedBeanInfo;
         return parsed;
     } catch (e) {
