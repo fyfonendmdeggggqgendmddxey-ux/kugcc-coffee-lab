@@ -3,29 +3,39 @@
 import { useState, useEffect } from 'react';
 
 const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
+const DEFAULT_ORIGINS = ['Ethiopia', 'Colombia', 'Brazil', 'Kenya', 'Guatemala', 'Indonesia'];
 const DEFAULT_PROCESSES = ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Experimental', 'Wet Hulled'];
 const DEFAULT_ROAST_LEVELS = ['Light', 'Medium', 'Dark', 'Italian', 'French', 'City'];
 const DEFAULT_VARIETIES = ['Geisha', 'Bourbon', 'Typica', 'Caturra', 'SL28', 'Pacamara'];
 const DEFAULT_DRIPPERS = ['Hario V60', 'Kalita Wave', 'Origami', 'Hario Switch', 'Aeropress', 'Chemex', 'French Press'];
+const DEFAULT_ACCESSORIES = ['Paragon', 'Melodrip', 'Sifter', 'WDT Tool', 'Paper Filter (Bottom)', 'LilyDrip'];
 
 export default function SettingsPanel() {
     const [roasters, setRoasters] = useState<string[]>([]);
+    const [origins, setOrigins] = useState<string[]>([]);
     const [processes, setProcesses] = useState<string[]>([]);
     const [roastLevels, setRoastLevels] = useState<string[]>([]);
     const [varieties, setVarieties] = useState<string[]>([]);
     const [drippers, setDrippers] = useState<string[]>([]);
+    const [accessories, setAccessories] = useState<string[]>([]);
 
     const [newRoaster, setNewRoaster] = useState('');
+    const [newOrigin, setNewOrigin] = useState('');
     const [newProcess, setNewProcess] = useState('');
     const [newRoastLevel, setNewRoastLevel] = useState('');
     const [newVariety, setNewVariety] = useState('');
     const [newDripper, setNewDripper] = useState('');
+    const [newAccessory, setNewAccessory] = useState('');
 
     // Load custom lists from LocalStorage on mount
     useEffect(() => {
         const savedRoasters = localStorage.getItem('kugcc_custom_roasters');
         if (savedRoasters) setRoasters(JSON.parse(savedRoasters));
         else saveRoasters(DEFAULT_ROASTERS);
+
+        const savedOrigins = localStorage.getItem('kugcc_custom_origins');
+        if (savedOrigins) setOrigins(JSON.parse(savedOrigins));
+        else saveOrigins(DEFAULT_ORIGINS);
 
         const savedProcesses = localStorage.getItem('kugcc_custom_processes');
         if (savedProcesses) setProcesses(JSON.parse(savedProcesses));
@@ -42,12 +52,21 @@ export default function SettingsPanel() {
         const savedDrippers = localStorage.getItem('kugcc_custom_drippers');
         if (savedDrippers) setDrippers(JSON.parse(savedDrippers));
         else saveDrippers(DEFAULT_DRIPPERS);
+
+        const savedAccessories = localStorage.getItem('kugcc_custom_accessories');
+        if (savedAccessories) setAccessories(JSON.parse(savedAccessories));
+        else saveAccessories(DEFAULT_ACCESSORIES);
     }, []);
 
     // Save helpers
     const saveRoasters = (list: string[]) => {
         setRoasters(list);
         localStorage.setItem('kugcc_custom_roasters', JSON.stringify(list));
+    };
+
+    const saveOrigins = (list: string[]) => {
+        setOrigins(list);
+        localStorage.setItem('kugcc_custom_origins', JSON.stringify(list));
     };
 
     const saveProcesses = (list: string[]) => {
@@ -70,6 +89,11 @@ export default function SettingsPanel() {
         localStorage.setItem('kugcc_custom_drippers', JSON.stringify(list));
     };
 
+    const saveAccessories = (list: string[]) => {
+        setAccessories(list);
+        localStorage.setItem('kugcc_custom_accessories', JSON.stringify(list));
+    };
+
     // Add / Remove handlers
     const addRoaster = () => {
         const trimmed = newRoaster.trim();
@@ -79,6 +103,15 @@ export default function SettingsPanel() {
         }
     };
     const removeRoaster = (item: string) => saveRoasters(roasters.filter(r => r !== item));
+
+    const addOrigin = () => {
+        const trimmed = newOrigin.trim();
+        if (trimmed && !origins.includes(trimmed)) {
+            saveOrigins([...origins, trimmed]);
+            setNewOrigin('');
+        }
+    };
+    const removeOrigin = (item: string) => saveOrigins(origins.filter(o => o !== item));
 
     const addProcess = () => {
         const trimmed = newProcess.trim();
@@ -116,14 +149,25 @@ export default function SettingsPanel() {
     };
     const removeDripper = (item: string) => saveDrippers(drippers.filter(d => d !== item));
 
+    const addAccessory = () => {
+        const trimmed = newAccessory.trim();
+        if (trimmed && !accessories.includes(trimmed)) {
+            saveAccessories([...accessories, trimmed]);
+            setNewAccessory('');
+        }
+    };
+    const removeAccessory = (item: string) => saveAccessories(accessories.filter(a => a !== item));
+
     // Data Management
     const handleExportData = () => {
         const beansStr = localStorage.getItem('kugcc_beans');
         const beans = beansStr ? JSON.parse(beansStr) : [];
         const logsStr = localStorage.getItem('kugcc_logs');
         const logs = logsStr ? JSON.parse(logsStr) : [];
+        const recipesStr = localStorage.getItem('kugcc_recipes');
+        const globalRecipes = recipesStr ? JSON.parse(recipesStr) : [];
         
-        const payload = { beans, logs };
+        const payload = { beans, logs, globalRecipes };
         const dataStr = JSON.stringify(payload, null, 2);
         const blob = new Blob([dataStr], { type: "application/json" });
         const url = URL.createObjectURL(blob);
@@ -145,10 +189,12 @@ export default function SettingsPanel() {
                 const rawData = JSON.parse(event.target?.result as string);
                 let importedBeans: any[] = [];
                 let importedLogs: any[] = [];
+                let importedRecipes: any[] = [];
 
                 if (rawData && typeof rawData === 'object' && !Array.isArray(rawData)) {
                     importedBeans = Array.isArray(rawData.beans) ? rawData.beans : [];
                     importedLogs = Array.isArray(rawData.logs) ? rawData.logs : [];
+                    importedRecipes = Array.isArray(rawData.globalRecipes) ? rawData.globalRecipes : [];
                 } else if (Array.isArray(rawData)) {
                     importedBeans = rawData;
                 } else {
@@ -166,10 +212,16 @@ export default function SettingsPanel() {
                 const currentLogIds = new Set(currentLogs.map(l => l.id));
                 const newLogs = importedLogs.filter((l: any) => !currentLogIds.has(l.id));
 
-                if (newBeans.length > 0 || newLogs.length > 0) {
+                const savedRecipes = localStorage.getItem('kugcc_recipes');
+                const currentRecipes: any[] = savedRecipes ? JSON.parse(savedRecipes) : [];
+                const currentRecipeIds = new Set(currentRecipes.map(r => r.id));
+                const newRecipes = importedRecipes.filter((r: any) => !currentRecipeIds.has(r.id));
+
+                if (newBeans.length > 0 || newLogs.length > 0 || newRecipes.length > 0) {
                     localStorage.setItem('kugcc_beans', JSON.stringify([...currentBeans, ...newBeans]));
                     localStorage.setItem('kugcc_logs', JSON.stringify([...currentLogs, ...newLogs]));
-                    alert(`Successfully imported data:\n- Beans: ${newBeans.length} added\n- Tasting Logs: ${newLogs.length} added`);
+                    localStorage.setItem('kugcc_recipes', JSON.stringify([...currentRecipes, ...newRecipes]));
+                    alert(`Successfully imported data:\n- Beans: ${newBeans.length} added\n- Tasting Logs: ${newLogs.length} added\n- Global Recipes: ${newRecipes.length} added`);
                     window.location.reload();
                 } else {
                     alert("No new data found. All imported items already exist.");
@@ -202,10 +254,12 @@ export default function SettingsPanel() {
         localStorage.setItem('kugcc_beans', JSON.stringify(demoBeans));
         localStorage.setItem('kugcc_logs', JSON.stringify(demoLogs));
         localStorage.setItem('kugcc_custom_roasters', JSON.stringify(DEFAULT_ROASTERS));
+        localStorage.setItem('kugcc_custom_origins', JSON.stringify(DEFAULT_ORIGINS));
         localStorage.setItem('kugcc_custom_processes', JSON.stringify(DEFAULT_PROCESSES));
         localStorage.setItem('kugcc_custom_roast_levels', JSON.stringify(DEFAULT_ROAST_LEVELS));
         localStorage.setItem('kugcc_custom_varieties', JSON.stringify(DEFAULT_VARIETIES));
         localStorage.setItem('kugcc_custom_drippers', JSON.stringify(DEFAULT_DRIPPERS));
+        localStorage.setItem('kugcc_custom_accessories', JSON.stringify(DEFAULT_ACCESSORIES));
         
         alert("System database reset successfully. Demo seed data has been loaded.");
         window.location.reload();
@@ -239,6 +293,31 @@ export default function SettingsPanel() {
                         className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoaster} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Origins Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Origins (生産国)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {origins.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeOrigin(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {origins.length === 0 && <span className="text-[10px] text-gray-700 italic">No origins configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Origin..." 
+                        value={newOrigin}
+                        onChange={(e) => setNewOrigin(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addOrigin()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addOrigin} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
             </div>
 
@@ -318,7 +397,7 @@ export default function SettingsPanel() {
             </div>
 
             {/* Drippers Manager */}
-            <div className="mb-8">
+            <div className="mb-6">
                 <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Drippers (器具/ドリッパー)</h3>
                 <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
                     {drippers.map(item => (
@@ -339,6 +418,31 @@ export default function SettingsPanel() {
                         className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addDripper} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Accessories Manager */}
+            <div className="mb-8">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Custom Accessories (追加器具)</h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {accessories.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeAccessory(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {accessories.length === 0 && <span className="text-[10px] text-gray-700 italic">No accessories configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="Add Accessory..." 
+                        value={newAccessory}
+                        onChange={(e) => setNewAccessory(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addAccessory()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addAccessory} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
             </div>
 

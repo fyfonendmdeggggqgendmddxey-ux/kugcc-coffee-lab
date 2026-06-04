@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Bean } from '@/utils/types';
+import { useState, useEffect, useMemo } from 'react';
+import { Bean, Recipe } from '@/utils/types';
+import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
 
 type TastingLog = {
     id: string;
@@ -15,10 +16,14 @@ type TastingLog = {
     body?: number;
     aroma?: number;
     image?: string; // Base64 compressed image
+    flavorTags?: string[];
+    recipe?: Recipe;
 };
 
 interface TastingLogProps {
     bean?: Bean;
+    activeRecipe?: Recipe;
+    onLoadRecipe?: (recipe: Recipe) => void;
 }
 
 // Client-side image compression and Base64 encoder helper
@@ -167,8 +172,8 @@ const RadarChart = ({
     );
 };
 
-export default function TastingLog({ bean }: TastingLogProps) {
-    const [rating, setRating] = useState(0);
+export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: TastingLogProps) {
+    const [rating, setRating] = useState(3);
     const [notes, setNotes] = useState('');
     const [saved, setSaved] = useState(false);
 
@@ -178,6 +183,11 @@ export default function TastingLog({ bean }: TastingLogProps) {
     const [sweetness, setSweetness] = useState(3);
     const [body, setBody] = useState(3);
     const [aroma, setAroma] = useState(3);
+
+    // Flavor Tags state
+    const [flavorTags, setFlavorTags] = useState<string[]>([]);
+    const [flavorSearch, setFlavorSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<FlavorCategory | 'All'>('All');
 
     // Image upload states
     const [image, setImage] = useState<string>('');
@@ -194,7 +204,39 @@ export default function TastingLog({ bean }: TastingLogProps) {
         }
     }, []);
 
+    // Reset flavor tags when bean changes
+    useEffect(() => {
+        if (bean) {
+            setFlavorTags(bean.flavorTags || []);
+        }
+    }, [bean]);
+
     const filteredHistory = history.filter(log => !bean || log.beanId === bean.id);
+
+    // Flavor logic
+    const toggleFlavorTag = (tag: string) => {
+        setFlavorTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
+    };
+
+    const handleFlavorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && flavorSearch.trim()) {
+            e.preventDefault();
+            const newTag = flavorSearch.trim();
+            if (!flavorTags.includes(newTag)) toggleFlavorTag(newTag);
+            setFlavorSearch('');
+        }
+    };
+
+    const filteredFlavors = useMemo(() => {
+        let flavors = FLAVOR_WHEEL;
+        if (selectedCategory !== 'All') {
+            flavors = flavors.filter(f => f.category === selectedCategory);
+        }
+        if (flavorSearch.trim()) {
+            flavors = flavors.filter(f => f.name.toLowerCase().includes(flavorSearch.toLowerCase()));
+        }
+        return flavors;
+    }, [flavorSearch, selectedCategory]);
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -215,10 +257,6 @@ export default function TastingLog({ bean }: TastingLogProps) {
             alert("Select a bean to link this log.");
             return;
         }
-        if (rating === 0) {
-            alert("Please rate the brew.");
-            return;
-        }
         const newLog: TastingLog = {
             id: Date.now().toString(),
             beanId: bean.id,
@@ -230,7 +268,9 @@ export default function TastingLog({ bean }: TastingLogProps) {
             sweetness,
             body,
             aroma,
-            image // Add Base64 compressed image string
+            image, // Add Base64 compressed image string
+            flavorTags,
+            recipe: activeRecipe
         };
 
         const updatedHistory = [newLog, ...history];
@@ -240,7 +280,7 @@ export default function TastingLog({ bean }: TastingLogProps) {
         setSaved(true);
         setTimeout(() => {
             setSaved(false);
-            setRating(0);
+            setRating(3);
             setNotes('');
             setAcidity(3);
             setBitterness(3);
@@ -249,6 +289,8 @@ export default function TastingLog({ bean }: TastingLogProps) {
             setAroma(3);
             setImage('');
             setImagePreview('');
+            setFlavorTags(bean?.flavorTags || []);
+            setFlavorSearch('');
         }, 2000);
     };
 
@@ -267,6 +309,31 @@ export default function TastingLog({ bean }: TastingLogProps) {
                 </div>
             ) : (
                 <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
+                    {/* Target Bean Context Banner */}
+                    <div className="p-4 border border-gray-800 bg-gray-950/60 flex items-center justify-between relative overflow-hidden group">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-gray-700 group-hover:bg-white transition-colors"></div>
+                        <div>
+                            <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Target Bean</p>
+                            <p className="text-sm text-white font-bold tracking-wider">{bean.name}</p>
+                            <p className="text-[10px] text-gray-400 mt-1.5 flex gap-2">
+                                <span>{bean.roaster}</span>
+                                <span className="text-gray-700">•</span>
+                                <span>{bean.origin || 'Unknown Origin'}</span>
+                                <span className="text-gray-700">•</span>
+                                <span>{bean.process || 'Unknown Process'}</span>
+                                {bean.roastDate && (
+                                    <>
+                                        <span className="text-gray-700">•</span>
+                                        <span>Roast: {bean.roastDate.split('T')[0]}</span>
+                                    </>
+                                )}
+                            </p>
+                        </div>
+                        <div className="text-[9px] uppercase tracking-widest px-2 py-1 bg-white/10 text-white rounded-sm border border-white/20 shrink-0">
+                            {bean.roastLevel}
+                        </div>
+                    </div>
+
                     {/* Input Area */}
                     <div className="border-b border-gray-800 pb-6 mb-6">
                         <div className="mb-6">
@@ -291,8 +358,19 @@ export default function TastingLog({ bean }: TastingLogProps) {
                         </div>
 
                         {/* Tasting Matrix Sliders & Real-Time SVG Preview Chart */}
-                        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center border border-gray-900 p-4 bg-gray-950/20">
-                            <div className="space-y-3">
+                        <div className="mb-6 flex flex-col md:flex-row gap-6 items-center border border-gray-900 p-6 bg-gray-950/20">
+                            <div className="flex flex-col items-center justify-center w-full md:w-auto pb-6 border-b border-gray-900/50 md:border-b-0 md:border-r md:pb-0 md:pr-8">
+                                <span className="text-[8px] uppercase tracking-widest text-gray-600 mb-4">Matrix Preview</span>
+                                {/* Mobile size */}
+                                <div className="md:hidden flex justify-center">
+                                    <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={180} />
+                                </div>
+                                {/* Desktop size */}
+                                <div className="hidden md:flex justify-center">
+                                    <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={110} />
+                                </div>
+                            </div>
+                            <div className="space-y-4 w-full flex-1">
                                 {[
                                     { label: '酸味 Acidity', val: acidity, set: setAcidity },
                                     { label: '甘味 Sweetness', val: sweetness, set: setSweetness },
@@ -301,7 +379,7 @@ export default function TastingLog({ bean }: TastingLogProps) {
                                     { label: '香り Aroma', val: aroma, set: setAroma },
                                 ].map((item) => (
                                     <div key={item.label} className="flex flex-col">
-                                        <div className="flex justify-between text-[9px] text-gray-500 uppercase tracking-wider mb-1">
+                                        <div className="flex justify-between text-[10px] text-gray-500 uppercase tracking-wider mb-2">
                                             <span>{item.label}</span>
                                             <span className="text-white font-bold">{item.val}</span>
                                         </div>
@@ -312,14 +390,95 @@ export default function TastingLog({ bean }: TastingLogProps) {
                                             step="1"
                                             value={item.val}
                                             onChange={(e) => item.set(Number(e.target.value))}
-                                            className="w-full h-1 bg-gray-900 appearance-none cursor-pointer accent-white border-none rounded-none focus:outline-none"
+                                            className="w-full h-1.5 bg-gray-900 appearance-none cursor-pointer accent-white border-none rounded-none focus:outline-none"
                                         />
                                     </div>
                                 ))}
                             </div>
-                            <div className="flex flex-col items-center justify-center p-2 border-t border-gray-900/50 md:border-t-0 md:border-l md:border-gray-900">
-                                <span className="text-[8px] uppercase tracking-widest text-gray-600 mb-2">Matrix Preview</span>
-                                <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={90} />
+                        </div>
+
+                        {/* Flavor Profile Selector */}
+                        <div className="mb-6 p-4 border border-gray-900 bg-gray-950/20">
+                            <div className="flex justify-between items-end mb-4 border-b border-gray-900 pb-2">
+                                <div>
+                                    <h3 className="text-[10px] text-gray-500 uppercase tracking-widest">Flavor Profile</h3>
+                                    <span className="text-[10px] text-gray-600 font-mono">{flavorTags.length} tags</span>
+                                </div>
+                                <button 
+                                    onClick={() => setFlavorTags(bean.flavorTags || [])}
+                                    className="text-[9px] uppercase tracking-widest px-2 py-1 bg-gray-900 text-gray-400 hover:text-white border border-gray-800 rounded-sm"
+                                >
+                                    Use Bean's Original Tags
+                                </button>
+                            </div>
+
+                            {/* Category Filter */}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {['All', ...Object.keys(CATEGORY_COLORS)].map(cat => {
+                                    const baseColor = cat !== 'All' ? CATEGORY_COLORS[cat as FlavorCategory] : 'bg-gray-800/60 text-gray-200 border-gray-600/80';
+                                    const isSelected = selectedCategory === cat;
+                                    return (
+                                        <button
+                                            key={cat}
+                                            onClick={() => setSelectedCategory(cat as any)}
+                                            className={`px-2 py-1 text-[9px] font-bold tracking-wider rounded-sm border transition-all ${
+                                                isSelected ? `${baseColor} ring-1 ring-white/30` : 'bg-transparent text-gray-500 border-gray-800 hover:text-gray-300 hover:border-gray-600'
+                                            }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="relative mb-4">
+                                <input
+                                    type="text"
+                                    value={flavorSearch}
+                                    onChange={(e) => setFlavorSearch(e.target.value)}
+                                    onKeyDown={handleFlavorKeyDown}
+                                    placeholder="Type to search or add custom flavor... (Press Enter)"
+                                    className="w-full bg-black border border-gray-800 text-[10px] text-white p-2.5 focus:border-white focus:outline-none transition-colors rounded-sm font-sans"
+                                />
+                            </div>
+
+                            {flavorTags.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-6 p-3 border border-dashed border-gray-800/60 bg-black/40 min-h-[44px] rounded-sm">
+                                    {flavorTags.map(tag => (
+                                        <span
+                                            key={tag}
+                                            onClick={() => toggleFlavorTag(tag)}
+                                            className={`px-2.5 py-1 text-[10px] rounded-sm border ${getFlavorColor(tag)} cursor-pointer opacity-100 font-bold tracking-wider hover:opacity-80 transition-all flex items-center gap-1 ring-1 ring-white/50`}
+                                        >
+                                            {tag} ✕
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="h-[120px] overflow-y-auto custom-scrollbar border border-gray-900 p-2 bg-black/40 rounded-sm">
+                                <div className="flex flex-wrap gap-1.5">
+                                    {filteredFlavors.filter(f => !flavorTags.includes(f.name)).map(f => (
+                                        <button
+                                            key={f.name}
+                                            onClick={() => toggleFlavorTag(f.name)}
+                                            className={`px-2 py-1 text-[9px] rounded-sm border ${CATEGORY_COLORS[f.category]} opacity-60 hover:opacity-100 transition-all font-bold tracking-wider`}
+                                        >
+                                            + {f.name}
+                                        </button>
+                                    ))}
+                                    {flavorSearch.trim() && !filteredFlavors.some(f => f.name.toLowerCase() === flavorSearch.toLowerCase()) && !flavorTags.includes(flavorSearch.trim()) && (
+                                        <button
+                                            onClick={() => {
+                                                toggleFlavorTag(flavorSearch.trim());
+                                                setFlavorSearch('');
+                                            }}
+                                            className="px-2 py-1 text-[9px] rounded-sm border bg-gray-800/80 text-white border-gray-600 hover:bg-gray-700 transition-all font-bold tracking-wider"
+                                        >
+                                            + Add "{flavorSearch.trim()}"
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -398,9 +557,43 @@ export default function TastingLog({ bean }: TastingLogProps) {
                                             ))}
                                         </div>
                                     </div>
-                                    <p className="text-xs text-gray-300 line-clamp-2 group-hover:text-white transition-colors pr-6">{log.notes || "No notes."}</p>
+                                    {log.notes && (
+                                        <p className="text-xs text-gray-300 line-clamp-2 group-hover:text-white transition-colors pr-6 mb-2">
+                                            {log.notes}
+                                        </p>
+                                    )}
+                                    
+                                    {log.flavorTags && log.flavorTags.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 pr-6 mb-2">
+                                            {log.flavorTags.map(tag => (
+                                                <span key={tag} className={`px-1.5 py-0.5 text-[8px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Display Recipe Snapshot */}
+                                    {log.recipe && (
+                                        <div className="mt-2 pr-6 border-t border-gray-900 pt-2">
+                                            <p className="text-[10px] text-gray-500 mb-1">
+                                                Recipe: {log.recipe.name || 'Unnamed'} ({log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'})
+                                            </p>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (confirm("現在のタイマー設定をこの過去のレシピで上書きしてよろしいですか？")) {
+                                                        onLoadRecipe?.(log.recipe!);
+                                                    }
+                                                }}
+                                                className="text-[9px] uppercase tracking-widest bg-gray-900 text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-1 transition-all rounded-sm"
+                                            >
+                                                🔄 Load this Recipe
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="shrink-0 flex items-center gap-2">
+                                <div className="shrink-0 flex flex-col items-center gap-2">
                                     {log.image && (
                                         <div 
                                             onClick={() => setZoomImage(log.image || null)}

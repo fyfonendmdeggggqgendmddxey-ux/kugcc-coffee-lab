@@ -9,16 +9,22 @@ import RecipeEditor from '@/components/features/RecipeEditor';
 import { Bean, Recipe, DEFAULT_RECIPE } from '@/utils/types';
 
 export default function Home() {
+    const [activeTab, setActiveTab] = useState<'library' | 'timer' | 'recipes'>('timer');
     const [selectedBeanId, setSelectedBeanId] = useState<string | null>(null);
     const [beans, setBeans] = useState<Bean[]>([]);
     const [isEditing, setIsEditing] = useState(false);
     const [customRecipe, setCustomRecipe] = useState<Recipe | null>(null);
+    const [globalRecipes, setGlobalRecipes] = useState<Recipe[]>([]);
 
     // Sync with localStorage
     useEffect(() => {
         const saved = localStorage.getItem('kugcc_beans');
         if (saved) {
             setBeans(JSON.parse(saved));
+        }
+        const savedGlobal = localStorage.getItem('kugcc_recipes');
+        if (savedGlobal) {
+            setGlobalRecipes(JSON.parse(savedGlobal));
         }
     }, []);
 
@@ -27,29 +33,26 @@ export default function Home() {
     // Determine active recipe: Bean Override -> Custom Session Recipe -> Default
     const activeRecipe = selectedBean?.recipeOverride || customRecipe || DEFAULT_RECIPE;
 
-    const handleRecipeSave = (newRecipe: Recipe, scope: 'default' | 'bean') => {
+    const handleRecipeSave = (newRecipe: Recipe, scope: 'default' | 'bean' | 'global') => {
         if (scope === 'bean' && selectedBeanId) {
             const updatedBeans = beans.map(b => {
                 if (b.id === selectedBeanId) {
                     // Logic:
                     // 1. Always update recipeOverride to be the "Active" recipe
-                    // 2. If it has a name, ALSO add/update it in the 'recipes' list
+                    // 2. Add/update it in the 'recipes' list (even if unnamed)
                     let updatedRecipes = b.recipes || [];
 
-                    if (newRecipe.name && newRecipe.name.trim() !== "") {
-                        // Check if recipe with same name exists, update it. OR generate ID?
-                        // Ideally we use ID, but for now name matching or new ID.
-                        const existingIndex = updatedRecipes.findIndex(r => r.name === newRecipe.name);
-                        if (existingIndex >= 0) {
-                            updatedRecipes = [
-                                ...updatedRecipes.slice(0, existingIndex),
-                                newRecipe,
-                                ...updatedRecipes.slice(existingIndex + 1)
-                            ];
-                        } else {
-                            updatedRecipes = [...updatedRecipes, { ...newRecipe, id: Date.now().toString() }];
-                        }
+                    const existingIndex = updatedRecipes.findIndex(r => r.id && r.id === newRecipe.id);
+                    if (existingIndex >= 0) {
+                        updatedRecipes = [
+                            ...updatedRecipes.slice(0, existingIndex),
+                            newRecipe,
+                            ...updatedRecipes.slice(existingIndex + 1)
+                        ];
+                    } else {
+                        updatedRecipes = [...updatedRecipes, { ...newRecipe, id: newRecipe.id || Date.now().toString() }];
                     }
+
 
                     return {
                         ...b,
@@ -63,10 +66,20 @@ export default function Home() {
             localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
             // Also set custom recipe to null so we use the override
             setCustomRecipe(null);
+        } else if (scope === 'global') {
+            let updatedGlobal = [...globalRecipes];
+            const existingIndex = updatedGlobal.findIndex(r => r.id && r.id === newRecipe.id);
+            if (existingIndex >= 0) {
+                updatedGlobal[existingIndex] = newRecipe;
+            } else {
+                updatedGlobal.push({ ...newRecipe, id: newRecipe.id || Date.now().toString() });
+            }
+            setGlobalRecipes(updatedGlobal);
+            localStorage.setItem('kugcc_recipes', JSON.stringify(updatedGlobal));
+            
+            setCustomRecipe(newRecipe);
         } else {
-            // "Save Default" behavior -> Just sets session custom recipe for now, 
-            // OR we could update DEFAULT_RECIPE if we had a global store. 
-            // For this session-based app, 'default' usually meant 'not attached to bean'.
+            // "Save Default" behavior -> Just sets session custom recipe for now
             setCustomRecipe(newRecipe);
         }
         setIsEditing(false);
@@ -81,6 +94,7 @@ export default function Home() {
         } else {
             setCustomRecipe(recipe);
         }
+        setActiveTab('timer'); // Switch to timer to view/use the loaded recipe
     };
 
     const handleToggleRecipeStar = (recipe: Recipe) => {
@@ -142,8 +156,29 @@ export default function Home() {
         localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
     };
 
+    const handleAddGlobalRecipe = () => {
+        setCustomRecipe({ ...DEFAULT_RECIPE, id: Date.now().toString(), name: 'New Global Recipe' });
+        setIsEditing(true);
+        setActiveTab('timer'); // Switch to center pane to show editor on mobile
+    };
+
+    const handleDeleteGlobalRecipe = (recipe: Recipe) => {
+        if (!confirm("Are you sure you want to delete this global recipe?")) return;
+        const updated = globalRecipes.filter(r => r.id !== recipe.id);
+        setGlobalRecipes(updated);
+        localStorage.setItem('kugcc_recipes', JSON.stringify(updated));
+    };
+
+    const handleToggleGlobalRecipeStar = (recipe: Recipe) => {
+        const updated = globalRecipes.map(r => r.id === recipe.id ? { ...r, isStarred: !r.isStarred } : r);
+        setGlobalRecipes(updated);
+        localStorage.setItem('kugcc_recipes', JSON.stringify(updated));
+    };
+
     return (
         <DashboardLayout
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
             left={
                 <BeanLibrary
                     selectedId={selectedBeanId}
@@ -159,10 +194,29 @@ export default function Home() {
                     />
                     : <Timer
                         recipe={activeRecipe}
-                        onEdit={() => setIsEditing(true)}
+                        beanName={selectedBean?.name}
+                        beanRecipes={selectedBean?.recipes}
+                        globalRecipes={globalRecipes}
+                        onLoadRecipe={handleLoadRecipe}
+                        onEdit={() => {
+                            setIsEditing(true);
+                            setActiveTab('timer');
+                        }}
                     />
             }
-            right={<RightPanel bean={selectedBean} recipe={activeRecipe} onLoadRecipe={handleLoadRecipe} onToggleStar={handleToggleRecipeStar} onDeleteRecipe={handleDeleteRecipe} />}
+            right={
+                <RightPanel 
+                    bean={selectedBean} 
+                    recipe={activeRecipe} 
+                    globalRecipes={globalRecipes}
+                    onLoadRecipe={handleLoadRecipe} 
+                    onToggleStar={handleToggleRecipeStar} 
+                    onDeleteRecipe={handleDeleteRecipe}
+                    onAddGlobalRecipe={handleAddGlobalRecipe}
+                    onToggleGlobalStar={handleToggleGlobalRecipeStar}
+                    onDeleteGlobalRecipe={handleDeleteGlobalRecipe}
+                />
+            }
         />
     );
 }

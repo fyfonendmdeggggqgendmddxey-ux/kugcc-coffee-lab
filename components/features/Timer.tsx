@@ -8,10 +8,21 @@ import { getGrinderClicks } from '@/utils/grinder-table';
 
 interface TimerProps {
   recipe?: Recipe;
+  beanName?: string;
+  beanRecipes?: Recipe[];
+  globalRecipes?: Recipe[];
+  onLoadRecipe?: (recipe: Recipe) => void;
   onEdit?: () => void;
 }
 
-export default function Timer({ recipe = DEFAULT_RECIPE, onEdit }: TimerProps) {
+export default function Timer({ 
+    recipe = DEFAULT_RECIPE, 
+    beanName, 
+    beanRecipes = [], 
+    globalRecipes = [], 
+    onLoadRecipe, 
+    onEdit 
+}: TimerProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
@@ -109,14 +120,73 @@ export default function Timer({ recipe = DEFAULT_RECIPE, onEdit }: TimerProps) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full relative h-full px-4 py-6 md:py-12 select-none">
-      {/* Edit Trigger */}
-      <div className="absolute top-4 right-4 z-20">
+      {/* Top Left Info (Bean & Equipment) - Visible on all screens */}
+      <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex flex-col gap-4">
+        {beanName && (
+          <div>
+            <span className="text-[10px] text-gray-500 uppercase tracking-widest block mb-1">Brewing</span>
+            <span className="text-sm md:text-base text-white font-bold tracking-wider">{beanName}</span>
+          </div>
+        )}
+        <div className="opacity-60">
+          <div className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Equipment</div>
+          <div className="text-[10px] md:text-xs text-white border-l-2 border-white pl-2 flex flex-col gap-0.5 md:gap-1">
+            <span>{recipe.dripper || "Unknown Dripper"}</span>
+            <span className="text-gray-400 text-[9px] md:text-[10px]">{recipe.grinderModel || "Generic"} • {recipe.grindSize}</span>
+            {recipe.accessories && recipe.accessories.length > 0 && (
+              <span className="text-gray-400 text-[9px] md:text-[10px] mt-0.5">
+                + {recipe.accessories.join(', ')}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Edit & Load Trigger */}
+      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-20 flex flex-col items-end gap-2">
         <button
           onClick={onEdit}
           className="text-[10px] uppercase tracking-widest text-gray-600 hover:text-white border border-transparent hover:border-gray-800 px-2 py-1 transition-all"
         >
           [Edit Recipe]
         </button>
+        
+        {/* Load Recipe Dropdown */}
+        <div className="relative">
+            <select
+                onChange={(e) => {
+                    const selectedId = e.target.value;
+                    if (!selectedId) return;
+                    const allRecipes = [...beanRecipes, ...globalRecipes];
+                    const selected = allRecipes.find(r => r.id === selectedId);
+                    if (selected && onLoadRecipe) {
+                        if (confirm(`Load recipe "${selected.name || 'Unnamed'}"?`)) {
+                            onLoadRecipe(selected);
+                        }
+                    }
+                    e.target.value = ''; // reset selection visually
+                }}
+                className="text-[9px] uppercase tracking-widest bg-black text-gray-500 border border-gray-800 px-2 py-1 outline-none focus:border-white transition-all appearance-none cursor-pointer hover:text-gray-300"
+                style={{ width: '130px' }}
+                value=""
+            >
+                <option value="" disabled>LOAD RECIPE ▾</option>
+                {beanRecipes.length > 0 && (
+                    <optgroup label="Bean Recipes">
+                        {beanRecipes.map(r => <option key={`b-${r.id}`} value={r.id}>{r.name || 'Unnamed'}</option>)}
+                    </optgroup>
+                )}
+                {globalRecipes.length > 0 && (
+                    <optgroup label="Global Recipes">
+                        {globalRecipes.map(r => (
+                            <option key={`g-${r.id}`} value={r.id}>
+                                {r.isShopRecipe ? '★ ' : ''}{r.name || 'Unnamed'}
+                            </option>
+                        ))}
+                    </optgroup>
+                )}
+            </select>
+        </div>
       </div>
 
       {/* Circular UI (Clickable Button) */}
@@ -124,7 +194,7 @@ export default function Timer({ recipe = DEFAULT_RECIPE, onEdit }: TimerProps) {
         onClick={() => {
           if (!isFinished) setIsRunning(prev => !prev);
         }}
-        className="mb-6 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="mb-6 mt-16 md:mt-0 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -139,7 +209,7 @@ export default function Timer({ recipe = DEFAULT_RECIPE, onEdit }: TimerProps) {
         />
       </button>
 
-      {/* Grind Info (New Phase 3) */}
+      {/* Desktop Grind Info (Hidden on Mobile) */}
       <div className="absolute top-10 left-10 hidden md:block opacity-60">
         <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Equipment</div>
         <div className="text-xs text-white border-l-2 border-white pl-2 flex flex-col gap-1">

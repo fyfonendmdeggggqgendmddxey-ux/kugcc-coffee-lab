@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import BeanEntryModal from './BeanEntryModal';
+import { getFlavorColor } from '@/utils/flavor-wheel';
 
 interface BeanLibraryProps {
     onSelect?: (id: string) => void;
@@ -92,6 +93,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
     // Load custom roasters, processes, roast levels & varieties lists from LocalStorage on mount/modal changes
     const [customRoasters, setCustomRoasters] = useState<string[]>([]);
+    const [customOrigins, setCustomOrigins] = useState<string[]>([]);
     const [customProcesses, setCustomProcesses] = useState<string[]>([]);
     const [customRoastLevels, setCustomRoastLevels] = useState<string[]>([]);
     const [customVarieties, setCustomVarieties] = useState<string[]>([]);
@@ -100,6 +102,9 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         if (showModal) {
             const savedCR = localStorage.getItem('kugcc_custom_roasters');
             if (savedCR) setCustomRoasters(JSON.parse(savedCR));
+
+            const savedCO = localStorage.getItem('kugcc_custom_origins');
+            if (savedCO) setCustomOrigins(JSON.parse(savedCO));
 
             const savedCP = localStorage.getItem('kugcc_custom_processes');
             if (savedCP) setCustomProcesses(JSON.parse(savedCP));
@@ -118,7 +123,10 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         ...customRoasters
     ].filter((r): r is string => !!r)));
     
-    const uniqueOrigins = Array.from(new Set(beans.map(b => b.origin).filter((o): o is string => !!o)));
+    const uniqueOrigins = Array.from(new Set([
+        ...beans.map(b => b.origin),
+        ...customOrigins
+    ].filter((o): o is string => !!o)));
     
     const uniqueProcesses = customProcesses.length > 0 
         ? customProcesses 
@@ -310,6 +318,15 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                             <div className="mt-0.5 text-[9px] text-gray-600 font-mono flex items-center gap-1">
                                 <span className="uppercase tracking-widest">Peak starts:</span>
                                 <span className="text-gray-400">{bean.shopRecommendedDays ?? bean.idealAgingDays}d</span>
+                            </div>
+                        )}
+                        {bean.flavorTags && bean.flavorTags.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                                {bean.flavorTags.map(tag => (
+                                    <span key={tag} className={`px-1.5 py-0.5 text-[8px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
+                                        {tag}
+                                    </span>
+                                ))}
                             </div>
                         )}
                     </div>

@@ -14,6 +14,13 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
     const [recipe, setRecipe] = useState<Recipe>(initialRecipe);
     const totalWater = (recipe.beanWeight || 0) * (recipe.ratio || 0);
     const [drippers, setDrippers] = useState<string[]>([]);
+    const [availableAccessories, setAvailableAccessories] = useState<string[]>([]);
+    
+    // Determine default save scope. 
+    // If the recipe is entirely new (no ID) and we clicked Add Global Recipe, it will just start with 'global'. 
+    // But since RecipeEditor doesn't know if it came from Add Global Recipe, we can just default to 'bean', 
+    // and let the user select 'global' if they want. Actually, we should add saveScope state.
+    const [saveScope, setSaveScope] = useState<'bean' | 'global'>('bean');
 
     useEffect(() => {
         const savedDrippers = localStorage.getItem('kugcc_custom_drippers');
@@ -22,7 +29,25 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
         } else {
             setDrippers(['Hario V60', 'Kalita Wave', 'Origami', 'Hario Switch', 'Aeropress', 'Chemex', 'French Press']);
         }
+
+        const savedAccessories = localStorage.getItem('kugcc_custom_accessories');
+        if (savedAccessories) {
+            setAvailableAccessories(JSON.parse(savedAccessories));
+        } else {
+            setAvailableAccessories(['Paragon', 'Melodrip', 'Sifter', 'WDT Tool', 'Paper Filter (Bottom)', 'LilyDrip']);
+        }
     }, []);
+
+    const toggleAccessory = (acc: string) => {
+        setRecipe(prev => {
+            const current = prev.accessories || [];
+            if (current.includes(acc)) {
+                return { ...prev, accessories: current.filter(a => a !== acc) };
+            } else {
+                return { ...prev, accessories: [...current, acc] };
+            }
+        });
+    };
 
     // Auto-scaling logic happens naturally by deriving state, 
     // but if we needed to adjust step percentages to maintain volumes, 
@@ -32,8 +57,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 's') {
                 e.preventDefault();
-                // Default to saving for bean for quick save
-                onSave(recipe, 'bean');
+                onSave(recipe, saveScope);
             }
             if (e.key === 'Escape') {
                 onCancel();
@@ -73,9 +97,9 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 Recipe Configuration
             </h2>
 
-            {/* Recipe Name */}
-            <div className="w-full max-w-4xl mb-6 md:mb-8 -mt-2">
-                <div className="flex flex-col">
+            {/* Recipe Name & Shop Recipe Toggle */}
+            <div className="w-full max-w-4xl mb-6 md:mb-8 -mt-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col flex-1">
                     <label className="text-[10px] uppercase tracking-widest text-gray-500 mb-1">Recipe Name (Optional)</label>
                     <input
                         type="text"
@@ -84,6 +108,18 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                         placeholder={initialRecipe.name || "e.g. My Favorite V60"}
                         className="bg-transparent border-b border-gray-800 text-white font-mono focus:outline-none focus:border-white transition-colors w-full text-sm py-2"
                     />
+                </div>
+                <div className="flex items-center gap-2">
+                    <input 
+                        type="checkbox" 
+                        id="shopRecipe" 
+                        checked={recipe.isShopRecipe || false}
+                        onChange={(e) => setRecipe({...recipe, isShopRecipe: e.target.checked})}
+                        className="accent-yellow-600 w-4 h-4"
+                    />
+                    <label htmlFor="shopRecipe" className="text-[10px] uppercase tracking-widest text-yellow-600 font-bold cursor-pointer select-none">
+                        Mark as Shop/Model Recipe (お手本)
+                    </label>
                 </div>
             </div>
 
@@ -184,6 +220,29 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 </div>
             </div>
 
+            {/* Accessories Selection */}
+            <div className="w-full max-w-4xl mb-6 md:mb-12">
+                <label className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 block">Accessories (Optional)</label>
+                <div className="flex flex-wrap gap-2">
+                    {availableAccessories.map(acc => {
+                        const isSelected = (recipe.accessories || []).includes(acc);
+                        return (
+                            <button
+                                key={acc}
+                                onClick={() => toggleAccessory(acc)}
+                                className={`px-3 py-1.5 text-[10px] uppercase tracking-widest transition-all rounded-sm border ${
+                                    isSelected 
+                                        ? 'bg-white text-black border-white font-bold shadow-[0_0_10px_rgba(255,255,255,0.3)]' 
+                                        : 'bg-transparent text-gray-400 border-gray-800 hover:border-gray-500'
+                                }`}
+                            >
+                                {acc}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
             {/* Steps Table */}
             <div className="w-full max-w-4xl mb-6">
                 <div className="flex justify-between items-end mb-4">
@@ -237,28 +296,55 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 </div>
                 <button
                     onClick={addStep}
-                    className="mt-4 text-xs text-gray-500 hover:text-white uppercase tracking-widest transition-colors"
+                    className="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-2 py-2 md:py-4"
                 >
-                    + Add Step
+                    <span>+ Add Phase</span>
                 </button>
             </div>
 
-            {/* Actions */}
-            <div className="mt-8 md:mt-12 mb-6 flex gap-6 z-10">
-                <button
-                    onClick={onCancel}
-                    className="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition-colors px-4 py-2"
-                >
-                    Cancel (Esc)
-                </button>
-                <div className="flex gap-4">
+            {/* Save Target & Actions */}
+            <div className="w-full max-w-4xl mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6 pb-20">
+                <div className="flex flex-col gap-2">
+                    <label className="text-[10px] uppercase tracking-widest text-gray-500">Save Destination</label>
+                    <div className="flex gap-4">
+                        <label className="flex items-center gap-2 text-xs cursor-pointer">
+                            <input 
+                                type="radio" 
+                                name="saveScope" 
+                                value="bean" 
+                                checked={saveScope === 'bean'} 
+                                onChange={() => setSaveScope('bean')}
+                                className="accent-white"
+                            />
+                            <span className={saveScope === 'bean' ? 'text-white font-bold' : 'text-gray-500'}>Current Bean</span>
+                        </label>
+                        <label className="flex items-center gap-2 text-xs cursor-pointer">
+                            <input 
+                                type="radio" 
+                                name="saveScope" 
+                                value="global" 
+                                checked={saveScope === 'global'} 
+                                onChange={() => setSaveScope('global')}
+                                className="accent-white"
+                            />
+                            <span className={saveScope === 'global' ? 'text-white font-bold' : 'text-gray-500'}>Global Library</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="flex gap-4 w-full md:w-auto">
                     <button
-                        onClick={() => onSave(recipe, 'bean')}
-                        disabled={!isValid}
-                        className={`px-8 py-3 border text-xs uppercase tracking-[0.2em] transition-all ${isValid ? 'border-white text-white hover:bg-white hover:text-black' : 'border-gray-800 text-gray-700 cursor-not-allowed'
-                            }`}
+                        onClick={onCancel}
+                        className="flex-1 md:flex-none px-8 py-3 text-xs uppercase tracking-widest text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 transition-all"
                     >
-                        Save as New
+                        Cancel
+                    </button>
+                    <button
+                        onClick={() => onSave(recipe, saveScope)}
+                        disabled={!isValid}
+                        className="flex-1 md:flex-none px-8 py-3 text-xs uppercase tracking-widest bg-white text-black hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold"
+                    >
+                        Save Recipe
                     </button>
                 </div>
             </div>

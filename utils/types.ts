@@ -14,7 +14,9 @@ export type Recipe = {
     grindSize: string; // Text description
     grinderModel?: string; // e.g. "Comandante C40"
     dripper?: string; // e.g. "V60", "Kalita"
+    accessories?: string[]; // e.g. ["Paragon", "Melodrip", "Sifter"]
     isStarred?: boolean; // New: Favorite status for recipe
+    isShopRecipe?: boolean; // New: Model/Shop recipe flag
     steps: RecipeStep[];
 };
 
@@ -33,6 +35,7 @@ export type Bean = {
     idealAgingDays?: number; // Optional: Theoretical ideal aging days
     shopRecommendedDays?: number; // Optional: Shop's recommended aging days
     storageLocation?: string; // Optional: Storage location (e.g., Freezer, Wine Cellar)
+    flavorTags?: string[]; // Optional: Flavor profile tags
 };
 
 // Default Recipe Template

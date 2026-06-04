@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
+import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
 
 interface BeanEntryModalProps {
     onSave: (bean: Bean) => void;
@@ -24,6 +25,8 @@ export default function BeanEntryModal({
     roastLevels = [],
     varieties = []
 }: BeanEntryModalProps) {
+    const [flavorSearch, setFlavorSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<FlavorCategory | 'All'>('All');
     const [formData, setFormData] = useState({
         name: initialBean?.name || '',
         roaster: initialBean?.roaster || '',
@@ -34,7 +37,8 @@ export default function BeanEntryModal({
         roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : new Date().toISOString().split('T')[0],
         idealAgingDays: initialBean?.idealAgingDays?.toString() || '',
         shopRecommendedDays: initialBean?.shopRecommendedDays?.toString() || '',
-        storageLocation: initialBean?.storageLocation || ''
+        storageLocation: initialBean?.storageLocation || '',
+        flavorTags: initialBean?.flavorTags || [] as string[]
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -42,15 +46,28 @@ export default function BeanEntryModal({
     };
 
     const handleSave = () => {
-        if (!formData.name || !formData.roaster) {
-            alert("Name and Roaster are required.");
-            return;
+        let finalName = formData.name.trim();
+        let finalRoaster = formData.roaster.trim();
+
+        if (!finalName) {
+            if (formData.origin.trim()) {
+                finalName = `${formData.origin.trim()} Blend`;
+            } else if (finalRoaster) {
+                finalName = `${finalRoaster} Coffee`;
+            } else {
+                const today = new Date();
+                finalName = `名もなき豆 (${today.getMonth() + 1}/${today.getDate()})`;
+            }
+        }
+
+        if (!finalRoaster) {
+            finalRoaster = 'Unknown Roaster';
         }
 
         const newBean: Bean = {
             id: initialBean?.id || Date.now().toString(),
-            name: formData.name,
-            roaster: formData.roaster,
+            name: finalName,
+            roaster: finalRoaster,
             origin: formData.origin,
             variety: formData.variety,
             roastLevel: formData.roastLevel,
@@ -59,19 +76,51 @@ export default function BeanEntryModal({
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
-            storageLocation: formData.storageLocation || undefined
+            storageLocation: formData.storageLocation || undefined,
+            flavorTags: formData.flavorTags
         };
         onSave(newBean);
     };
 
+    const toggleFlavorTag = (tag: string) => {
+        setFormData(prev => {
+            const tags = prev.flavorTags.includes(tag)
+                ? prev.flavorTags.filter(t => t !== tag)
+                : [...prev.flavorTags, tag];
+            return { ...prev, flavorTags: tags };
+        });
+    };
+
+    const handleFlavorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && flavorSearch.trim()) {
+            e.preventDefault();
+            const newTag = flavorSearch.trim();
+            if (!formData.flavorTags.includes(newTag)) {
+                toggleFlavorTag(newTag);
+            }
+            setFlavorSearch('');
+        }
+    };
+
+    const filteredFlavors = useMemo(() => {
+        let flavors = FLAVOR_WHEEL;
+        if (selectedCategory !== 'All') {
+            flavors = flavors.filter(f => f.category === selectedCategory);
+        }
+        if (flavorSearch.trim()) {
+            flavors = flavors.filter(f => f.name.toLowerCase().includes(flavorSearch.toLowerCase()));
+        }
+        return flavors;
+    }, [flavorSearch, selectedCategory]);
+
     return (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-black border border-gray-800 w-full max-w-md p-8 relative">
-                <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-8 text-white border-b border-gray-900 pb-4">
+        <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] sm:p-4">
+            <div className="bg-black sm:border sm:border-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-md p-5 sm:p-8 relative flex flex-col">
+                <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-4 sm:mb-8 text-white border-b border-gray-900 pb-4 shrink-0 mt-8 sm:mt-0">
                     {initialBean ? 'Edit Bean Entry' : 'New Bean Entry'}
                 </h2>
 
-                <div className="space-y-6">
+                <div className="space-y-6 overflow-y-auto flex-1 pr-2 sm:pr-4 custom-scrollbar">
                     <div className="flex flex-col gap-2">
                         <label className="text-[10px] uppercase text-gray-500 tracking-widest">Name</label>
                         <input
@@ -172,6 +221,81 @@ export default function BeanEntryModal({
                     </div>
 
                     <div className="pt-4 border-t border-gray-900 mt-2">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-[10px] text-gray-500 uppercase tracking-widest">Flavor Profile</h3>
+                            <span className="text-[10px] text-gray-600 font-mono">{formData.flavorTags.length} tags</span>
+                        </div>
+                        
+                        <div className="bg-gray-950/50 border border-gray-800 p-4 rounded-md">
+                            <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 pb-2 border-b border-gray-800/50">
+                                {['All', 'Fruity', 'Floral', 'Sweet', 'Nutty/Cocoa', 'Roasted', 'Spices', 'Sour/Fermented', 'Green/Vegetative', 'Other'].map(cat => {
+                                    const isSelected = selectedCategory === cat;
+                                    const baseColor = cat !== 'All' ? CATEGORY_COLORS[cat as FlavorCategory] : 'bg-gray-800/60 text-gray-200 border-gray-600/80';
+                                    return (
+                                        <button
+                                            key={cat}
+                                            type="button"
+                                            onClick={() => setSelectedCategory(cat as any)}
+                                            className={`whitespace-nowrap px-3 py-1 text-[9px] uppercase tracking-wider rounded-full border transition-all ${
+                                                isSelected 
+                                                    ? `${baseColor} opacity-100 font-bold ring-1 ring-white/60 shadow-[0_0_10px_rgba(255,255,255,0.15)]` 
+                                                    : `${baseColor} opacity-70 hover:opacity-100`
+                                            }`}
+                                        >
+                                            {cat.replace('/', ' / ')}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <input
+                                type="text"
+                                value={flavorSearch}
+                                onChange={(e) => setFlavorSearch(e.target.value)}
+                                onKeyDown={handleFlavorKeyDown}
+                                placeholder="Type to search or add custom flavor... (Press Enter)"
+                                className="w-full bg-transparent border-b border-gray-700 text-white p-2 mb-4 text-xs focus:border-white focus:outline-none transition-colors"
+                            />
+                            
+                            <div className="flex flex-wrap gap-2 max-h-60 overflow-y-auto no-scrollbar">
+                                {formData.flavorTags.map(tag => (
+                                    <button
+                                        key={tag}
+                                        type="button"
+                                        onClick={() => toggleFlavorTag(tag)}
+                                        className={`px-2.5 py-1 text-[10px] rounded-full border ${getFlavorColor(tag)} opacity-100 font-bold tracking-wider hover:opacity-80 transition-all flex items-center gap-1 ring-1 ring-white/50 shadow-[0_0_8px_rgba(255,255,255,0.2)]`}
+                                    >
+                                        {tag} <span className="text-[8px] opacity-80 font-normal">✕</span>
+                                    </button>
+                                ))}
+                                
+                                {filteredFlavors.filter(f => !formData.flavorTags.includes(f.name)).map(f => (
+                                    <button
+                                        key={f.name}
+                                        type="button"
+                                        onClick={() => toggleFlavorTag(f.name)}
+                                        className={`px-2.5 py-1 text-[10px] rounded-full border ${f.colorClasses} opacity-80 hover:opacity-100 transition-all`}
+                                    >
+                                        + {f.name}
+                                    </button>
+                                ))}
+                                
+                                {flavorSearch.trim() && !filteredFlavors.some(f => f.name.toLowerCase() === flavorSearch.toLowerCase()) && !formData.flavorTags.includes(flavorSearch.trim()) && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            toggleFlavorTag(flavorSearch.trim());
+                                            setFlavorSearch('');
+                                        }}
+                                        className="px-2.5 py-1 text-[10px] rounded-full border border-gray-600 bg-gray-800 text-gray-300 opacity-80 hover:opacity-100 transition-opacity"
+                                    >
+                                        + Add "{flavorSearch.trim()}"
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-900 mt-2">
                         <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-4">Aging Records (Optional)</h3>
                         <div className="grid grid-cols-2 gap-6 mb-4">
                             <div className="flex flex-col gap-2">
@@ -213,7 +337,7 @@ export default function BeanEntryModal({
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-4 mt-10">
+                <div className="flex justify-end gap-4 mt-6 sm:mt-10 shrink-0 pb-12 sm:pb-0 pt-4 bg-black">
                     <button
                         onClick={onCancel}
                         className="text-xs uppercase tracking-widest text-gray-500 hover:text-white px-4 py-2"
@@ -228,6 +352,6 @@ export default function BeanEntryModal({
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
