@@ -196,7 +196,10 @@ export default function BeanEntryModal({
             alert('Successfully extracted bean info!');
         } catch (error: any) {
             console.error('Auto-fill error:', error);
-            alert('Failed to analyze image: ' + error.message);
+            const msg = error instanceof Error ? error.message : 
+                        (error.type === 'error' ? 'Failed to load image (possibly unsupported format like HEIC in Chrome). Please try a JPEG/PNG.' : 
+                        error.toString());
+            alert('Failed to analyze image: ' + msg);
         } finally {
             setIsAnalyzing(false);
             e.target.value = ''; // Reset input
