@@ -212,14 +212,7 @@ export default function Timer({
         />
       </button>
 
-      {/* Desktop Grind Info (Hidden on Mobile) */}
-      <div className="absolute top-10 left-10 hidden md:block opacity-60">
-        <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Equipment</div>
-        <div className="text-xs text-white border-l-2 border-white pl-2 flex flex-col gap-1">
-          <span>{recipe.dripper || "Unknown Dripper"}</span>
-          <span className="text-gray-400 text-[10px]">{recipe.grinderModel || "Generic"} • {recipe.grindSize}</span>
-        </div>
-      </div>
+
 
       {/* Steps Visualization (Mini Timeline) */}
       <div className="flex gap-1 w-full max-w-[400px] h-1 bg-gray-900 rounded-full overflow-hidden mb-6 md:mb-8">
