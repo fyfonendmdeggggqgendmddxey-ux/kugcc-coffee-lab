@@ -4,6 +4,7 @@ import { useState } from 'react';
 import AICoach from './AICoach';
 import TastingLog from './TastingLog';
 import SettingsPanel from './SettingsPanel';
+import HelpPanel from './HelpPanel';
 import { Bean, Recipe } from '@/utils/types';
 
 interface RightPanelProps {
@@ -23,7 +24,7 @@ export default function RightPanel({
     onLoadRecipe, onToggleStar, onDeleteRecipe,
     onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe
 }: RightPanelProps) {
-    const [activeTab, setActiveTab] = useState<'coach' | 'log' | 'recipes' | 'settings'>('coach');
+    const [activeTab, setActiveTab] = useState<'coach' | 'log' | 'recipes' | 'settings' | 'help'>('coach');
 
     // Sort recipes: Starred first
     const sortedBeanRecipes = bean?.recipes ? [...bean.recipes].sort((a, b) => {
@@ -88,10 +89,10 @@ export default function RightPanel({
     return (
         <div className="h-full flex flex-col bg-black relative">
             {/* Touch-friendly Tab Switcher Header */}
-            <div className="flex border-b border-gray-900 bg-black text-[10px] uppercase tracking-[0.12em] font-bold z-10 shrink-0 select-none">
+            <div className="flex border-b border-gray-900 bg-black text-[10px] uppercase tracking-[0.12em] font-bold z-10 shrink-0 select-none overflow-x-auto no-scrollbar">
                 <button
                     onClick={() => setActiveTab('coach')}
-                    className={`flex-1 py-4 text-center transition-all border-b-2 font-mono ${
+                    className={`px-4 py-4 text-center transition-all border-b-2 font-mono whitespace-nowrap ${
                         activeTab === 'coach' 
                             ? 'text-white border-white bg-gray-900/20' 
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
@@ -101,7 +102,7 @@ export default function RightPanel({
                 </button>
                 <button
                     onClick={() => setActiveTab('log')}
-                    className={`flex-1 py-4 text-center transition-all border-b-2 font-mono ${
+                    className={`px-4 py-4 text-center transition-all border-b-2 font-mono whitespace-nowrap ${
                         activeTab === 'log' 
                             ? 'text-white border-white bg-gray-900/20' 
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
@@ -111,7 +112,7 @@ export default function RightPanel({
                 </button>
                 <button
                     onClick={() => setActiveTab('recipes')}
-                    className={`flex-1 py-4 text-center transition-all border-b-2 font-mono ${
+                    className={`px-4 py-4 text-center transition-all border-b-2 font-mono whitespace-nowrap ${
                         activeTab === 'recipes' 
                             ? 'text-white border-white bg-gray-900/20' 
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
@@ -119,9 +120,20 @@ export default function RightPanel({
                 >
                     Recipes
                 </button>
+                <div className="flex-1"></div>
+                <button
+                    onClick={() => setActiveTab('help')}
+                    className={`px-4 py-4 text-center transition-all border-b-2 font-mono whitespace-nowrap ${
+                        activeTab === 'help' 
+                            ? 'text-white border-white bg-gray-900/20' 
+                            : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
+                    }`}
+                >
+                    Guide
+                </button>
                 <button
                     onClick={() => setActiveTab('settings')}
-                    className={`px-5 py-4 text-center transition-all border-b-2 text-xs ${
+                    className={`px-4 py-4 text-center transition-all border-b-2 text-xs whitespace-nowrap ${
                         activeTab === 'settings' 
                             ? 'text-white border-white bg-gray-900/20' 
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
@@ -137,6 +149,7 @@ export default function RightPanel({
                 {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} />}
                 {activeTab === 'log' && <TastingLog bean={bean} activeRecipe={recipe} onLoadRecipe={onLoadRecipe} />}
                 {activeTab === 'settings' && <SettingsPanel />}
+                {activeTab === 'help' && <HelpPanel />}
                 {activeTab === 'recipes' && (
                     <div className="h-full flex flex-col p-6 font-mono overflow-y-auto">
                         <div className="flex justify-between items-end mb-8 border-b border-gray-900 pb-2">

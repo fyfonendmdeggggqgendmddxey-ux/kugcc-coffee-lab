@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Tooltip from '../common/Tooltip';
 
 const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
 const DEFAULT_ORIGINS = ['Ethiopia', 'Colombia', 'Brazil', 'Kenya', 'Guatemala', 'Indonesia'];
@@ -311,6 +312,9 @@ export default function SettingsPanel() {
             <div className="mb-6 pb-6 border-b border-gray-900 border-dashed">
                 <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>API Integrations</span>
+                    <Tooltip content="Gemini APIキーを設定すると、写真からAIが自動で情報を抽出する機能が使えるようになります！" position="right">
+                        <span className="text-gray-400 cursor-help">[?]</span>
+                    </Tooltip>
                     <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
                 </h3>
                 <div className="flex flex-col gap-2">
@@ -359,6 +363,9 @@ export default function SettingsPanel() {
             <div className="mb-6">
                 <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>Roaster Aging Defaults (焙煎日の自動補完)</span>
+                    <Tooltip content="設定しておくと、写真から焙煎日が読み取れなかった時に自動で適用されます。" position="right">
+                        <span className="text-gray-400 cursor-help">[?]</span>
+                    </Tooltip>
                     <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
                 </h3>
                 <p className="text-[9px] text-gray-500 mb-2 leading-relaxed">

@@ -5,6 +5,7 @@ import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import BeanEntryModal from './BeanEntryModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
+import Tooltip from '../common/Tooltip';
 
 interface BeanLibraryProps {
     onSelect?: (id: string) => void;
@@ -384,10 +385,12 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                 {bean.process === 'Washed' ? 'ウォッシュト' : bean.process === 'Natural' ? 'ナチュラル' : bean.process}
                             </span>
                         </div>
-                        <div className="mt-2 text-[10px] text-gray-500 font-mono flex items-center">
-                            <span>Roast: {bean.roastDate ? bean.roastDate.split('T')[0] : 'N/A'}</span>
-                            {getAgingBadge(bean)}
-                        </div>
+                        <Tooltip content="エイジング（焙煎からの日数）。ピーク（飲み頃）は自動計算されます。" position="right">
+                            <div className="mt-2 text-[10px] text-gray-500 font-mono flex items-center cursor-help w-fit">
+                                <span>Roast: {bean.roastDate ? bean.roastDate.split('T')[0] : 'N/A'}</span>
+                                {getAgingBadge(bean)}
+                            </div>
+                        </Tooltip>
                         {bean.storageLocation && (
                             <div className="mt-1.5 text-[9px] text-gray-600 font-mono flex items-center gap-1 border border-gray-900/50 w-fit px-1 bg-gray-950/30">
                                 <span className="uppercase tracking-widest">Loc:</span> <span className="text-gray-400">{bean.storageLocation}</span>
@@ -419,10 +422,12 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 >
                     + Add Entry
                 </button>
-                <label className={`w-12 border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all cursor-pointer ${isBatchProcessing ? 'opacity-50 pointer-events-none' : ''}`} title="Batch Import from Photos">
-                    <span className="text-sm">📸</span>
-                    <input type="file" multiple accept="image/*" className="hidden" onChange={handleBatchImageUpload} disabled={isBatchProcessing} />
-                </label>
+                <Tooltip content="一括登録：複数の写真を選択すると、AIがまとめて解析してくれます！" position="top">
+                    <label className={`h-full w-12 border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all cursor-pointer ${isBatchProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
+                        <span className="text-sm">📸</span>
+                        <input type="file" multiple accept="image/*" className="hidden" onChange={handleBatchImageUpload} disabled={isBatchProcessing} />
+                    </label>
+                </Tooltip>
             </div>
             
             {isBatchProcessing && (
