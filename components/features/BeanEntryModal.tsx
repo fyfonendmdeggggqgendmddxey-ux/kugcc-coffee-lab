@@ -219,7 +219,7 @@ export default function BeanEntryModal({
                                 <span>📸</span> Auto-fill
                             </span>
                         )}
-                        <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} disabled={isAnalyzing} />
+                        <input type="file" accept="image/*" capture="environment" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleImageUpload} disabled={isAnalyzing} />
                     </label>
                 </h2>
 
