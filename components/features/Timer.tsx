@@ -197,7 +197,7 @@ export default function Timer({
         onClick={() => {
           if (!isFinished) setIsRunning(prev => !prev);
         }}
-        className="mb-6 mt-16 md:mt-0 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-6 mt-16 md:mt-0 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
