@@ -6,7 +6,7 @@ import { GRINDER_TABLE } from '@/utils/grinder-table';
 
 interface RecipeEditorProps {
     initialRecipe: Recipe;
-    onSave: (recipe: Recipe, scope: 'default' | 'bean') => void;
+    onSave: (recipe: Recipe, scope: 'bean' | 'global') => void;
     onCancel: () => void;
 }
 
