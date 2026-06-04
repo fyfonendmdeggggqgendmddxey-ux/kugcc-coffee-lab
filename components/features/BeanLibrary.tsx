@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import BeanEntryModal from './BeanEntryModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
+import { analyzeCoffeeBagImage } from '@/utils/gemini';
 
 interface BeanLibraryProps {
     onSelect?: (id: string) => void;
@@ -18,6 +19,66 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     const [showModal, setShowModal] = useState(false);
     const [editingBean, setEditingBean] = useState<Bean | undefined>(undefined);
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+    const [isBatchProcessing, setIsBatchProcessing] = useState(false);
+    const [batchProgress, setBatchProgress] = useState("");
+
+    const handleBatchImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        const apiKey = localStorage.getItem('kugcc_gemini_api_key') || '';
+
+        setIsBatchProcessing(true);
+        let newlyAddedCount = 0;
+        // Need to use functional state update or ensure we have the latest beans
+        let currentBeans = [...beans];
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            setBatchProgress(`Analyzing ${i + 1} / ${files.length}...`);
+            
+            try {
+                const base64Data = await new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const result = reader.result as string;
+                        const base64 = result.split(',')[1];
+                        resolve(base64);
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+
+                const extracted = await analyzeCoffeeBagImage(base64Data, file.type, apiKey);
+
+                const newBean: Bean = {
+                    id: Date.now().toString() + i,
+                    name: extracted.name || 'Unnamed Coffee',
+                    roaster: extracted.roaster || 'Unknown Roaster',
+                    origin: extracted.origin || '',
+                    variety: extracted.variety || '',
+                    process: extracted.process || '',
+                    roastLevel: extracted.roastLevel || '',
+                    flavorTags: extracted.flavorTags || [],
+                    roastDate: new Date().toISOString(),
+                    recipeOverride: DEFAULT_RECIPE,
+                };
+                currentBeans.push(newBean);
+                newlyAddedCount++;
+            } catch (err) {
+                console.error("Batch extraction failed for image", i, err);
+            }
+        }
+
+        if (newlyAddedCount > 0) {
+            setBeans(currentBeans);
+            localStorage.setItem('kugcc_beans', JSON.stringify(currentBeans));
+        }
+
+        setIsBatchProcessing(false);
+        setBatchProgress("");
+        e.target.value = "";
+    };
 
     // Load from LocalStorage
     useEffect(() => {
@@ -332,14 +393,25 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     </div>
                 ))}
             </div>
-            <div className="pt-3 border-t border-gray-900 mt-3">
+            <div className="pt-3 border-t border-gray-900 mt-3 flex gap-2">
                 <button
                     onClick={() => { setEditingBean(undefined); setShowModal(true); }}
-                    className="w-full py-2.5 border border-gray-800 text-xs text-gray-400 hover:bg-white hover:text-black hover:border-white transition-all duration-300 uppercase tracking-[0.2em]"
+                    disabled={isBatchProcessing}
+                    className="flex-1 py-2.5 border border-gray-800 text-xs text-gray-400 hover:bg-white hover:text-black hover:border-white transition-all duration-300 uppercase tracking-[0.2em] disabled:opacity-50 disabled:pointer-events-none"
                 >
                     + Add Entry
                 </button>
+                <label className={`w-12 border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all cursor-pointer ${isBatchProcessing ? 'opacity-50 pointer-events-none' : ''}`} title="Batch Import from Photos">
+                    <span className="text-sm">📸</span>
+                    <input type="file" multiple accept="image/*" className="hidden" onChange={handleBatchImageUpload} disabled={isBatchProcessing} />
+                </label>
             </div>
+            
+            {isBatchProcessing && (
+                <div className="mt-2 text-center text-[10px] text-amber-500 font-bold uppercase tracking-widest animate-pulse">
+                    {batchProgress}
+                </div>
+            )}
 
             {showModal && (
                 <BeanEntryModal
