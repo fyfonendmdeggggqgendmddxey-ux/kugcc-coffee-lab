@@ -88,8 +88,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
         setRecipe(prev => ({ ...prev, steps: prev.steps.filter(s => s.id !== id) }));
     };
 
-    const totalPercentage = recipe.steps.reduce((sum, s) => sum + Number(s.waterPercentage), 0);
-    const isValid = totalPercentage === 100;
+    const currentTotalMl = recipe.steps.reduce((sum, s) => sum + (totalWater * (Number(s.waterPercentage) / 100)), 0);
+    const isValid = Math.abs(currentTotalMl - totalWater) < 0.5;
 
     return (
         <div className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto">
@@ -248,7 +248,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 <div className="flex justify-between items-end mb-4">
                     <h3 className="text-xs text-gray-500 uppercase tracking-widest">Steps Partitioning</h3>
                     <span className={`text-xs ${isValid ? 'text-gray-500' : 'text-red-500'}`}>
-                        Total: {totalPercentage}%
+                        Total: {Math.round(currentTotalMl)} / {Math.round(totalWater)} ml
                     </span>
                 </div>
 
@@ -265,15 +265,19 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                             <div className="flex items-center gap-2">
                                 <input
                                     type="number"
-                                    value={step.waterPercentage === 0 ? '' : step.waterPercentage}
-                                    onChange={(e) => updateStep(step.id, 'waterPercentage', e.target.value === '' ? 0 : Number(e.target.value))}
+                                    value={step.waterPercentage === 0 ? '' : Math.round(totalWater * (step.waterPercentage / 100))}
+                                    onChange={(e) => {
+                                        const ml = e.target.value === '' ? 0 : Number(e.target.value);
+                                        const pct = totalWater > 0 ? (ml / totalWater) * 100 : 0;
+                                        updateStep(step.id, 'waterPercentage', pct);
+                                    }}
                                     className="bg-transparent text-white text-sm text-right w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
                                 />
-                                <span className="text-gray-600 text-xs">%</span>
+                                <span className="text-gray-600 text-xs">ml</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="text-gray-500 text-sm tabular-nums w-12 text-right">
-                                    {(totalWater * (step.waterPercentage / 100)).toFixed(0)}ml
+                                    {step.waterPercentage.toFixed(1)}%
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">
