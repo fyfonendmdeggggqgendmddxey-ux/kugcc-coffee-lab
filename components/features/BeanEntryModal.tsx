@@ -37,7 +37,7 @@ export default function BeanEntryModal({
         variety: initialBean?.variety || '',
         roastLevel: initialBean?.roastLevel || 'Light',
         process: initialBean?.process || 'Washed',
-        roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : new Date().toISOString().split('T')[0],
+        roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : '',
         idealAgingDays: initialBean?.idealAgingDays?.toString() || '',
         shopRecommendedDays: initialBean?.shopRecommendedDays?.toString() || '',
         storageLocation: initialBean?.storageLocation || '',
@@ -75,7 +75,7 @@ export default function BeanEntryModal({
             variety: formData.variety,
             roastLevel: formData.roastLevel,
             process: formData.process,
-            roastDate: new Date(formData.roastDate).toISOString(),
+            roastDate: formData.roastDate ? new Date(formData.roastDate).toISOString() : '',
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
@@ -169,6 +169,24 @@ export default function BeanEntryModal({
                     const uniqueTags = Array.from(new Set([...prev.flavorTags, ...cleanedTags]));
                     newData.flavorTags = uniqueTags;
                 }
+
+                if (result.roastDate) {
+                    newData.roastDate = result.roastDate;
+                } else if (result.roaster) {
+                    const savedDefaults = localStorage.getItem('kugcc_roaster_defaults');
+                    if (savedDefaults) {
+                        try {
+                            const defaults = JSON.parse(savedDefaults);
+                            const days = defaults[result.roaster];
+                            if (typeof days === 'number') {
+                                const d = new Date();
+                                d.setDate(d.getDate() - days);
+                                newData.roastDate = d.toISOString().split('T')[0];
+                            }
+                        } catch (e) {}
+                    }
+                }
+
                 return newData;
             });
             

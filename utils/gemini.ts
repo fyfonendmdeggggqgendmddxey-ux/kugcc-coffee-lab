@@ -6,6 +6,7 @@ export interface ExtractedBeanInfo {
     roastLevel?: string;
     process?: string;
     flavorTags?: string[];
+    roastDate?: string;
 }
 
 export async function analyzeCoffeeBagImage(base64Image: string, mimeType: string, apiKey: string): Promise<ExtractedBeanInfo> {
@@ -46,7 +47,8 @@ JSON Schema:
     "variety": "string (the coffee variety, e.g. 'Geisha', 'Bourbon', 'Typica')",
     "roastLevel": "string (e.g. 'Light', 'Medium', 'Dark'. Infer from text if not explicit, but leave empty if unknown)",
     "process": "string (the processing method, e.g. 'Washed', 'Natural', 'Honey', 'Anaerobic')",
-    "flavorTags": ["string", "string"] (list of flavor notes or tasting notes found on the bag)
+    "flavorTags": ["string", "string"] (list of flavor notes or tasting notes found on the bag),
+    "roastDate": "string (the roast date found on the bag in YYYY-MM-DD format. If you cannot find a date, leave it empty)"
 }
 
 If you cannot find a specific piece of information, omit the key or set it to null.

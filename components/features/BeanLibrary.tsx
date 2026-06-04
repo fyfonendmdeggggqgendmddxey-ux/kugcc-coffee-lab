@@ -51,6 +51,24 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
                 const extracted = await analyzeCoffeeBagImage(base64Data, file.type, apiKey);
 
+                let finalRoastDate = '';
+                if (extracted.roastDate) {
+                    finalRoastDate = extracted.roastDate;
+                } else if (extracted.roaster) {
+                    const savedDefaults = localStorage.getItem('kugcc_roaster_defaults');
+                    if (savedDefaults) {
+                        try {
+                            const defaults = JSON.parse(savedDefaults);
+                            const days = defaults[extracted.roaster];
+                            if (typeof days === 'number') {
+                                const d = new Date();
+                                d.setDate(d.getDate() - days);
+                                finalRoastDate = d.toISOString().split('T')[0];
+                            }
+                        } catch(e) {}
+                    }
+                }
+
                 const newBean: Bean = {
                     id: Date.now().toString() + i,
                     name: extracted.name || 'Unnamed Coffee',
@@ -60,7 +78,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     process: extracted.process || '',
                     roastLevel: extracted.roastLevel || '',
                     flavorTags: extracted.flavorTags || [],
-                    roastDate: new Date().toISOString(),
+                    roastDate: finalRoastDate ? new Date(finalRoastDate).toISOString() : '',
                     recipeOverride: DEFAULT_RECIPE,
                 };
                 currentBeans.push(newBean);

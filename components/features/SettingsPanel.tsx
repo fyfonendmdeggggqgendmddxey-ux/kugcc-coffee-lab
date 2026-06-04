@@ -28,6 +28,10 @@ export default function SettingsPanel() {
     const [newAccessory, setNewAccessory] = useState('');
 
     const [geminiApiKey, setGeminiApiKey] = useState('');
+    const [roasterDefaults, setRoasterDefaults] = useState<Record<string, number>>({});
+    
+    const [newDefaultRoaster, setNewDefaultRoaster] = useState('');
+    const [newDefaultDays, setNewDefaultDays] = useState<number | ''>('');
 
     // Load custom lists from LocalStorage on mount
     useEffect(() => {
@@ -61,6 +65,9 @@ export default function SettingsPanel() {
 
         const savedApiKey = localStorage.getItem('kugcc_gemini_api_key');
         if (savedApiKey) setGeminiApiKey(savedApiKey);
+        
+        const savedRoasterDefaults = localStorage.getItem('kugcc_roaster_defaults');
+        if (savedRoasterDefaults) setRoasterDefaults(JSON.parse(savedRoasterDefaults));
     }, []);
 
     // Save helpers
@@ -102,6 +109,25 @@ export default function SettingsPanel() {
     const saveGeminiApiKey = (val: string) => {
         setGeminiApiKey(val);
         localStorage.setItem('kugcc_gemini_api_key', val);
+    };
+
+    const saveRoasterDefaults = (map: Record<string, number>) => {
+        setRoasterDefaults(map);
+        localStorage.setItem('kugcc_roaster_defaults', JSON.stringify(map));
+    };
+
+    const addRoasterDefault = () => {
+        const roaster = newDefaultRoaster.trim();
+        if (roaster && newDefaultDays !== '' && typeof newDefaultDays === 'number') {
+            saveRoasterDefaults({ ...roasterDefaults, [roaster]: newDefaultDays });
+            setNewDefaultRoaster('');
+            setNewDefaultDays('');
+        }
+    };
+    const removeRoasterDefault = (roaster: string) => {
+        const updated = { ...roasterDefaults };
+        delete updated[roaster];
+        saveRoasterDefaults(updated);
     };
 
     // Add / Remove handlers
@@ -326,6 +352,49 @@ export default function SettingsPanel() {
                         className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoaster} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
+                </div>
+            </div>
+
+            {/* Roaster Defaults Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span>Roaster Aging Defaults (焙煎日の自動設定)</span>
+                    <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
+                </h3>
+                <p className="text-[9px] text-gray-500 mb-2 leading-relaxed">
+                    Set a default "Days since roast" for specific roasters. If the AI cannot read the roast date from the photo, this default will be applied automatically (e.g. "Glitch: 7 days ago"). If not set, the roast date will be left blank.
+                </p>
+                <div className="flex flex-col gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {Object.entries(roasterDefaults).map(([r, days]) => (
+                        <div key={r} className="flex justify-between items-center text-[10px] bg-gray-900 border border-gray-800 text-gray-300 rounded px-2 py-1">
+                            <span>{r}</span>
+                            <div className="flex items-center gap-3">
+                                <span className="text-gray-400">{days} days ago</span>
+                                <button onClick={() => removeRoasterDefault(r)} className="text-gray-600 hover:text-red-500 font-bold text-xs">×</button>
+                            </div>
+                        </div>
+                    ))}
+                    {Object.keys(roasterDefaults).length === 0 && <span className="text-[10px] text-gray-700 italic">No defaults configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <select 
+                        value={newDefaultRoaster}
+                        onChange={(e) => setNewDefaultRoaster(e.target.value)}
+                        className="flex-[2] bg-gray-900/50 border-none text-[10px] p-2 text-white focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    >
+                        <option value="">Select Roaster...</option>
+                        {roasters.map(r => <option key={r} value={r}>{r}</option>)}
+                    </select>
+                    <input 
+                        type="number" 
+                        min="0"
+                        placeholder="Days ago..." 
+                        value={newDefaultDays}
+                        onChange={(e) => setNewDefaultDays(e.target.value === '' ? '' : parseInt(e.target.value))}
+                        onKeyDown={(e) => e.key === 'Enter' && addRoasterDefault()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addRoasterDefault} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
             </div>
 
