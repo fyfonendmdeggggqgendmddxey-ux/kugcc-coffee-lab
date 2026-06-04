@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
+import { analyzeCoffeeBagImage } from '@/utils/gemini';
 
 interface BeanEntryModalProps {
     onSave: (bean: Bean) => void;
@@ -27,6 +28,8 @@ export default function BeanEntryModal({
 }: BeanEntryModalProps) {
     const [flavorSearch, setFlavorSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<FlavorCategory | 'All'>('All');
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    
     const [formData, setFormData] = useState({
         name: initialBean?.name || '',
         roaster: initialBean?.roaster || '',
@@ -113,11 +116,111 @@ export default function BeanEntryModal({
         return flavors;
     }, [flavorSearch, selectedCategory]);
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const apiKey = localStorage.getItem('kugcc_gemini_api_key');
+        if (!apiKey) {
+            alert('Please configure your Gemini API Key in the Settings tab first!');
+            return;
+        }
+
+        setIsAnalyzing(true);
+        
+        try {
+            // Compress image using Canvas
+            const compressedBase64 = await new Promise<{data: string, mime: string}>((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1024;
+                    const MAX_HEIGHT = 1024;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) return reject('No context');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    // Use JPEG for smaller payload
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    const base64Data = dataUrl.split(',')[1];
+                    resolve({ data: base64Data, mime: 'image/jpeg' });
+                };
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
+
+            const result = await analyzeCoffeeBagImage(compressedBase64.data, compressedBase64.mime, apiKey);
+            
+            // Merge extracted data into formData
+            setFormData(prev => {
+                const newData = { ...prev };
+                if (result.name) newData.name = result.name;
+                if (result.roaster) newData.roaster = result.roaster;
+                if (result.origin) newData.origin = result.origin;
+                if (result.variety) newData.variety = result.variety;
+                if (result.roastLevel) {
+                    // Match to known levels if possible, or just use it
+                    const validLevels = ['Light', 'Medium', 'Dark', 'Italian', 'French', 'City'];
+                    const matched = validLevels.find(l => result.roastLevel?.toLowerCase().includes(l.toLowerCase()));
+                    newData.roastLevel = matched || result.roastLevel;
+                }
+                if (result.process) {
+                    const validProcesses = ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Experimental', 'Wet Hulled'];
+                    const matched = validProcesses.find(p => result.process?.toLowerCase().includes(p.toLowerCase()));
+                    newData.process = matched || result.process;
+                }
+                if (result.flavorTags && result.flavorTags.length > 0) {
+                    // Capitalize first letters and add to tags
+                    const cleanedTags = result.flavorTags.map(t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase());
+                    const uniqueTags = Array.from(new Set([...prev.flavorTags, ...cleanedTags]));
+                    newData.flavorTags = uniqueTags;
+                }
+                return newData;
+            });
+            
+            alert('Successfully extracted bean info!');
+        } catch (error: any) {
+            console.error('Auto-fill error:', error);
+            alert('Failed to analyze image: ' + error.message);
+        } finally {
+            setIsAnalyzing(false);
+            e.target.value = ''; // Reset input
+        }
+    };
+
     return (
         <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] sm:p-4">
             <div className="bg-black sm:border sm:border-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-md p-5 sm:p-8 relative flex flex-col">
-                <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-4 sm:mb-8 text-white border-b border-gray-900 pb-4 shrink-0 mt-8 sm:mt-0">
-                    {initialBean ? 'Edit Bean Entry' : 'New Bean Entry'}
+                <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-4 sm:mb-8 text-white border-b border-gray-900 pb-4 shrink-0 mt-8 sm:mt-0 flex justify-between items-center">
+                    <span>{initialBean ? 'Edit Bean Entry' : 'New Bean Entry'}</span>
+                    <label className="relative cursor-pointer flex items-center justify-center bg-gray-900 hover:bg-gray-800 text-gray-300 transition-colors px-3 py-1.5 rounded-sm border border-gray-800">
+                        {isAnalyzing ? (
+                            <span className="text-[10px] uppercase tracking-widest flex items-center gap-2">
+                                <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                Analyzing...
+                            </span>
+                        ) : (
+                            <span className="text-[10px] uppercase tracking-widest flex items-center gap-1.5 text-blue-300">
+                                <span>📸</span> Auto-fill
+                            </span>
+                        )}
+                        <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} disabled={isAnalyzing} />
+                    </label>
                 </h2>
 
                 <div className="space-y-6 overflow-y-auto flex-1 pr-2 sm:pr-4 custom-scrollbar">

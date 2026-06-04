@@ -27,6 +27,8 @@ export default function SettingsPanel() {
     const [newDripper, setNewDripper] = useState('');
     const [newAccessory, setNewAccessory] = useState('');
 
+    const [geminiApiKey, setGeminiApiKey] = useState('');
+
     // Load custom lists from LocalStorage on mount
     useEffect(() => {
         const savedRoasters = localStorage.getItem('kugcc_custom_roasters');
@@ -56,6 +58,9 @@ export default function SettingsPanel() {
         const savedAccessories = localStorage.getItem('kugcc_custom_accessories');
         if (savedAccessories) setAccessories(JSON.parse(savedAccessories));
         else saveAccessories(DEFAULT_ACCESSORIES);
+
+        const savedApiKey = localStorage.getItem('kugcc_gemini_api_key');
+        if (savedApiKey) setGeminiApiKey(savedApiKey);
     }, []);
 
     // Save helpers
@@ -92,6 +97,11 @@ export default function SettingsPanel() {
     const saveAccessories = (list: string[]) => {
         setAccessories(list);
         localStorage.setItem('kugcc_custom_accessories', JSON.stringify(list));
+    };
+
+    const saveGeminiApiKey = (val: string) => {
+        setGeminiApiKey(val);
+        localStorage.setItem('kugcc_gemini_api_key', val);
     };
 
     // Add / Remove handlers
@@ -270,6 +280,29 @@ export default function SettingsPanel() {
             <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-6 text-gray-500 border-b border-gray-900 pb-2">
                 Preferences Settings
             </h2>
+
+            {/* API Integrations */}
+            <div className="mb-6 pb-6 border-b border-gray-900 border-dashed">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span>API Integrations</span>
+                    <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
+                </h3>
+                <div className="flex flex-col gap-2">
+                    <label className="text-[10px] text-gray-400 leading-relaxed">
+                        <strong>Google Gemini API Key</strong><br/>
+                        Used for "Auto-fill from Photo" feature. Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-blue-300">Google AI Studio</a>.
+                    </label>
+                    <div className="flex gap-2">
+                        <input 
+                            type="password" 
+                            placeholder="AIzaSy..." 
+                            value={geminiApiKey}
+                            onChange={(e) => saveGeminiApiKey(e.target.value)}
+                            className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        />
+                    </div>
+                </div>
+            </div>
 
             {/* Roasters Manager */}
             <div className="mb-6">
