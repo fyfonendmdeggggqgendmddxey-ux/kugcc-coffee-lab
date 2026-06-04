@@ -45,7 +45,13 @@ export default function BeanEntryModal({
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        let val = e.target.value;
+        if (e.target.type === 'number') {
+            if (val.length > 1 && val.startsWith('0') && !val.startsWith('0.')) {
+                val = val.replace(/^0+/, '');
+            }
+        }
+        setFormData({ ...formData, [e.target.name]: val });
     };
 
     const handleSave = () => {

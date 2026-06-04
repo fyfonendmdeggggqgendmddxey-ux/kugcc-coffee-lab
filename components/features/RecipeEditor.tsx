@@ -212,8 +212,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 <div className="flex flex-col">
                     <label className="text-[10px] uppercase tracking-widest text-gray-500 mb-1">Clicks / Setting</label>
                     <input
-                        type="number"
-                        value={recipe.grindSize}
+                        type="text"
+                        value={recipe.grindSize || ''}
                         onChange={(e) => setRecipe({ ...recipe, grindSize: e.target.value })}
                         className="bg-transparent border-b border-gray-800 text-white font-mono focus:outline-none focus:border-white transition-colors w-full text-xs py-2"
                     />
@@ -265,8 +265,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                             <div className="flex items-center gap-2">
                                 <input
                                     type="number"
-                                    value={step.waterPercentage}
-                                    onChange={(e) => updateStep(step.id, 'waterPercentage', Number(e.target.value))}
+                                    value={step.waterPercentage === 0 ? '' : step.waterPercentage}
+                                    onChange={(e) => updateStep(step.id, 'waterPercentage', e.target.value === '' ? 0 : Number(e.target.value))}
                                     className="bg-transparent text-white text-sm text-right w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
                                 />
                                 <span className="text-gray-600 text-xs">%</span>
@@ -279,8 +279,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                             <div className="flex items-center gap-2">
                                 <input
                                     type="number"
-                                    value={step.duration}
-                                    onChange={(e) => updateStep(step.id, 'duration', Number(e.target.value))}
+                                    value={step.duration === 0 ? '' : step.duration}
+                                    onChange={(e) => updateStep(step.id, 'duration', e.target.value === '' ? 0 : Number(e.target.value))}
                                     className="bg-transparent text-white text-sm text-right w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
                                 />
                                 <span className="text-gray-600 text-xs">s</span>
