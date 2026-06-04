@@ -120,72 +120,75 @@ export default function Timer({
 
   return (
     <div className="flex flex-col items-center justify-center w-full relative h-full px-4 py-6 md:py-12 select-none">
-      {/* Top Left Info (Bean & Equipment) - Visible on all screens */}
-      <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex flex-col gap-4">
-        {beanName && (
-          <div>
-            <span className="text-[10px] text-gray-500 uppercase tracking-widest block mb-1">Brewing</span>
-            <span className="text-sm md:text-base text-white font-bold tracking-wider">{beanName}</span>
-          </div>
-        )}
-        <div className="opacity-60">
-          <div className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Equipment</div>
-          <div className="text-[10px] md:text-xs text-white border-l-2 border-white pl-2 flex flex-col gap-0.5 md:gap-1">
-            <span>{recipe.dripper || "Unknown Dripper"}</span>
-            <span className="text-gray-400 text-[9px] md:text-[10px]">{recipe.grinderModel || "Generic"} • {recipe.grindSize}</span>
-            {recipe.accessories && recipe.accessories.length > 0 && (
-              <span className="text-gray-400 text-[9px] md:text-[10px] mt-0.5">
-                + {recipe.accessories.join(', ')}
-              </span>
-            )}
+      {/* Top Header Row (Bean/Equipment & Actions) */}
+      <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
+        
+        {/* Left Info */}
+        <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
+          {beanName && (
+            <div>
+              <span className="text-[10px] text-gray-500 uppercase tracking-widest block mb-1">Brewing</span>
+              <span className="text-sm md:text-base text-white font-bold tracking-wider leading-tight line-clamp-2">{beanName}</span>
+            </div>
+          )}
+          <div className="opacity-60">
+            <div className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Equipment</div>
+            <div className="text-[10px] md:text-xs text-white border-l-2 border-white pl-2 flex flex-col gap-0.5 md:gap-1">
+              <span className="line-clamp-1">{recipe.dripper || "Unknown Dripper"}</span>
+              <span className="text-gray-400 text-[9px] md:text-[10px] line-clamp-1">{recipe.grinderModel || "Generic"} • {recipe.grindSize}</span>
+              {recipe.accessories && recipe.accessories.length > 0 && (
+                <span className="text-gray-400 text-[9px] md:text-[10px] mt-0.5 line-clamp-1">
+                  + {recipe.accessories.join(', ')}
+                </span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Edit & Load Trigger */}
-      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-20 flex flex-col items-end gap-2">
-        <button
-          onClick={onEdit}
-          className="text-[10px] uppercase tracking-widest text-gray-600 hover:text-white border border-transparent hover:border-gray-800 px-2 py-1 transition-all"
-        >
-          [Edit Recipe]
-        </button>
-        
-        {/* Load Recipe Dropdown */}
-        <div className="relative">
-            <select
-                onChange={(e) => {
-                    const selectedId = e.target.value;
-                    if (!selectedId) return;
-                    const allRecipes = [...beanRecipes, ...globalRecipes];
-                    const selected = allRecipes.find(r => r.id === selectedId);
-                    if (selected && onLoadRecipe) {
-                        if (confirm(`Load recipe "${selected.name || 'Unnamed'}"?`)) {
-                            onLoadRecipe(selected);
-                        }
-                    }
-                    e.target.value = ''; // reset selection visually
-                }}
-                className="text-[9px] uppercase tracking-widest bg-black text-gray-500 border border-gray-800 px-2 py-1 outline-none focus:border-white transition-all appearance-none cursor-pointer hover:text-gray-300"
-                style={{ width: '130px' }}
-                value=""
-            >
-                <option value="" disabled>LOAD RECIPE ▾</option>
-                {beanRecipes.length > 0 && (
-                    <optgroup label="Bean Recipes">
-                        {beanRecipes.map(r => <option key={`b-${r.id}`} value={r.id}>{r.name || 'Unnamed'}</option>)}
-                    </optgroup>
-                )}
-                {globalRecipes.length > 0 && (
-                    <optgroup label="Global Recipes">
-                        {globalRecipes.map(r => (
-                            <option key={`g-${r.id}`} value={r.id}>
-                                {r.isShopRecipe ? '★ ' : ''}{r.name || 'Unnamed'}
-                            </option>
-                        ))}
-                    </optgroup>
-                )}
-            </select>
+        {/* Right Actions */}
+        <div className="flex flex-col items-end gap-2 pointer-events-auto shrink-0">
+          <button
+            onClick={onEdit}
+            className="text-[10px] uppercase tracking-widest text-gray-600 hover:text-white border border-transparent hover:border-gray-800 px-2 py-1 transition-all"
+          >
+            [Edit Recipe]
+          </button>
+          
+          {/* Load Recipe Dropdown */}
+          <div className="relative">
+              <select
+                  onChange={(e) => {
+                      const selectedId = e.target.value;
+                      if (!selectedId) return;
+                      const allRecipes = [...beanRecipes, ...globalRecipes];
+                      const selected = allRecipes.find(r => r.id === selectedId);
+                      if (selected && onLoadRecipe) {
+                          if (confirm(`Load recipe "${selected.name || 'Unnamed'}"?`)) {
+                              onLoadRecipe(selected);
+                          }
+                      }
+                      e.target.value = ''; // reset selection visually
+                  }}
+                  className="text-[9px] uppercase tracking-widest bg-black text-gray-500 border border-gray-800 px-2 py-1.5 outline-none focus:border-white transition-all appearance-none cursor-pointer hover:text-gray-300 max-w-[120px] md:max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  value=""
+              >
+                  <option value="" disabled>LOAD RECIPE ▾</option>
+                  {beanRecipes.length > 0 && (
+                      <optgroup label="Bean Recipes">
+                          {beanRecipes.map(r => <option key={`b-${r.id}`} value={r.id}>{r.name || 'Unnamed'}</option>)}
+                      </optgroup>
+                  )}
+                  {globalRecipes.length > 0 && (
+                      <optgroup label="Global Recipes">
+                          {globalRecipes.map(r => (
+                              <option key={`g-${r.id}`} value={r.id}>
+                                  {r.isShopRecipe ? '★ ' : ''}{r.name || 'Unnamed'}
+                              </option>
+                          ))}
+                      </optgroup>
+                  )}
+              </select>
+          </div>
         </div>
       </div>
 
