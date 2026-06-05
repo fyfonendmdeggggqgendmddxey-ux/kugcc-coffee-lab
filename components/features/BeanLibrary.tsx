@@ -22,6 +22,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
     const [isBatchProcessing, setIsBatchProcessing] = useState(false);
     const [batchProgress, setBatchProgress] = useState("");
+    const [quickFilters, setQuickFilters] = useState<string[]>(['Light', 'Dark', 'Washed', 'Natural']);
 
     const handleBatchImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -112,6 +113,12 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 { id: '3', name: 'Kenya AA', roaster: 'Glitch', origin: 'Kenya', roastLevel: 'Light', process: 'Washed', roastDate: new Date().toISOString(), recipeOverride: DEFAULT_RECIPE },
             ]);
         }
+
+        const savedQuickFilters = localStorage.getItem('kugcc_quick_filters');
+        if (savedQuickFilters) {
+            setQuickFilters(JSON.parse(savedQuickFilters));
+        }
+
         setIsLoaded(true);
     }, []);
 
@@ -285,10 +292,8 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             (bean.origin || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
             (bean.variety || "").toLowerCase().includes(searchQuery.toLowerCase());
         const matchesFilter = activeFilter
-            ? (activeFilter === 'Light' && bean.roastLevel === 'Light') ||
-            (activeFilter === 'Dark' && (bean.roastLevel === 'Dark' || bean.roastLevel === 'Medium')) || // Grouping for demo
-            (activeFilter === 'Washed' && bean.process === 'Washed') ||
-            (activeFilter === 'Natural' && bean.process === 'Natural')
+            ? [bean.roaster, bean.origin, bean.process, bean.roastLevel, bean.variety]
+                .some(field => (field || '').toLowerCase().includes(activeFilter.toLowerCase()))
             : true;
 
         return matchesSearch && matchesFilter;
@@ -321,7 +326,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     className="w-full bg-gray-900/50 border-none text-xs p-2 text-white placeholder-gray-600 focus:ring-1 focus:ring-gray-700 rounded-sm"
                 />
                 <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-                    {['Light', 'Dark', 'Washed', 'Natural'].map(filter => (
+                    {quickFilters.map(filter => (
                         <button
                             key={filter}
                             onClick={() => setActiveFilter(activeFilter === filter ? null : filter)}
@@ -330,10 +335,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                 : 'text-gray-600 border-gray-800 hover:border-gray-600'
                                 }`}
                         >
-                            {/* Localize Tags logic */}
-                            {filter === 'Light' ? '浅煎り' :
-                                filter === 'Dark' ? '深煎り' :
-                                    filter === 'Washed' ? 'ウォッシュト' : 'ナチュラル'}
+                            {filter}
                         </button>
                     ))}
                 </div>

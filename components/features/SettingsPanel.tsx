@@ -22,6 +22,7 @@ export default function SettingsPanel() {
     const [varieties, setVarieties] = useState<string[]>([]);
     const [drippers, setDrippers] = useState<string[]>([]);
     const [accessories, setAccessories] = useState<string[]>([]);
+    const [quickFilters, setQuickFilters] = useState<string[]>([]);
 
     const [newRoaster, setNewRoaster] = useState('');
     const [newOrigin, setNewOrigin] = useState('');
@@ -30,6 +31,7 @@ export default function SettingsPanel() {
     const [newVariety, setNewVariety] = useState('');
     const [newDripper, setNewDripper] = useState('');
     const [newAccessory, setNewAccessory] = useState('');
+    const [newQuickFilter, setNewQuickFilter] = useState('');
 
     const [geminiApiKey, setGeminiApiKey] = useState('');
     const [roasterDefaults, setRoasterDefaults] = useState<Record<string, number>>({});
@@ -68,6 +70,10 @@ export default function SettingsPanel() {
         const savedAccessories = localStorage.getItem('kugcc_custom_accessories');
         if (savedAccessories) setAccessories(JSON.parse(savedAccessories));
         else saveAccessories(DEFAULT_ACCESSORIES);
+
+        const savedQuickFilters = localStorage.getItem('kugcc_quick_filters');
+        if (savedQuickFilters) setQuickFilters(JSON.parse(savedQuickFilters));
+        else saveQuickFilters(['Light', 'Dark', 'Washed', 'Natural']);
 
         const savedApiKey = localStorage.getItem('kugcc_gemini_api_key');
         if (savedApiKey) setGeminiApiKey(savedApiKey);
@@ -113,6 +119,11 @@ export default function SettingsPanel() {
     const saveAccessories = (list: string[]) => {
         setAccessories(list);
         localStorage.setItem('kugcc_custom_accessories', JSON.stringify(list));
+    };
+
+    const saveQuickFilters = (list: string[]) => {
+        setQuickFilters(list);
+        localStorage.setItem('kugcc_quick_filters', JSON.stringify(list));
     };
 
     const saveGeminiApiKey = (val: string) => {
@@ -213,6 +224,15 @@ export default function SettingsPanel() {
         }
     };
     const removeAccessory = (item: string) => saveAccessories(accessories.filter(a => a !== item));
+
+    const addQuickFilter = () => {
+        const trimmed = newQuickFilter.trim();
+        if (trimmed && !quickFilters.includes(trimmed)) {
+            saveQuickFilters([...quickFilters, trimmed]);
+            setNewQuickFilter('');
+        }
+    };
+    const removeQuickFilter = (item: string) => saveQuickFilters(quickFilters.filter(f => f !== item));
 
     // Data Management
     const handleExportData = () => {
@@ -471,6 +491,37 @@ export default function SettingsPanel() {
                         className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoasterDefault} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">追加</button>
+                </div>
+            </div>
+
+            {/* Quick Filters Manager */}
+            <div className="mb-6">
+                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span>Quick Filters (クイックフィルター)</span>
+                    <Tooltip content="Library画面の検索バー下に表示されるフィルターボタンを自由に設定できます。" position="right">
+                        <span className="text-gray-400 cursor-help">[?]</span>
+                    </Tooltip>
+                    <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
+                </h3>
+                <div className="flex flex-wrap gap-1.5 mb-2.5 max-h-[100px] overflow-y-auto border border-gray-900 p-2 bg-gray-950/20">
+                    {quickFilters.map(item => (
+                        <span key={item} className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] bg-gray-900 border border-gray-800 text-gray-300 rounded">
+                            {item}
+                            <button onClick={() => removeQuickFilter(item)} className="text-gray-600 hover:text-red-500 font-bold">×</button>
+                        </span>
+                    ))}
+                    {quickFilters.length === 0 && <span className="text-[10px] text-gray-700 italic">No filters configured.</span>}
+                </div>
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        placeholder="フィルターキーワード (例: Colombia)..." 
+                        value={newQuickFilter}
+                        onChange={(e) => setNewQuickFilter(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addQuickFilter()}
+                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                    />
+                    <button onClick={addQuickFilter} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">追加</button>
                 </div>
             </div>
 
