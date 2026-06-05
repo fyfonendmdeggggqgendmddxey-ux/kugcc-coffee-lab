@@ -9,29 +9,34 @@ export interface ExtractedBeanInfo {
     roastDate?: string;
 }
 
+let cachedTargetModel: string | null = null;
+
 export async function analyzeCoffeeBagImage(base64Image: string, mimeType: string, apiKey: string): Promise<ExtractedBeanInfo> {
-    // Dynamically fetch available models to ensure compatibility with the user's specific API key/region
-    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-    const listRes = await fetch(listUrl);
-    if (!listRes.ok) {
-        const errorText = await listRes.text();
-        throw new Error(`Gemini API Error (List Models): ${listRes.status} - ${errorText}`);
-    }
-    const listData = await listRes.json();
-    const models: any[] = listData.models || [];
-    
-    // Find a model that supports generateContent, preferring flash then pro
-    const targetModel = models.find(m => m.name.includes('gemini-1.5-flash') && m.supportedGenerationMethods?.includes('generateContent')) || 
-                        models.find(m => m.name.includes('gemini-1.5-pro') && m.supportedGenerationMethods?.includes('generateContent')) ||
-                        models.find(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent'));
+    if (!cachedTargetModel) {
+        // Dynamically fetch available models to ensure compatibility with the user's specific API key/region
+        const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+        const listRes = await fetch(listUrl);
+        if (!listRes.ok) {
+            const errorText = await listRes.text();
+            throw new Error(`Gemini API Error (List Models): ${listRes.status} - ${errorText}`);
+        }
+        const listData = await listRes.json();
+        const models: any[] = listData.models || [];
+        
+        // Find a model that supports generateContent, preferring flash then pro
+        const targetModel = models.find(m => m.name.includes('gemini-1.5-flash') && m.supportedGenerationMethods?.includes('generateContent')) || 
+                            models.find(m => m.name.includes('gemini-1.5-pro') && m.supportedGenerationMethods?.includes('generateContent')) ||
+                            models.find(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent'));
 
-    if (!targetModel) {
-        const availableNames = models.map(m => m.name).join(', ');
-        throw new Error(`No compatible Gemini model found for this API key. Available models: ${availableNames}`);
+        if (!targetModel) {
+            const availableNames = models.map(m => m.name).join(', ');
+            throw new Error(`No compatible Gemini model found for this API key. Available models: ${availableNames}`);
+        }
+        cachedTargetModel = targetModel.name;
     }
 
-    // targetModel.name is usually in the format "models/gemini-..."
-    const url = `https://generativelanguage.googleapis.com/v1beta/${targetModel.name}:generateContent?key=${apiKey}`;
+    // cachedTargetModel is usually in the format "models/gemini-..."
+    const url = `https://generativelanguage.googleapis.com/v1beta/${cachedTargetModel}:generateContent?key=${apiKey}`;
 
     // Prompt optimized for coffee bag extraction
     const prompt = `
