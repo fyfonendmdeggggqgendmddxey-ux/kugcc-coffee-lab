@@ -9,8 +9,32 @@ export interface ExtractedBeanInfo {
     roastDate?: string;
 }
 
+let cachedTargetModel: string | null = null;
+
 export async function analyzeCoffeeBagImage(base64Image: string, mimeType: string, apiKey: string): Promise<ExtractedBeanInfo> {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    if (!cachedTargetModel) {
+        const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+        const listRes = await fetch(listUrl);
+        if (!listRes.ok) {
+            const errorText = await listRes.text();
+            throw new Error(`Gemini API Error (List Models): ${listRes.status} - ${errorText}`);
+        }
+        const listData = await listRes.json();
+        const models: any[] = listData.models || [];
+        
+        // Find a model that supports generateContent, preferring flash then pro
+        const targetModel = models.find(m => m.name.includes('gemini-2.5-flash') && m.supportedGenerationMethods?.includes('generateContent')) || 
+                            models.find(m => m.name.includes('gemini-1.5-flash') && m.supportedGenerationMethods?.includes('generateContent')) ||
+                            models.find(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent'));
+
+        if (!targetModel) {
+            const availableNames = models.map(m => m.name).join(', ');
+            throw new Error(`No compatible Gemini model found for this API key. Available models: ${availableNames}`);
+        }
+        cachedTargetModel = targetModel.name;
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${cachedTargetModel}:generateContent?key=${apiKey}`;
 
     const prompt = `Extract coffee info from image into JSON. No markdown.
 {
