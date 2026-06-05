@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
+import { toast } from '@/components/ui/Toast';
 
 interface BeanEntryModalProps {
     onSave: (bean: Bean) => void;
@@ -128,7 +129,7 @@ export default function BeanEntryModal({
 
         const apiKey = localStorage.getItem('kugcc_gemini_api_key');
         if (!apiKey) {
-            alert('Please configure your Gemini API Key in the Settings tab first!');
+            toast('Please configure your Gemini API Key in the Settings tab first!', 'error');
             return;
         }
 
@@ -186,13 +187,13 @@ export default function BeanEntryModal({
                 return newData;
             });
             
-            alert('Successfully extracted bean info!');
+            toast('Image analyzed successfully!');
         } catch (error: any) {
             console.error('Auto-fill error:', error);
             const msg = error instanceof Error ? error.message : 
                         (error.type === 'error' ? 'Failed to load image (possibly unsupported format like HEIC in Chrome). Please try a JPEG/PNG.' : 
                         error.toString());
-            alert('Failed to analyze image: ' + msg);
+            toast('Failed to analyze image: ' + msg, 'error');
         } finally {
             setIsAnalyzing(false);
             e.target.value = ''; // Reset input
@@ -200,8 +201,8 @@ export default function BeanEntryModal({
     };
 
     return (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] sm:p-4">
-            <div className="bg-black sm:border sm:border-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-md p-5 sm:p-8 relative flex flex-col">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] sm:p-4" onClick={() => onCancel()}>
+            <div className="bg-black border border-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-md p-5 sm:p-8 relative flex flex-col font-mono" onClick={e => e.stopPropagation()}>
                 <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-4 sm:mb-8 text-white border-b border-gray-900 pb-4 shrink-0 mt-8 sm:mt-0 flex justify-between items-center">
                     <span>{initialBean ? 'Edit Bean Entry' : 'New Bean Entry'}</span>
                     <label className="relative cursor-pointer flex items-center justify-center bg-gray-900 hover:bg-gray-800 text-gray-300 transition-colors px-3 py-1.5 rounded-sm border border-gray-800">

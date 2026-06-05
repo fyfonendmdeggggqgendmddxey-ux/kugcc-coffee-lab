@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Tooltip from '../common/Tooltip';
 import { useLanguage } from '@/utils/LanguageContext';
+import { toast } from '@/components/ui/Toast';
 
 const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
 const DEFAULT_ORIGINS = ['Ethiopia', 'Colombia', 'Brazil', 'Kenya', 'Guatemala', 'Indonesia'];
@@ -282,7 +283,7 @@ export default function SettingsPanel() {
                 } else if (Array.isArray(rawData)) {
                     importedBeans = rawData;
                 } else {
-                    alert("Invalid backup file format.");
+                    toast("Invalid backup file format.", "error");
                     return;
                 }
 
@@ -305,14 +306,14 @@ export default function SettingsPanel() {
                     localStorage.setItem('kugcc_beans', JSON.stringify([...currentBeans, ...newBeans]));
                     localStorage.setItem('kugcc_logs', JSON.stringify([...currentLogs, ...newLogs]));
                     localStorage.setItem('kugcc_recipes', JSON.stringify([...currentRecipes, ...newRecipes]));
-                    alert(`Successfully imported data:\n- Beans: ${newBeans.length} added\n- Tasting Logs: ${newLogs.length} added\n- Global Recipes: ${newRecipes.length} added`);
+                    toast(`Successfully imported data: ${newBeans.length} beans, ${newLogs.length} logs, ${newRecipes.length} recipes.`);
                     window.location.reload();
                 } else {
-                    alert("No new data found. All imported items already exist.");
+                    toast("No new data found. All imported items already exist.");
                 }
             } catch (error) {
                 console.error("Import failed:", error);
-                alert("Failed to parse backup file.");
+                toast("Failed to parse backup file.", "error");
             }
             e.target.value = '';
         };
@@ -345,8 +346,8 @@ export default function SettingsPanel() {
         localStorage.setItem('kugcc_custom_drippers', JSON.stringify(DEFAULT_DRIPPERS));
         localStorage.setItem('kugcc_custom_accessories', JSON.stringify(DEFAULT_ACCESSORIES));
         
-        alert("System database reset successfully. Demo seed data has been loaded.");
-        window.location.reload();
+        toast("System database reset successfully. Demo seed data has been loaded.");
+        setTimeout(() => window.location.reload(), 1500);
     };
 
     return (

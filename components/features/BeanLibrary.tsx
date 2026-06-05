@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
+import { toast } from '@/components/ui/Toast';
 import BeanEntryModal from './BeanEntryModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
@@ -101,9 +102,9 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         e.target.value = "";
 
         if (failedFiles.length > 0) {
-            alert(`Added ${newlyAddedCount} beans.\\nFailed to process ${failedFiles.length} images:\\n${failedFiles.join(', ')}`);
+            toast(`Added ${newlyAddedCount} beans. Failed: ${failedFiles.length} images.`, 'error');
         } else if (newlyAddedCount > 0) {
-            alert(`Successfully added ${newlyAddedCount} beans!`);
+            toast(`Successfully added ${newlyAddedCount} beans!`);
         }
     };
 
