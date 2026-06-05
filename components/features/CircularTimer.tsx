@@ -23,7 +23,7 @@ export default function CircularTimer({
     isFinished,
     grinderSetting
 }: CircularTimerProps) {
-    const radius = 140;
+    const radius = 160;
     const stroke = 4;
     const normalizedRadius = radius - stroke * 2;
     const circumference = normalizedRadius * 2 * Math.PI;
@@ -42,7 +42,7 @@ export default function CircularTimer({
     };
 
     return (
-        <div className="relative flex items-center justify-center w-[320px] h-[320px] group transition-all duration-300 select-none">
+        <div className="relative flex items-center justify-center w-[360px] h-[360px] group transition-all duration-300 select-none">
             {/* SVG Ring Container */}
             <svg
                 height={radius * 2}
