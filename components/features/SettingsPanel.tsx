@@ -198,9 +198,17 @@ export default function SettingsPanel() {
     // Data Management
     const handleExportData = () => {
         const beansStr = localStorage.getItem('kugcc_beans');
-        const beans = beansStr ? JSON.parse(beansStr) : [];
+        let beans = beansStr ? JSON.parse(beansStr) : [];
+        
+        // Exclude default sample beans from export
+        beans = beans.filter((b: any) => !['1', '2', '3'].includes(b.id));
+
         const logsStr = localStorage.getItem('kugcc_logs');
-        const logs = logsStr ? JSON.parse(logsStr) : [];
+        let logs = logsStr ? JSON.parse(logsStr) : [];
+
+        // Also exclude any logs that belong to the sample beans
+        logs = logs.filter((l: any) => !['1', '2', '3'].includes(l.beanId));
+
         const recipesStr = localStorage.getItem('kugcc_recipes');
         const globalRecipes = recipesStr ? JSON.parse(recipesStr) : [];
         
