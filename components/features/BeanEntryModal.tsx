@@ -150,10 +150,16 @@ export default function BeanEntryModal({
                 if (result.origin) newData.origin = result.origin;
                 if (result.variety) newData.variety = result.variety;
                 if (result.roastLevel) {
-                    // Match to known levels if possible, or just use it
-                    const validLevels = ['Light', 'Medium', 'Dark', 'Italian', 'French', 'City'];
-                    const matched = validLevels.find(l => result.roastLevel?.toLowerCase().includes(l.toLowerCase()));
-                    newData.roastLevel = matched || result.roastLevel;
+                    const levelStr = result.roastLevel.toLowerCase();
+                    if (levelStr.includes('浅') || levelStr.includes('light') || levelStr.includes('ライト')) {
+                        newData.roastLevel = 'Light';
+                    } else if (levelStr.includes('中') || levelStr.includes('medium') || levelStr.includes('ミディアム')) {
+                        newData.roastLevel = 'Medium';
+                    } else if (levelStr.includes('深') || levelStr.includes('dark') || levelStr.includes('ダーク') || levelStr.includes('french') || levelStr.includes('italian')) {
+                        newData.roastLevel = 'Dark';
+                    } else {
+                        newData.roastLevel = result.roastLevel;
+                    }
                 }
                 if (result.process) {
                     const validProcesses = ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Experimental', 'Wet Hulled'];

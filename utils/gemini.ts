@@ -42,7 +42,7 @@ export async function analyzeCoffeeBagImage(base64Image: string, mimeType: strin
   "roaster": "string",
   "origin": "string",
   "variety": "string",
-  "roastLevel": "string (Light/Medium/Dark/etc)",
+  "roastLevel": "string (Light/Medium/Dark. Read from text only, do not guess from bag color)",
   "process": "string",
   "flavorTags": ["string"],
   "roastDate": "string (YYYY-MM-DD)"
