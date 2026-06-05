@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useLanguage } from '@/utils/LanguageContext';
 import AICoach from './AICoach';
 import TastingLog from './TastingLog';
 import SettingsPanel from './SettingsPanel';
@@ -24,6 +25,7 @@ export default function RightPanel({
     onLoadRecipe, onToggleStar, onDeleteRecipe,
     onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe
 }: RightPanelProps) {
+    const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<'coach' | 'log' | 'recipes' | 'settings' | 'help'>('coach');
 
     // Sort recipes: Starred first
@@ -108,7 +110,7 @@ export default function RightPanel({
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
                     }`}
                 >
-                    Tasting Log
+                    {t('Tasting Log')}
                 </button>
                 <button
                     onClick={() => setActiveTab('recipes')}
@@ -118,7 +120,7 @@ export default function RightPanel({
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
                     }`}
                 >
-                    Recipes
+                    {t('Recipes')}
                 </button>
                 <div className="flex-1"></div>
                 <button
@@ -132,17 +134,7 @@ export default function RightPanel({
                 >
                     📖
                 </button>
-                <button
-                    onClick={() => setActiveTab('coach')}
-                    className={`px-4 py-4 text-center transition-all border-b-2 text-[10px] uppercase tracking-widest whitespace-nowrap ${
-                        activeTab === 'coach' 
-                            ? 'text-white border-white bg-gray-900/20' 
-                            : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
-                    }`}
-                    title="AI Coach"
-                >
-                    AI
-                </button>
+
                 <button
                     onClick={() => setActiveTab('settings')}
                     className={`px-4 py-4 text-center transition-all border-b-2 text-xs whitespace-nowrap ${

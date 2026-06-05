@@ -1,12 +1,18 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { LanguageProvider } from '@/utils/LanguageContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'kugcc | Desktop Coffee Lab',
     description: 'Professional coffee brewing management',
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'black-translucent',
+        title: 'Coffee Lab'
+    }
 }
 
 export default function RootLayout({
@@ -33,7 +39,9 @@ export default function RootLayout({
                 />
             </head>
             <body className={`${inter.className} bg-black text-white antialiased selection:bg-white selection:text-black transition-colors duration-300`}>
-                {children}
+                <LanguageProvider>
+                    {children}
+                </LanguageProvider>
             </body>
         </html>
     )

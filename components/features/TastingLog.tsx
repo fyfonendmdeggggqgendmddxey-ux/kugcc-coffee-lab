@@ -294,8 +294,71 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
         }, 2000);
     };
 
+    const sweetSpotData = useMemo(() => {
+        if (!bean || !bean.roastDate) return null;
+        const highRatedLogs = filteredHistory.filter(log => log.rating >= 4);
+        if (highRatedLogs.length < 2) return null;
+
+        const roastDate = new Date(bean.roastDate).getTime();
+        const days = highRatedLogs.map(log => {
+            const logDate = new Date(log.date).getTime();
+            return Math.floor((logDate - roastDate) / (1000 * 60 * 60 * 24));
+        }).filter(d => d >= 0);
+
+        if (days.length === 0) return null;
+
+        const minDays = Math.min(...days);
+        const maxDays = Math.max(...days);
+
+        const bestLog = [...highRatedLogs].sort((a, b) => {
+            if (b.rating !== a.rating) return b.rating - a.rating;
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        })[0];
+
+        return {
+            minDays,
+            maxDays,
+            bestRecipe: bestLog.recipe,
+            bestRating: bestLog.rating,
+            count: highRatedLogs.length
+        };
+    }, [filteredHistory, bean]);
+
     return (
         <div className="h-full flex flex-col p-6 font-mono">
+            {sweetSpotData && (
+                <div className="mb-8 p-4 bg-blue-900/10 border border-blue-900/30 rounded-lg">
+                    <h3 className="text-xs text-blue-400 font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <span>🎯 Sweet Spot Analyzer</span>
+                    </h3>
+                    <p className="text-[10px] text-gray-400 mb-4 leading-relaxed">
+                        Based on your {sweetSpotData.count} high-rated logs (★4+), here is the optimal extraction profile for this bean.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 text-xs">
+                        <div className="bg-black/50 p-3 rounded border border-gray-800 text-center">
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Peak Aging</div>
+                            <div className="text-white font-bold text-lg">
+                                {sweetSpotData.minDays === sweetSpotData.maxDays 
+                                    ? `Day ${sweetSpotData.minDays}` 
+                                    : `Days ${sweetSpotData.minDays}-${sweetSpotData.maxDays}`}
+                            </div>
+                        </div>
+                        <div className="bg-black/50 p-3 rounded border border-gray-800 text-center">
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Best Recipe (★{sweetSpotData.bestRating})</div>
+                            <div className="text-white font-bold">
+                                {sweetSpotData.bestRecipe ? (
+                                    <span>
+                                        {sweetSpotData.bestRecipe.temperature}°C / {sweetSpotData.bestRecipe.grindSize} / {sweetSpotData.bestRecipe.dripper || 'V60'}
+                                    </span>
+                                ) : (
+                                    <span className="text-gray-600">No recipe linked</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-gray-500 border-b border-gray-900 pb-2 flex justify-between">
                 <span>Tasting Log</span>
                 <span className="text-gray-700">{filteredHistory.length} ENTRIES</span>

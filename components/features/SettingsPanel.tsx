@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Tooltip from '../common/Tooltip';
+import { useLanguage } from '@/utils/LanguageContext';
 
 const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
 const DEFAULT_ORIGINS = ['Ethiopia', 'Colombia', 'Brazil', 'Kenya', 'Guatemala', 'Indonesia'];
@@ -12,6 +13,8 @@ const DEFAULT_DRIPPERS = ['Hario V60', 'Kalita Wave', 'Origami', 'Hario Switch',
 const DEFAULT_ACCESSORIES = ['Paragon', 'Melodrip', 'Sifter', 'WDT Tool', 'Paper Filter (Bottom)', 'LilyDrip'];
 
 export default function SettingsPanel() {
+    const { language, setLanguage, t } = useLanguage();
+
     const [roasters, setRoasters] = useState<string[]>([]);
     const [origins, setOrigins] = useState<string[]>([]);
     const [processes, setProcesses] = useState<string[]>([]);
@@ -332,10 +335,31 @@ export default function SettingsPanel() {
                 System Config
             </h2>
 
+            {/* Language Selection */}
+            <div className="mb-6">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xs text-gray-400 uppercase tracking-widest">{t('Language')}</h3>
+                </div>
+                <div className="flex bg-gray-900/50 p-1 rounded-sm border border-gray-800 w-full max-w-xs">
+                    <button
+                        onClick={() => setLanguage('en')}
+                        className={`flex-1 py-2 text-[10px] uppercase tracking-widest transition-all ${language === 'en' ? 'bg-white text-black shadow-sm border border-gray-300' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        English
+                    </button>
+                    <button
+                        onClick={() => setLanguage('ja')}
+                        className={`flex-1 py-2 text-[10px] uppercase tracking-widest transition-all ${language === 'ja' ? 'bg-white text-black shadow-sm border border-gray-300' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        日本語
+                    </button>
+                </div>
+            </div>
+
             {/* Theme & Appearance */}
             <div className="mb-8">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xs text-gray-400 uppercase tracking-widest">Appearance</h3>
+                    <h3 className="text-xs text-gray-400 uppercase tracking-widest">{t('Appearance')}</h3>
                 </div>
                 <div className="flex bg-gray-900/50 p-1 rounded-sm border border-gray-800 w-full max-w-xs">
                     <button
