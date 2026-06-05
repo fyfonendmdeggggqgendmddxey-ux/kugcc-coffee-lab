@@ -18,7 +18,7 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
             {/* --- DESKTOP LAYOUT (md and up) --- */}
             
             {/* Left Column: Bean Library / Settings */}
-            <aside className="hidden md:flex w-[280px] border-r border-[#333] flex-col">
+            <aside className="hidden md:flex md:w-[280px] lg:w-[320px] xl:w-[360px] border-r border-[#333] flex-col shrink-0">
                 {left}
             </aside>
 
@@ -28,7 +28,7 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
             </main>
 
             {/* Right Column: AI Insights / Log */}
-            <aside className="hidden md:flex w-[280px] border-l border-[#333] flex-col bg-black">
+            <aside className="hidden md:flex md:w-[320px] lg:w-[360px] xl:w-[400px] border-l border-[#333] flex-col bg-black shrink-0 overflow-hidden">
                 {right}
             </aside>
 

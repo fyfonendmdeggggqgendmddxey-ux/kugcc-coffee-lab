@@ -421,19 +421,14 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                         </div>
 
                         {/* Tasting Matrix Sliders & Real-Time SVG Preview Chart */}
-                        <div className="mb-6 flex flex-col md:flex-row gap-6 items-center border border-gray-900 p-6 bg-gray-950/20">
-                            <div className="flex flex-col items-center justify-center w-full md:w-auto pb-6 border-b border-gray-900/50 md:border-b-0 md:border-r md:pb-0 md:pr-8">
+                        <div className="mb-6 flex flex-col gap-6 items-center border border-gray-900 p-6 bg-gray-950/20">
+                            <div className="flex flex-col items-center justify-center w-full pb-6 border-b border-gray-900/50">
                                 <span className="text-[8px] uppercase tracking-widest text-gray-600 mb-4">Matrix Preview</span>
-                                {/* Mobile size */}
-                                <div className="md:hidden flex justify-center">
-                                    <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={180} />
-                                </div>
-                                {/* Desktop size */}
-                                <div className="hidden md:flex justify-center">
-                                    <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={110} />
+                                <div className="flex justify-center">
+                                    <RadarChart acidity={acidity} sweetness={sweetness} body={body} bitterness={bitterness} aroma={aroma} size={160} />
                                 </div>
                             </div>
-                            <div className="space-y-4 w-full flex-1">
+                            <div className="space-y-4 w-full">
                                 {[
                                     { label: '酸味 Acidity', val: acidity, set: setAcidity },
                                     { label: '甘味 Sweetness', val: sweetness, set: setSweetness },
