@@ -51,7 +51,7 @@ export default function CircularTimer({
             >
                 {/* Background Ring */}
                 <circle
-                    stroke="#222"
+                    stroke="var(--color-gray-800)"
                     strokeWidth={stroke}
                     fill="transparent"
                     r={normalizedRadius}
@@ -62,7 +62,8 @@ export default function CircularTimer({
                 {/* Progress Ring (Glowing) */}
                 <circle
                     key={stepIndex} // Force re-mount on step change to eliminate transition lag
-                    stroke="white"
+                    stroke="currentColor"
+                    className="text-white"
                     strokeWidth={stroke}
                     strokeLinecap="round"
                     fill="transparent"
@@ -73,7 +74,7 @@ export default function CircularTimer({
                         strokeDasharray: circumference + ' ' + circumference,
                         strokeDashoffset,
                         transition: stepProgress === 0 ? 'none' : 'stroke-dashoffset 0.1s linear',
-                        filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))'
+                        filter: 'drop-shadow(0 0 8px currentColor)'
                     }}
                 />
 
@@ -91,9 +92,9 @@ export default function CircularTimer({
                             key={i}
                             x1={x1} y1={y1}
                             x2={x2} y2={y2}
-                            stroke={i % 5 === 0 ? "#666" : "#333"}
+                            stroke={i % 5 === 0 ? "var(--color-gray-500)" : "var(--color-gray-700)"}
                             strokeWidth={i % 5 === 0 ? 2 : 1}
-                            className="transition-colors duration-300 group-hover:stroke-gray-400"
+                            className="transition-colors duration-300"
                         />
                     );
                 })}

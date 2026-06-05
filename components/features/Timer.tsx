@@ -223,14 +223,25 @@ export default function Timer({
 
           let width = '0%';
           if (isPast || isFinished) width = '100%';
-          else if (isFuture) width = '0%';
-          else if (isActive) width = `${stepProgress * 100}%`;
+          let stepPct = 0;
+          if (isPast || isFinished) {
+            width = '100%';
+            stepPct = 100;
+          }
+          else if (isFuture) {
+            width = '0%';
+            stepPct = 0;
+          }
+          else if (isActive) {
+            width = `${stepProgress * 100}%`;
+            stepPct = stepProgress * 100;
+          }
 
           return (
             <div key={step.id} className="h-full flex-1 bg-gray-800 relative">
-              <div
-                className={`absolute left-0 top-0 h-full ${isActive ? 'bg-white' : 'bg-gray-600'}`}
-                style={{ width }}
+              <div 
+                className={`absolute left-0 top-0 h-full transition-all duration-300 ${isActive ? 'bg-gray-300' : 'bg-gray-700'}`}
+                style={{ width: `${Math.min(100, Math.max(0, stepPct))}%` }}
               />
             </div>
           )

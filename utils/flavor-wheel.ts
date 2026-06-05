@@ -17,21 +17,21 @@ export interface FlavorNode {
 
 // Map categories to beautiful glassmorphic Tailwind classes
 export const CATEGORY_COLORS: Record<FlavorCategory, string> = {
-    'Floral': 'bg-[#e45396]/30 text-pink-200 border-[#e45396]/80',
-    'Fruity': 'bg-[#da1d23]/30 text-red-200 border-[#da1d23]/80',
-    'Sour/Fermented': 'bg-[#f6d21e]/20 text-yellow-200 border-[#f6d21e]/80',
-    'Green/Vegetative': 'bg-[#179038]/40 text-green-200 border-[#179038]/80',
-    'Roasted': 'bg-[#9f4521]/40 text-orange-200 border-[#9f4521]/80',
-    'Spices': 'bg-[#c21f31]/40 text-red-200 border-[#c21f31]/80',
-    'Nutty/Cocoa': 'bg-[#c38953]/40 text-orange-200 border-[#c38953]/80',
-    'Sweet': 'bg-[#e35a26]/30 text-orange-200 border-[#e35a26]/80',
-    'Other': 'bg-[#3b8c9d]/40 text-cyan-200 border-[#3b8c9d]/80'
+    'Floral': 'bg-[#e45396]/30 text-pink-800 dark:text-pink-200 border-[#e45396]/80',
+    'Fruity': 'bg-[#da1d23]/30 text-red-800 dark:text-red-200 border-[#da1d23]/80',
+    'Sour/Fermented': 'bg-[#f6d21e]/20 text-yellow-800 dark:text-yellow-200 border-[#f6d21e]/80',
+    'Green/Vegetative': 'bg-[#179038]/40 text-green-800 dark:text-green-200 border-[#179038]/80',
+    'Roasted': 'bg-[#9f4521]/40 text-orange-900 dark:text-orange-200 border-[#9f4521]/80',
+    'Spices': 'bg-[#c21f31]/40 text-red-900 dark:text-red-200 border-[#c21f31]/80',
+    'Nutty/Cocoa': 'bg-[#c38953]/40 text-orange-900 dark:text-orange-200 border-[#c38953]/80',
+    'Sweet': 'bg-[#e35a26]/30 text-orange-800 dark:text-orange-200 border-[#e35a26]/80',
+    'Other': 'bg-[#3b8c9d]/40 text-cyan-800 dark:text-cyan-200 border-[#3b8c9d]/80'
 };
 
 // Sub-colors for specific fruity types to make it pop like the wheel
-const CITRUS_COLOR = 'bg-[#f6a22e]/30 text-yellow-200 border-[#f6a22e]/80';
-const BERRY_COLOR = 'bg-[#d92b4a]/30 text-rose-200 border-[#d92b4a]/80';
-const DARK_FRUIT_COLOR = 'bg-[#833a80]/40 text-purple-200 border-[#833a80]/80';
+const CITRUS_COLOR = 'bg-[#f6a22e]/30 text-yellow-800 dark:text-yellow-200 border-[#f6a22e]/80';
+const BERRY_COLOR = 'bg-[#d92b4a]/30 text-rose-800 dark:text-rose-200 border-[#d92b4a]/80';
+const DARK_FRUIT_COLOR = 'bg-[#833a80]/40 text-purple-800 dark:text-purple-200 border-[#833a80]/80';
 
 export const FLAVOR_WHEEL: FlavorNode[] = [
     // Floral
