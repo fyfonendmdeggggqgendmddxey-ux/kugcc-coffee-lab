@@ -254,15 +254,15 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
 
                 <div className="w-full border-t border-gray-800">
                     {recipe.steps.map((step, idx) => (
-                        <div key={step.id} className="flex items-center gap-4 py-2 md:py-3 border-b border-gray-900 group">
-                            <span className="text-gray-600 w-6 text-xs">{idx + 1}</span>
+                        <div key={step.id} className="flex items-center gap-2 md:gap-4 py-2 md:py-3 border-b border-gray-900 group">
+                            <span className="text-gray-600 w-4 md:w-6 text-xs">{idx + 1}</span>
                             <input
                                 value={step.name}
                                 onChange={(e) => updateStep(step.id, 'name', e.target.value)}
-                                className="bg-transparent text-white text-sm focus:outline-none flex-1"
+                                className="bg-transparent text-white text-sm focus:outline-none flex-1 min-w-[60px]"
                                 placeholder="Step Name"
                             />
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 md:gap-2 shrink-0">
                                 <input
                                     type="number"
                                     value={step.waterPercentage === 0 ? '' : Math.round(totalWater * (step.waterPercentage / 100))}
@@ -271,27 +271,29 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                                         const pct = totalWater > 0 ? (ml / totalWater) * 100 : 0;
                                         updateStep(step.id, 'waterPercentage', pct);
                                     }}
-                                    className="bg-transparent text-white text-sm text-right w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                    className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                    placeholder="0"
                                 />
                                 <span className="text-gray-600 text-xs">ml</span>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="hidden md:flex items-center gap-2 shrink-0">
                                 <span className="text-gray-500 text-sm tabular-nums w-12 text-right">
                                     {step.waterPercentage.toFixed(1)}%
                                 </span>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 md:gap-2 shrink-0">
                                 <input
                                     type="number"
                                     value={step.duration === 0 ? '' : step.duration}
                                     onChange={(e) => updateStep(step.id, 'duration', e.target.value === '' ? 0 : Number(e.target.value))}
-                                    className="bg-transparent text-white text-sm text-right w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                    className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                    placeholder="0"
                                 />
                                 <span className="text-gray-600 text-xs">s</span>
                             </div>
                             <button
                                 onClick={() => removeStep(step.id)}
-                                className="opacity-0 group-hover:opacity-100 text-gray-600 hover:text-red-500 transition-all text-xs px-2"
+                                className="text-gray-600 hover:text-red-500 transition-all text-xs px-1 md:px-2 md:opacity-0 md:group-hover:opacity-100 shrink-0"
                             >
                                 [x]
                             </button>
