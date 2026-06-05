@@ -417,24 +417,19 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                     {/* Input Area */}
                     <div className="border-b border-gray-800 pb-6 mb-6">
                         <div className="mb-6">
-                            <label className="text-[10px] text-gray-500 uppercase tracking-widest block mb-2">
-                                Quality Index
-                            </label>
-                            <div className="flex gap-2">
-                                {[1, 2, 3, 4, 5].map((val) => (
-                                    <button
-                                        key={val}
-                                        onClick={() => setRating(val)}
-                                        className={`w-8 h-8 md:w-10 md:h-2 border transition-all duration-300 ${rating >= val
-                                            ? 'bg-white border-white'
-                                            : 'bg-black border-gray-800 hover:border-gray-500'
-                                            }`}
-                                    />
-                                ))}
+                            <div className="flex justify-between text-[10px] text-gray-500 uppercase tracking-wider mb-2">
+                                <span>Quality Index</span>
+                                <span className="text-white font-bold">{rating > 0 ? rating.toFixed(1) : '-'} / 5.0</span>
                             </div>
-                            <p className="text-right text-[10px] text-gray-500 mt-1 h-4">
-                                {rating > 0 ? `${rating} / 5` : ''}
-                            </p>
+                            <input
+                                type="range"
+                                min="1"
+                                max="5"
+                                step="0.5"
+                                value={rating}
+                                onChange={(e) => setRating(Number(e.target.value))}
+                                className="w-full h-1.5 bg-gray-900 appearance-none cursor-pointer accent-white border-none rounded-none focus:outline-none"
+                            />
                         </div>
 
                         {/* Tasting Matrix Sliders & Real-Time SVG Preview Chart */}
@@ -640,9 +635,17 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                             <div className="flex justify-between items-start mb-1">
                                                 <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
                                                 <div className="flex gap-1 pr-6">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <div key={i} className={`w-1 h-1 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
-                                                    ))}
+                                                    {[...Array(5)].map((_, i) => {
+                                                        const isFull = log.rating >= i + 1;
+                                                        const isHalf = log.rating > i && log.rating < i + 1;
+                                                        return (
+                                                            <div 
+                                                                key={i} 
+                                                                className="w-1.5 h-1.5 rounded-full border border-gray-600" 
+                                                                style={{ background: isFull ? 'white' : isHalf ? 'linear-gradient(to right, white 50%, transparent 50%)' : 'transparent' }}
+                                                            />
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
                                             {log.notes && (
@@ -692,10 +695,19 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                     <div className="flex flex-col gap-6 animate-fade-in pr-4">
                                         <div className="flex justify-between items-start">
                                             <span className="text-sm text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
-                                            <div className="flex gap-2">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <div key={i} className={`w-2 h-2 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
-                                                ))}
+                                            <div className="flex gap-2 items-center">
+                                                <span className="text-[10px] text-gray-500 font-mono mr-1">{log.rating.toFixed(1)} / 5.0</span>
+                                                {[...Array(5)].map((_, i) => {
+                                                    const isFull = log.rating >= i + 1;
+                                                    const isHalf = log.rating > i && log.rating < i + 1;
+                                                    return (
+                                                        <div 
+                                                            key={i} 
+                                                            className="w-2.5 h-2.5 rounded-full border border-gray-600 shadow-sm" 
+                                                            style={{ background: isFull ? 'white' : isHalf ? 'linear-gradient(to right, white 50%, transparent 50%)' : 'transparent' }}
+                                                        />
+                                                    );
+                                                })}
                                             </div>
                                         </div>
 
