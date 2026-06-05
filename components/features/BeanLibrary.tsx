@@ -375,7 +375,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1.5 pr-2 custom-scrollbar">
                 {filteredBeans.map((bean) => (
                     <div
                         key={bean.id}
@@ -385,42 +385,9 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                             }`}
                         onClick={() => onSelect?.(bean.id)}
                     >
-                        <div className="flex justify-between items-start gap-3">
-                            <h3 className={`text-sm font-medium transition-colors tracking-wide leading-snug flex-1 ${selectedId === bean.id ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>
-                                {bean.name}
-                            </h3>
-
-                            {/* Action Buttons: Clone, Delete & Edit */}
-                            <div className={`flex gap-1 shrink-0 transition-opacity ${selectedId === bean.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100'}`}>
-                                <button
-                                    onClick={(e) => openClone(e, bean)}
-                                    className="text-[9px] text-gray-500 hover:text-white border border-gray-800 hover:border-white px-1.5 py-1 transition-all bg-black/40"
-                                    title="Clone this bean"
-                                >
-                                    CLONE
-                                </button>
-                                <button
-                                    onClick={(e) => openEdit(e, bean)}
-                                    className="text-[9px] text-gray-500 hover:text-white border border-gray-800 hover:border-white px-1.5 py-1 transition-all bg-black/40"
-                                >
-                                    EDIT
-                                </button>
-
-                                {deleteConfirmId === bean.id ? (
-                                    <div className="flex border border-red-900 bg-black/40">
-                                        <button onClick={(e) => executeDelete(e, bean.id)} className="text-red-500 hover:bg-red-500 hover:text-white text-[9px] px-1.5 py-1 font-bold transition-colors">YES</button>
-                                        <button onClick={cancelDelete} className="text-gray-500 hover:text-white text-[9px] px-1.5 py-1 border-l border-red-950 transition-colors">NO</button>
-                                    </div>
-                                ) : (
-                                    <button
-                                        onClick={(e) => confirmDelete(e, bean.id)}
-                                        className="text-[9px] text-gray-500 hover:text-red-500 border border-gray-800 hover:border-red-500 px-1.5 py-1 transition-all bg-black/40"
-                                    >
-                                        DEL
-                                    </button>
-                                )}
-                            </div>
-                        </div>
+                        <h3 className={`text-sm font-medium transition-colors tracking-wide leading-snug ${selectedId === bean.id ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>
+                            {bean.name}
+                        </h3>
                         <p className="text-[10px] text-gray-500 mb-1 leading-normal">{bean.roaster}</p>
                         <div className="flex gap-2 mt-1">
                             <span className="text-[10px] text-gray-600 uppercase tracking-widest">
@@ -431,7 +398,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                 {bean.process === 'Washed' ? 'ウォッシュト' : bean.process === 'Natural' ? 'ナチュラル' : bean.process}
                             </span>
                         </div>
-                        <Tooltip content="エイジング（焙煎からの日数）。ピーク（飲み頃）は自動計算されます。" position="right">
+                        <Tooltip content="エイジング（焙煎からの日数）。ピーク（飲み頃）は自動計算されます。" position="top">
                             <div className="mt-2 text-[10px] text-gray-500 font-mono flex items-center cursor-help w-fit">
                                 <span>Roast: {bean.roastDate ? bean.roastDate.split('T')[0] : 'N/A'}</span>
                                 {getAgingBadge(bean)}
@@ -455,6 +422,37 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                         {tag}
                                     </span>
                                 ))}
+                            </div>
+                        )}
+
+                        {selectedId === bean.id && (
+                            <div className="mt-4 pt-3 border-t border-gray-800 flex justify-end gap-2 animate-fade-in">
+                                <button
+                                    onClick={(e) => openClone(e, bean)}
+                                    className="text-[10px] uppercase tracking-widest border border-gray-700 hover:border-white text-gray-400 hover:text-white bg-black px-3 py-1.5 rounded-sm transition-all"
+                                >
+                                    CLONE
+                                </button>
+                                <button
+                                    onClick={(e) => openEdit(e, bean)}
+                                    className="text-[10px] uppercase tracking-widest border border-gray-700 hover:border-white text-gray-400 hover:text-white bg-black px-3 py-1.5 rounded-sm transition-all"
+                                >
+                                    EDIT
+                                </button>
+                                
+                                {deleteConfirmId === bean.id ? (
+                                    <div className="flex border border-red-900 bg-black rounded-sm overflow-hidden">
+                                        <button onClick={(e) => executeDelete(e, bean.id)} className="text-red-500 hover:bg-red-500 hover:text-white text-[10px] font-bold px-3 py-1.5 transition-colors">YES</button>
+                                        <button onClick={cancelDelete} className="text-gray-500 hover:text-white text-[10px] px-3 py-1.5 border-l border-red-950 transition-colors">NO</button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={(e) => confirmDelete(e, bean.id)}
+                                        className="text-[10px] uppercase tracking-widest border border-gray-800 hover:border-red-500 text-gray-500 hover:text-red-500 bg-black px-3 py-1.5 rounded-sm transition-all"
+                                    >
+                                        DEL
+                                    </button>
+                                )}
                             </div>
                         )}
                     </div>
