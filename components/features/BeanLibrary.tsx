@@ -332,7 +332,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     if (!isLoaded) return <div className="p-6 text-xs text-gray-600">Loading Library...</div>;
 
     return (
-        <div className="h-full flex flex-col p-6 font-mono relative">
+        <div className="h-full flex flex-col px-3 py-4 md:p-6 font-mono relative">
             <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-6 text-gray-500 border-b border-gray-900 pb-2 flex justify-between items-center">
                 <span>Bean Library</span>
                 <span className="text-gray-700">{filteredBeans.length} / {beans.length}</span>
