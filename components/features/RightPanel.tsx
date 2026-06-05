@@ -18,12 +18,14 @@ interface RightPanelProps {
     onAddGlobalRecipe?: () => void;
     onToggleGlobalStar?: (recipe: Recipe) => void;
     onDeleteGlobalRecipe?: (recipe: Recipe) => void;
+    onSwipeToTimer?: () => void;
 }
 
 export default function RightPanel({ 
     bean, recipe, globalRecipes = [], 
     onLoadRecipe, onToggleStar, onDeleteRecipe,
-    onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe
+    onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe,
+    onSwipeToTimer
 }: RightPanelProps) {
     const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<'coach' | 'log' | 'recipes' | 'settings' | 'help'>('coach');
@@ -88,8 +90,54 @@ export default function RightPanel({
         );
     };
 
+    const [touchStart, setTouchStart] = useState<{x: number, y: number} | null>(null);
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        // Prevent layout tab switch
+        e.stopPropagation();
+        
+        const target = e.target as HTMLElement;
+        const ignoreSwipe = target.closest('.overflow-x-auto, .no-scrollbar, input, textarea, select, button');
+        if (ignoreSwipe) return;
+
+        setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        e.stopPropagation(); // Prevent layout tab switch
+        if (!touchStart) return;
+        
+        const touchEnd = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        const dx = touchStart.x - touchEnd.x;
+        const dy = touchStart.y - touchEnd.y;
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+        
+        if (absDx > 70 && absDx > absDy * 2) {
+            const tabs = ['coach', 'log', 'recipes', 'help', 'settings'] as const;
+            const currentIndex = tabs.indexOf(activeTab);
+            
+            if (dx > 0) { // Swiped Left
+                if (currentIndex < tabs.length - 1) {
+                    setActiveTab(tabs[currentIndex + 1]);
+                }
+            } else if (dx < 0) { // Swiped Right
+                if (currentIndex > 0) {
+                    setActiveTab(tabs[currentIndex - 1]);
+                } else {
+                    onSwipeToTimer?.();
+                }
+            }
+        }
+        setTouchStart(null);
+    };
+
     return (
-        <div className="h-full flex flex-col bg-black relative">
+        <div 
+            className="h-full flex flex-col bg-black relative"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+        >
             {/* Touch-friendly Tab Switcher Header */}
             <div className="flex border-b border-gray-900 bg-black text-[10px] uppercase tracking-[0.12em] font-bold z-10 shrink-0 select-none overflow-x-auto no-scrollbar">
                 <button

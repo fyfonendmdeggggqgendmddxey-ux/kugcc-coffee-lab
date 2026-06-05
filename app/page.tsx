@@ -213,6 +213,7 @@ export default function Home() {
                     onAddGlobalRecipe={handleAddGlobalRecipe}
                     onToggleGlobalStar={handleToggleGlobalRecipeStar}
                     onDeleteGlobalRecipe={handleDeleteGlobalRecipe}
+                    onSwipeToTimer={() => setActiveTab('timer')}
                 />
             }
         />
