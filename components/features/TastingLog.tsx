@@ -123,51 +123,67 @@ const RadarChart = ({
     });
 
     return (
-        <svg viewBox="0 0 100 100" width={size} height={size} className="overflow-visible select-none">
-            {gridPolygons.map((points, idx) => (
-                <polygon
-                    key={idx}
-                    points={points}
-                    fill="none"
-                    stroke="#1f2937"
-                    strokeWidth="0.5"
-                />
-            ))}
-            {[0, 1, 2, 3, 4].map(i => {
-                const outer = getCoordinates(i, 5);
-                return (
-                    <line
-                        key={i}
-                        x1={center}
-                        y1={center}
-                        x2={outer.x}
-                        y2={outer.y}
-                        stroke="#1f2937"
+        <svg viewBox="0 0 100 100" width={size} height={size} className="overflow-visible select-none text-white dark:text-white">
+            <style>
+                {`
+                    @media (prefers-color-scheme: light) {
+                        .radar-svg { color: #000; }
+                    }
+                    @media (prefers-color-scheme: dark) {
+                        .radar-svg { color: #fff; }
+                    }
+                `}
+            </style>
+            <g className="radar-svg" style={{ color: 'inherit' }}>
+                {gridPolygons.map((points, idx) => (
+                    <polygon
+                        key={idx}
+                        points={points}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeOpacity="0.2"
                         strokeWidth="0.5"
                     />
-                );
-            })}
-            <polygon
-                points={dataPoints}
-                fill="rgba(255, 255, 255, 0.15)"
-                stroke="#ffffff"
-                strokeWidth="1.5"
-                className="transition-all duration-300"
-            />
-            {labelPoints.map((lp, idx) => (
-                <text
-                    key={idx}
-                    x={lp.x}
-                    y={lp.y}
-                    fill="#6b7280"
-                    fontSize="5"
-                    fontFamily="monospace"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                >
-                    {lp.label}
-                </text>
-            ))}
+                ))}
+                {[0, 1, 2, 3, 4].map(i => {
+                    const outer = getCoordinates(i, 5);
+                    return (
+                        <line
+                            key={i}
+                            x1={center}
+                            y1={center}
+                            x2={outer.x}
+                            y2={outer.y}
+                            stroke="currentColor"
+                            strokeOpacity="0.2"
+                            strokeWidth="0.5"
+                        />
+                    );
+                })}
+                <polygon
+                    points={dataPoints}
+                    fill="currentColor"
+                    fillOpacity="0.2"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    className="transition-all duration-300"
+                />
+                {labelPoints.map((lp, idx) => (
+                    <text
+                        key={idx}
+                        x={lp.x}
+                        y={lp.y}
+                        fill="currentColor"
+                        fillOpacity="0.6"
+                        fontSize="5"
+                        fontFamily="monospace"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                    >
+                        {lp.label}
+                    </text>
+                ))}
+            </g>
         </svg>
     );
 };
