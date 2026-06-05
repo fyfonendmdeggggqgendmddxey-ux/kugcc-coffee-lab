@@ -176,6 +176,7 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
     const [rating, setRating] = useState(3);
     const [notes, setNotes] = useState('');
     const [saved, setSaved] = useState(false);
+    const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
 
     // Tasting matrix state (default to 3)
     const [acidity, setAcidity] = useState(3);
@@ -604,75 +605,139 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                             History: {bean.name}
                         </h3>
                         {filteredHistory.length === 0 && <p className="text-xs text-gray-700 italic">No logs recorded.</p>}
-                        {filteredHistory.map(log => (
-                            <div key={log.id} id={`log-card-${log.id}`} className="border-l border-gray-800 pl-4 py-2.5 hover:border-white transition-colors group relative flex justify-between items-center gap-4 bg-black">
-                                <div className="flex-1">
-                                    <div className="flex justify-between items-start mb-1">
-                                        <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
-                                        <div className="flex gap-1 pr-6">
-                                            {[...Array(5)].map((_, i) => (
-                                                <div key={i} className={`w-1 h-1 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    {log.notes && (
-                                        <p className="text-xs text-gray-300 line-clamp-2 group-hover:text-white transition-colors pr-6 mb-2">
-                                            {log.notes}
-                                        </p>
-                                    )}
-                                    
-                                    {log.flavorTags && log.flavorTags.length > 0 && (
-                                        <div className="flex flex-wrap gap-1 pr-6 mb-2">
-                                            {log.flavorTags.map(tag => (
-                                                <span key={tag} className={`px-1.5 py-0.5 text-[8px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
+                        {filteredHistory.map(log => {
+                            const isExpanded = expandedLogId === log.id;
+                            
+                            return (
+                            <div 
+                                key={log.id} 
+                                id={`log-card-${log.id}`} 
+                                onClick={() => setExpandedLogId(isExpanded ? null : log.id)}
+                                className={`border-l pl-4 py-2.5 transition-all group relative bg-black cursor-pointer ${
+                                    isExpanded ? 'border-white pb-6 my-4' : 'border-gray-800 hover:border-gray-500 flex justify-between items-center gap-4'
+                                }`}
+                            >
+                                {/* ---- COMPACT VIEW ---- */}
+                                {!isExpanded && (
+                                    <>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                                <div className="flex gap-1 pr-6">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <div key={i} className={`w-1 h-1 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            {log.notes && (
+                                                <p className="text-xs text-gray-300 line-clamp-2 group-hover:text-white transition-colors pr-6 mb-2">
+                                                    {log.notes}
+                                                </p>
+                                            )}
+                                            
+                                            {log.flavorTags && log.flavorTags.length > 0 && (
+                                                <div className="flex flex-wrap gap-1 pr-6 mb-2">
+                                                    {log.flavorTags.map(tag => (
+                                                        <span key={tag} className={`px-1.5 py-0.5 text-[8px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
 
-                                    {/* Display Recipe Snapshot */}
-                                    {log.recipe && (
-                                        <div className="mt-2 pr-6 border-t border-gray-900 pt-2">
-                                            <p className="text-[10px] text-gray-500 mb-1">
-                                                Recipe: {log.recipe.name || 'Unnamed'} ({log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'})
+                                            {log.recipe && (
+                                                <p className="text-[9px] text-gray-600 truncate pr-6">
+                                                    Recipe: {log.recipe.name || 'Unnamed'}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <div className="shrink-0 flex flex-col items-center gap-2">
+                                            {log.image && (
+                                                <div 
+                                                    onClick={(e) => { e.stopPropagation(); setZoomImage(log.image || null); }}
+                                                    className="w-11 h-11 bg-gray-900 border border-gray-800 overflow-hidden rounded-sm relative active:scale-95 transition-transform"
+                                                    title="Click to zoom"
+                                                >
+                                                    <img src={log.image} alt="Brew" className="w-full h-full object-cover" />
+                                                </div>
+                                            )}
+                                            <div className="shrink-0 flex items-center justify-center bg-gray-950/40 p-1 border border-gray-900/60 rounded-sm">
+                                                <RadarChart 
+                                                    acidity={log.acidity ?? 3} sweetness={log.sweetness ?? 3} body={log.body ?? 3} 
+                                                    bitterness={log.bitterness ?? 3} aroma={log.aroma ?? 3} size={45} 
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* ---- EXPANDED VIEW ---- */}
+                                {isExpanded && (
+                                    <div className="flex flex-col gap-4 animate-fade-in pr-4">
+                                        <div className="flex justify-between items-start">
+                                            <span className="text-[12px] text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                            <div className="flex gap-1.5">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-4 items-start">
+                                            {log.image && (
+                                                <div 
+                                                    onClick={(e) => { e.stopPropagation(); setZoomImage(log.image || null); }}
+                                                    className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-900 border border-gray-800 overflow-hidden rounded-sm relative shrink-0 active:scale-95 transition-transform"
+                                                    title="Click to zoom"
+                                                >
+                                                    <img src={log.image} alt="Brew" className="w-full h-full object-cover" />
+                                                </div>
+                                            )}
+                                            <div className="shrink-0 flex items-center justify-center bg-gray-950/60 p-2 border border-gray-800 rounded-sm">
+                                                <RadarChart 
+                                                    acidity={log.acidity ?? 3} sweetness={log.sweetness ?? 3} body={log.body ?? 3} 
+                                                    bitterness={log.bitterness ?? 3} aroma={log.aroma ?? 3} size={80} 
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {log.flavorTags && log.flavorTags.length > 0 && (
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {log.flavorTags.map(tag => (
+                                                    <span key={tag} className={`px-2 py-1 text-[9px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {log.notes && (
+                                            <p className="text-sm text-gray-200 bg-gray-900/30 p-3 border border-gray-800 rounded-sm whitespace-pre-wrap leading-relaxed">
+                                                {log.notes}
                                             </p>
-                                            <button
-                                                data-html2canvas-ignore="true"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (confirm("現在のタイマー設定をこの過去のレシピで上書きしてよろしいですか？")) {
-                                                        onLoadRecipe?.(log.recipe!);
-                                                    }
-                                                }}
-                                                className="text-[9px] uppercase tracking-widest bg-gray-900 text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-1 transition-all rounded-sm"
-                                            >
-                                                🔄 Load this Recipe
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="shrink-0 flex flex-col items-center gap-2">
-                                    {log.image && (
-                                        <div 
-                                            onClick={() => setZoomImage(log.image || null)}
-                                            className="w-11 h-11 bg-gray-900 border border-gray-800 overflow-hidden rounded-sm relative cursor-pointer active:scale-95 transition-transform"
-                                            title="Click to zoom"
-                                        >
-                                            <img src={log.image} alt="Brew" className="w-full h-full object-cover" />
-                                        </div>
-                                    )}
-                                    <div className="shrink-0 flex items-center justify-center bg-gray-950/40 p-1 border border-gray-900/60 rounded-sm">
-                                        <RadarChart 
-                                            acidity={log.acidity ?? 3} 
-                                            sweetness={log.sweetness ?? 3} 
-                                            body={log.body ?? 3} 
-                                            bitterness={log.bitterness ?? 3} 
-                                            aroma={log.aroma ?? 3} 
-                                            size={45} 
-                                        />
+                                        )}
+
+                                        {log.recipe && (
+                                            <div className="mt-2 border-t border-gray-900 pt-3">
+                                                <p className="text-[10px] text-gray-400 mb-2 font-mono">
+                                                    RECIPE: <span className="text-white">{log.recipe.name || 'Unnamed'}</span><br/>
+                                                    {log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'}
+                                                </p>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (confirm("現在のタイマー設定をこの過去のレシピで上書きしてよろしいですか？")) {
+                                                            onLoadRecipe?.(log.recipe!);
+                                                        }
+                                                    }}
+                                                    className="text-[9px] uppercase tracking-widest bg-gray-900 text-gray-300 hover:text-white border border-gray-800 hover:bg-gray-800 px-4 py-2 transition-all rounded-sm w-full text-center"
+                                                >
+                                                    🔄 Load this Recipe to Timer
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
+                                )}
 
                                 {/* Actions Container */}
                                 <div className="absolute top-1 right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
@@ -685,14 +750,14 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                                 localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
                                             }
                                         }}
-                                        className="text-gray-600 hover:text-red-500 text-[10px] border border-gray-800 hover:border-red-500 px-1 bg-black"
+                                        className="text-gray-600 hover:text-red-500 text-[10px] border border-gray-800 hover:border-red-500 px-2 py-1 bg-black z-10"
                                         title="Delete Log"
                                     >
-                                        ✕
+                                        ✕ DEL
                                     </button>
                                 </div>
                             </div>
-                        ))}
+                        )})}
                     </div>
                 </div>
             )}
