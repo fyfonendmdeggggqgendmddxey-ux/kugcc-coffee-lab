@@ -557,7 +557,7 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                     )}
                                     <input
                                         type="file"
-                                        accept="image/*"
+                                        accept="image/jpeg, image/png, image/webp"
                                         onChange={handleImageChange}
                                         className="hidden"
                                     />

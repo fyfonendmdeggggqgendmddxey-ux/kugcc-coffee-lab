@@ -441,7 +441,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 <Tooltip content="一括登録：複数の写真を選択すると、AIがまとめて解析してくれます！" position="top">
                     <label className={`h-full w-12 border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all cursor-pointer ${isBatchProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
                         <span className="text-sm">📸</span>
-                        <input type="file" multiple accept="image/*" className="hidden" onChange={handleBatchImageUpload} disabled={isBatchProcessing} />
+                        <input type="file" multiple accept="image/jpeg, image/png, image/webp" className="hidden" onChange={handleBatchImageUpload} disabled={isBatchProcessing} />
                     </label>
                 </Tooltip>
             </div>
