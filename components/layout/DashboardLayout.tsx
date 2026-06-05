@@ -13,6 +13,44 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ left, center, right, activeTab, onTabChange }: DashboardLayoutProps) {
     const { t } = useLanguage();
 
+    const [touchStart, setTouchStart] = useState<{x: number, y: number} | null>(null);
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        // Prevent swipe on inputs, textareas, ranges, or explicitly horizontal-scrollable elements
+        const target = e.target as HTMLElement;
+        const ignoreSwipe = target.closest('.overflow-x-auto, .no-scrollbar, input, textarea, select, button');
+        if (ignoreSwipe) return;
+
+        setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (!touchStart) return;
+        
+        const touchEnd = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        const dx = touchStart.x - touchEnd.x;
+        const dy = touchStart.y - touchEnd.y;
+        
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+        
+        // Threshold: at least 70px horizontal movement, and must be clearly more horizontal than vertical
+        if (absDx > 70 && absDx > absDy * 2) {
+            const tabs = ['library', 'timer', 'recipes'] as const;
+            const currentIndex = tabs.indexOf(activeTab);
+            
+            if (dx > 0 && currentIndex < tabs.length - 1) {
+                // Swiped left (finger moved left) -> Next tab
+                onTabChange(tabs[currentIndex + 1]);
+            } else if (dx < 0 && currentIndex > 0) {
+                // Swiped right (finger moved right) -> Prev tab
+                onTabChange(tabs[currentIndex - 1]);
+            }
+        }
+        
+        setTouchStart(null);
+    };
+
     return (
         <div className="flex flex-col md:flex-row h-screen w-full overflow-hidden bg-black text-white">
             {/* --- DESKTOP LAYOUT (md and up) --- */}
@@ -35,7 +73,11 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
             {/* --- MOBILE LAYOUT (below md) --- */}
             
             {/* Main Content Area */}
-            <div className="flex-1 md:hidden overflow-y-auto pb-[80px] relative">
+            <div 
+                className="flex-1 md:hidden overflow-y-auto pb-[80px] relative transition-transform duration-300"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+            >
                 {activeTab === 'library' && left}
                 {activeTab === 'timer' && center}
                 {activeTab === 'recipes' && right}
