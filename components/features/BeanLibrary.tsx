@@ -40,18 +40,10 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             setBatchProgress(`Analyzing ${i + 1} / ${files.length}...`);
             
             try {
-                const base64Data = await new Promise<string>((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        const result = reader.result as string;
-                        const base64 = result.split(',')[1];
-                        resolve(base64);
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
+                const { resizeImageToBase64 } = await import('@/utils/imageResizer');
+                const base64Data = await resizeImageToBase64(file);
 
-                const extracted = await analyzeCoffeeBagImage(base64Data, file.type, apiKey);
+                const extracted = await analyzeCoffeeBagImage(base64Data.data, base64Data.mime, apiKey);
 
                 let finalRoastDate = '';
                 if (extracted.roastDate) {

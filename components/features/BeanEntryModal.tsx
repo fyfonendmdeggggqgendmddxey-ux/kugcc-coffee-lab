@@ -135,19 +135,9 @@ export default function BeanEntryModal({
         setIsAnalyzing(true);
         
         try {
-            // Read image directly without canvas to avoid browser-specific loading errors
-            const base64Data = await new Promise<{data: string, mime: string}>((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    const result = reader.result as string;
-                    // result is in format: data:image/jpeg;base64,/9j/4AAQSkZJ...
-                    const mime = result.split(';')[0].split(':')[1];
-                    const data = result.split(',')[1];
-                    resolve({ data, mime });
-                };
-                reader.onerror = () => reject(new Error('Failed to read file using FileReader'));
-                reader.readAsDataURL(file);
-            });
+            // Resize and compress the image before sending to Gemini API to prevent payload too large errors
+            const { resizeImageToBase64 } = await import('@/utils/imageResizer');
+            const base64Data = await resizeImageToBase64(file);
 
             const result = await analyzeCoffeeBagImage(base64Data.data, base64Data.mime, apiKey);
             
