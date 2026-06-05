@@ -673,38 +673,39 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
 
                                 {/* ---- EXPANDED VIEW ---- */}
                                 {isExpanded && (
-                                    <div className="flex flex-col gap-4 animate-fade-in pr-4">
+                                    <div className="flex flex-col gap-6 animate-fade-in pr-4">
                                         <div className="flex justify-between items-start">
-                                            <span className="text-[12px] text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
-                                            <div className="flex gap-1.5">
+                                            <span className="text-sm text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                            <div className="flex gap-2">
                                                 {[...Array(5)].map((_, i) => (
-                                                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
+                                                    <div key={i} className={`w-2 h-2 rounded-full ${i < log.rating ? 'bg-white' : 'bg-gray-800'}`} />
                                                 ))}
                                             </div>
                                         </div>
 
-                                        <div className="flex gap-4 items-start">
+                                        <div className="flex flex-col gap-6">
                                             {log.image && (
                                                 <div 
                                                     onClick={(e) => { e.stopPropagation(); setZoomImage(log.image || null); }}
-                                                    className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-900 border border-gray-800 overflow-hidden rounded-sm relative shrink-0 active:scale-95 transition-transform"
+                                                    className="w-full h-48 sm:h-64 bg-gray-900 border border-gray-700 overflow-hidden rounded-sm relative active:scale-[0.98] transition-transform"
                                                     title="Click to zoom"
                                                 >
                                                     <img src={log.image} alt="Brew" className="w-full h-full object-cover" />
                                                 </div>
                                             )}
-                                            <div className="shrink-0 flex items-center justify-center bg-gray-950/60 p-2 border border-gray-800 rounded-sm">
+                                            
+                                            <div className="flex justify-center w-full bg-gray-950/60 p-6 border border-gray-800 rounded-sm">
                                                 <RadarChart 
                                                     acidity={log.acidity ?? 3} sweetness={log.sweetness ?? 3} body={log.body ?? 3} 
-                                                    bitterness={log.bitterness ?? 3} aroma={log.aroma ?? 3} size={80} 
+                                                    bitterness={log.bitterness ?? 3} aroma={log.aroma ?? 3} size={180} 
                                                 />
                                             </div>
                                         </div>
 
                                         {log.flavorTags && log.flavorTags.length > 0 && (
-                                            <div className="flex flex-wrap gap-1.5">
+                                            <div className="flex flex-wrap gap-2">
                                                 {log.flavorTags.map(tag => (
-                                                    <span key={tag} className={`px-2 py-1 text-[9px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
+                                                    <span key={tag} className={`px-3 py-1.5 text-[11px] font-bold tracking-wider rounded-sm border ${getFlavorColor(tag)}`}>
                                                         {tag}
                                                     </span>
                                                 ))}
@@ -712,16 +713,18 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                         )}
 
                                         {log.notes && (
-                                            <p className="text-sm text-gray-200 bg-gray-900/30 p-3 border border-gray-800 rounded-sm whitespace-pre-wrap leading-relaxed">
+                                            <p className="text-base text-white bg-gray-900/40 p-4 border border-gray-700 rounded-sm whitespace-pre-wrap leading-relaxed shadow-inner">
                                                 {log.notes}
                                             </p>
                                         )}
 
                                         {log.recipe && (
-                                            <div className="mt-2 border-t border-gray-900 pt-3">
-                                                <p className="text-[10px] text-gray-400 mb-2 font-mono">
-                                                    RECIPE: <span className="text-white">{log.recipe.name || 'Unnamed'}</span><br/>
-                                                    {log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'}
+                                            <div className="mt-2 border-t border-gray-800 pt-4">
+                                                <p className="text-xs text-gray-400 mb-3 font-mono leading-relaxed">
+                                                    RECIPE: <span className="text-white text-sm font-bold">{log.recipe.name || 'Unnamed'}</span><br/>
+                                                    <span className="inline-block mt-1 bg-gray-900 px-2 py-1 rounded-sm border border-gray-800">
+                                                        {log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'}
+                                                    </span>
                                                 </p>
                                                 <button
                                                     onClick={(e) => {
@@ -730,9 +733,9 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                                             onLoadRecipe?.(log.recipe!);
                                                         }
                                                     }}
-                                                    className="text-[9px] uppercase tracking-widest bg-gray-900 text-gray-300 hover:text-white border border-gray-800 hover:bg-gray-800 px-4 py-2 transition-all rounded-sm w-full text-center"
+                                                    className="text-[10px] sm:text-xs uppercase tracking-widest bg-gray-100 text-black hover:bg-white px-4 py-3 transition-all rounded-sm w-full text-center font-bold"
                                                 >
-                                                    🔄 Load this Recipe to Timer
+                                                    🔄 LOAD THIS RECIPE TO TIMER
                                                 </button>
                                             </div>
                                         )}
