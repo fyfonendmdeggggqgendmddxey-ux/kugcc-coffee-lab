@@ -9,56 +9,21 @@ export interface ExtractedBeanInfo {
     roastDate?: string;
 }
 
-let cachedTargetModel: string | null = null;
-
 export async function analyzeCoffeeBagImage(base64Image: string, mimeType: string, apiKey: string): Promise<ExtractedBeanInfo> {
-    if (!cachedTargetModel) {
-        // Dynamically fetch available models to ensure compatibility with the user's specific API key/region
-        const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-        const listRes = await fetch(listUrl);
-        if (!listRes.ok) {
-            const errorText = await listRes.text();
-            throw new Error(`Gemini API Error (List Models): ${listRes.status} - ${errorText}`);
-        }
-        const listData = await listRes.json();
-        const models: any[] = listData.models || [];
-        
-        // Find a model that supports generateContent, preferring flash then pro
-        const targetModel = models.find(m => m.name.includes('gemini-1.5-flash') && m.supportedGenerationMethods?.includes('generateContent')) || 
-                            models.find(m => m.name.includes('gemini-1.5-pro') && m.supportedGenerationMethods?.includes('generateContent')) ||
-                            models.find(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent'));
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-        if (!targetModel) {
-            const availableNames = models.map(m => m.name).join(', ');
-            throw new Error(`No compatible Gemini model found for this API key. Available models: ${availableNames}`);
-        }
-        cachedTargetModel = targetModel.name;
-    }
-
-    // cachedTargetModel is usually in the format "models/gemini-..."
-    const url = `https://generativelanguage.googleapis.com/v1beta/${cachedTargetModel}:generateContent?key=${apiKey}`;
-
-    // Prompt optimized for coffee bag extraction
-    const prompt = `
-You are a coffee expert. Analyze this image of a coffee bean bag or label.
-Extract the following information and return it strictly as a JSON object.
-Do NOT include any markdown formatting, only the raw JSON.
-
-JSON Schema:
+    const prompt = `Extract coffee info from image into JSON. No markdown.
 {
-    "name": "string (the main name of the coffee, e.g. 'Finca El Puente' or 'Ethiopia Yirgacheffe'. Exclude the roaster name if possible)",
-    "roaster": "string (the name of the coffee roaster or brand)",
-    "origin": "string (the country or region of origin)",
-    "variety": "string (the coffee variety, e.g. 'Geisha', 'Bourbon', 'Typica')",
-    "roastLevel": "string (e.g. 'Light', 'Medium', 'Dark'. Infer from text if not explicit, but leave empty if unknown)",
-    "process": "string (the processing method, e.g. 'Washed', 'Natural', 'Honey', 'Anaerobic')",
-    "flavorTags": ["string", "string"] (list of flavor notes or tasting notes found on the bag),
-    "roastDate": "string (the roast date found on the bag in YYYY-MM-DD format. If you cannot find a date, leave it empty)"
+  "name": "string (main name, ex: Finca El Puente. No roaster)",
+  "roaster": "string",
+  "origin": "string",
+  "variety": "string",
+  "roastLevel": "string (Light/Medium/Dark/etc)",
+  "process": "string",
+  "flavorTags": ["string"],
+  "roastDate": "string (YYYY-MM-DD)"
 }
-
-If you cannot find a specific piece of information, omit the key or set it to null.
-Ensure the output is ONLY valid JSON.
-`;
+Omit missing fields. Valid JSON only.`;
 
     const requestBody = {
         contents: [

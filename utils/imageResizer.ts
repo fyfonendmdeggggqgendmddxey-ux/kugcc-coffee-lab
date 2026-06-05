@@ -1,4 +1,4 @@
-export async function resizeImageToBase64(file: File, maxSize: number = 1024): Promise<{data: string, mime: string}> {
+export async function resizeImageToBase64(file: File, maxSize: number = 800): Promise<{data: string, mime: string}> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -32,7 +32,7 @@ export async function resizeImageToBase64(file: File, maxSize: number = 1024): P
                 ctx.drawImage(img, 0, 0, width, height);
 
                 // Use jpeg for compression to avoid base64 bloat
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
                 const mime = 'image/jpeg';
                 const data = dataUrl.split(',')[1];
                 resolve({ data, mime });

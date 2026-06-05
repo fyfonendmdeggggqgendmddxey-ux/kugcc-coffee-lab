@@ -32,6 +32,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
         setIsBatchProcessing(true);
         let newlyAddedCount = 0;
+        let failedFiles: string[] = [];
         // Need to use functional state update or ensure we have the latest beans
         let currentBeans = [...beans];
 
@@ -78,7 +79,14 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 currentBeans.push(newBean);
                 newlyAddedCount++;
             } catch (err) {
-                console.error("Batch extraction failed for image", i, err);
+                console.error("Batch extraction failed for image", file.name, err);
+                failedFiles.push(file.name);
+            }
+
+            // Rate limiting: Delay to prevent Gemini API "429 Quota Exceeded" (15 RPM limit = 1 req / 4s)
+            if (i < files.length - 1) {
+                setBatchProgress(`Waiting to prevent API limits... (${i + 1}/${files.length})`);
+                await new Promise(r => setTimeout(r, 4500));
             }
         }
 
@@ -90,6 +98,12 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         setIsBatchProcessing(false);
         setBatchProgress("");
         e.target.value = "";
+
+        if (failedFiles.length > 0) {
+            alert(`Added ${newlyAddedCount} beans.\\nFailed to process ${failedFiles.length} images:\\n${failedFiles.join(', ')}`);
+        } else if (newlyAddedCount > 0) {
+            alert(`Successfully added ${newlyAddedCount} beans!`);
+        }
     };
 
     // Load from LocalStorage
