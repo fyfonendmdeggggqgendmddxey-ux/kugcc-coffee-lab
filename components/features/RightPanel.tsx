@@ -128,8 +128,20 @@ export default function RightPanel({
                             ? 'text-white border-white bg-gray-900/20' 
                             : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
                     }`}
+                    title="Guide"
                 >
-                    Guide
+                    📖
+                </button>
+                <button
+                    onClick={() => setActiveTab('coach')}
+                    className={`px-4 py-4 text-center transition-all border-b-2 text-[10px] uppercase tracking-widest whitespace-nowrap ${
+                        activeTab === 'coach' 
+                            ? 'text-white border-white bg-gray-900/20' 
+                            : 'text-gray-600 border-transparent hover:text-gray-300 hover:bg-gray-900/10'
+                    }`}
+                    title="AI Coach"
+                >
+                    AI
                 </button>
                 <button
                     onClick={() => setActiveTab('settings')}

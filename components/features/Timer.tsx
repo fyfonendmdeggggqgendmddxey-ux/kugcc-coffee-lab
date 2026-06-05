@@ -5,6 +5,7 @@ import { Recipe, DEFAULT_RECIPE } from '@/utils/types';
 import CircularTimer from './CircularTimer';
 import { usePrecisionTimer } from '@/hooks/usePrecisionTimer';
 import { getGrinderClicks } from '@/utils/grinder-table';
+import { audioEngine } from '@/utils/audio';
 
 interface TimerProps {
   recipe?: Recipe;
@@ -26,6 +27,7 @@ export default function Timer({
   const [isRunning, setIsRunning] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const lastTickRef = useRef(-1);
 
   // Derived Values
   const totalWater = recipe.beanWeight * recipe.ratio;
@@ -47,9 +49,12 @@ export default function Timer({
   useEffect(() => {
     if (!isRunning || isFinished) return;
 
+    const currentIntSec = Math.floor(elapsedSeconds);
+
     // Find current step based on elapsed time vs thresholds
     // If elapsedSeconds > totalDuration, we are finished
     if (elapsedSeconds >= stepThresholds[stepThresholds.length - 1]) {
+      if (!isFinished) audioEngine?.playComplete();
       setIsFinished(true);
       setIsRunning(false);
       setCurrentStepIndex(recipe.steps.length - 1);
@@ -60,6 +65,17 @@ export default function Timer({
     const newIndex = stepThresholds.findIndex(threshold => elapsedSeconds < threshold);
     if (newIndex !== -1 && newIndex !== currentStepIndex) {
       setCurrentStepIndex(newIndex);
+      audioEngine?.playStart();
+    }
+
+    // Play countdown ticks (3, 2, 1) before the next step
+    if (currentIntSec !== lastTickRef.current && newIndex !== -1) {
+        const threshold = stepThresholds[newIndex];
+        const intDiff = Math.ceil(threshold) - currentIntSec;
+        if (intDiff === 1 || intDiff === 2 || intDiff === 3) {
+            audioEngine?.playTick();
+        }
+        lastTickRef.current = currentIntSec;
     }
   }, [elapsedSeconds, stepThresholds, isRunning, isFinished, currentStepIndex, recipe.steps.length]);
 
@@ -281,7 +297,10 @@ export default function Timer({
 
         <button
           onClick={() => {
-            if (!isFinished) setIsRunning(prev => !prev);
+            if (!isFinished) {
+                if (!isRunning) audioEngine?.playStart();
+                setIsRunning(prev => !prev);
+            }
           }}
           className={`h-16 px-10 text-sm uppercase tracking-widest font-bold border transition-all active:scale-95 ${isRunning
             ? "border-white text-white hover:bg-white/10"

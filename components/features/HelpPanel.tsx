@@ -81,6 +81,64 @@ export default function HelpPanel() {
                     </p>
                 </section>
 
+                {/* 6. Grind Size Reference */}
+                <section>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">⚙️ 6. 挽き目リファレンス（Grind Size Reference）</h3>
+                    <p className="mb-2">
+                        代表的なグラインダー（ミル）の挽き目（クリック数）の目安です。抽出の参考にしてください。
+                    </p>
+                    <div className="overflow-x-auto border border-gray-800 rounded-sm">
+                        <table className="w-full text-[10px] text-left whitespace-nowrap">
+                            <thead className="bg-gray-900/50 text-gray-400">
+                                <tr>
+                                    <th className="px-3 py-2 border-b border-r border-gray-800 font-bold uppercase tracking-wider">Grinder Model</th>
+                                    <th className="px-3 py-2 border-b border-r border-gray-800 font-bold uppercase tracking-wider text-center">Fine (Espresso)</th>
+                                    <th className="px-3 py-2 border-b border-r border-gray-800 font-bold uppercase tracking-wider text-center">Med-Fine (Pour Over)</th>
+                                    <th className="px-3 py-2 border-b font-bold uppercase tracking-wider text-center">Coarse (French Press)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border-b border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">Comandante C40 MK4</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">10-15</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">18-25</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">28-32</td>
+                                </tr>
+                                <tr className="border-b border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">Comandante RedClix</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">20-30</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">36-50</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">56-64</td>
+                                </tr>
+                                <tr className="border-b border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">1Zpresso K-Ultra</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">30-40</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">55-75</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">85-100</td>
+                                </tr>
+                                <tr className="border-b border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">KINGrinder K6</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">35-50</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">70-90</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">100-120</td>
+                                </tr>
+                                <tr className="border-b border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">Timemore C2/C3</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">10-14</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">15-20</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">22-26</td>
+                                </tr>
+                                <tr className="border-gray-900 hover:bg-gray-900/30">
+                                    <td className="px-3 py-2 border-r border-gray-900 font-bold text-gray-300">Timemore X-Lite</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">5-7</td>
+                                    <td className="px-3 py-2 border-r border-gray-900 text-center text-gray-400">8.5-11.5</td>
+                                    <td className="px-3 py-2 text-center text-gray-400">14-16</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
             </div>
         </div>
     );

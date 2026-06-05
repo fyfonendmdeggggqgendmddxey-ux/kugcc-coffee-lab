@@ -34,29 +34,27 @@ export default function Home() {
     const activeRecipe = selectedBean?.recipeOverride || customRecipe || DEFAULT_RECIPE;
 
     const handleRecipeSave = (newRecipe: Recipe, scope: 'default' | 'bean' | 'global') => {
+        const recipeToSave = { ...newRecipe, id: newRecipe.id || Date.now().toString() };
+
         if (scope === 'bean' && selectedBeanId) {
             const updatedBeans = beans.map(b => {
                 if (b.id === selectedBeanId) {
-                    // Logic:
-                    // 1. Always update recipeOverride to be the "Active" recipe
-                    // 2. Add/update it in the 'recipes' list (even if unnamed)
                     let updatedRecipes = b.recipes || [];
 
-                    const existingIndex = updatedRecipes.findIndex(r => r.id && r.id === newRecipe.id);
+                    const existingIndex = updatedRecipes.findIndex(r => r.id && r.id === recipeToSave.id);
                     if (existingIndex >= 0) {
                         updatedRecipes = [
                             ...updatedRecipes.slice(0, existingIndex),
-                            newRecipe,
+                            recipeToSave,
                             ...updatedRecipes.slice(existingIndex + 1)
                         ];
                     } else {
-                        updatedRecipes = [...updatedRecipes, { ...newRecipe, id: newRecipe.id || Date.now().toString() }];
+                        updatedRecipes = [...updatedRecipes, recipeToSave];
                     }
-
 
                     return {
                         ...b,
-                        recipeOverride: newRecipe,
+                        recipeOverride: recipeToSave,
                         recipes: updatedRecipes
                     };
                 }
@@ -68,19 +66,19 @@ export default function Home() {
             setCustomRecipe(null);
         } else if (scope === 'global') {
             let updatedGlobal = [...globalRecipes];
-            const existingIndex = updatedGlobal.findIndex(r => r.id && r.id === newRecipe.id);
+            const existingIndex = updatedGlobal.findIndex(r => r.id && r.id === recipeToSave.id);
             if (existingIndex >= 0) {
-                updatedGlobal[existingIndex] = newRecipe;
+                updatedGlobal[existingIndex] = recipeToSave;
             } else {
-                updatedGlobal.push({ ...newRecipe, id: newRecipe.id || Date.now().toString() });
+                updatedGlobal.push(recipeToSave);
             }
             setGlobalRecipes(updatedGlobal);
             localStorage.setItem('kugcc_recipes', JSON.stringify(updatedGlobal));
             
-            setCustomRecipe(newRecipe);
+            setCustomRecipe(recipeToSave);
         } else {
             // "Save Default" behavior -> Just sets session custom recipe for now
-            setCustomRecipe(newRecipe);
+            setCustomRecipe(recipeToSave);
         }
         setIsEditing(false);
     };

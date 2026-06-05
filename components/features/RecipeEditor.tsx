@@ -92,7 +92,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
     const isValid = Math.abs(currentTotalMl - totalWater) < 0.5;
 
     return (
-        <div className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto">
+        <div id="recipe-editor-export" className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto">
             <h2 className="text-white uppercase tracking-[0.3em] mb-8 md:mb-12 border-b border-gray-800 pb-4 w-full text-center text-sm md:text-base">
                 Recipe Configuration
             </h2>
@@ -336,19 +336,29 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                     </div>
                 </div>
 
-                <div className="flex gap-4 w-full md:w-auto">
+                <div className="flex gap-4 w-full md:w-auto mt-4 md:mt-0">
                     <button
                         onClick={onCancel}
-                        className="flex-1 md:flex-none px-8 py-3 text-xs uppercase tracking-widest text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 transition-all"
+                        className="flex-1 md:flex-none px-6 py-3 text-xs uppercase tracking-widest text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 transition-all"
                     >
                         Cancel
                     </button>
+                    {recipe.id && (
+                        <button
+                            onClick={() => onSave({ ...recipe, id: '' }, saveScope)}
+                            disabled={!isValid}
+                            className="flex-1 md:flex-none px-6 py-3 text-xs uppercase tracking-widest text-white border border-gray-600 hover:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            title="Save as a new copy"
+                        >
+                            Save as New
+                        </button>
+                    )}
                     <button
                         onClick={() => onSave(recipe, saveScope)}
                         disabled={!isValid}
                         className="flex-1 md:flex-none px-8 py-3 text-xs uppercase tracking-widest bg-white text-black hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold"
                     >
-                        Save Recipe
+                        Save
                     </button>
                 </div>
             </div>

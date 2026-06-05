@@ -547,7 +547,7 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                         </h3>
                         {filteredHistory.length === 0 && <p className="text-xs text-gray-700 italic">No logs recorded.</p>}
                         {filteredHistory.map(log => (
-                            <div key={log.id} className="border-l border-gray-800 pl-4 py-2.5 hover:border-white transition-colors group relative flex justify-between items-center gap-4">
+                            <div key={log.id} id={`log-card-${log.id}`} className="border-l border-gray-800 pl-4 py-2.5 hover:border-white transition-colors group relative flex justify-between items-center gap-4 bg-black">
                                 <div className="flex-1">
                                     <div className="flex justify-between items-start mb-1">
                                         <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
@@ -580,6 +580,7 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                                 Recipe: {log.recipe.name || 'Unnamed'} ({log.recipe.ratio}ratio • {log.recipe.temperature}°C • {log.recipe.dripper || 'Unknown'})
                                             </p>
                                             <button
+                                                data-html2canvas-ignore="true"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     if (confirm("現在のタイマー設定をこの過去のレシピで上書きしてよろしいですか？")) {
@@ -615,21 +616,23 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                     </div>
                                 </div>
 
-                                {/* Delete Button */}
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        if (confirm("Delete this tasting log?")) {
-                                            const updatedHistory = history.filter(h => h.id !== log.id);
-                                            setHistory(updatedHistory);
-                                            localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
-                                        }
-                                    }}
-                                    className="absolute top-1 right-0 text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all text-[10px] border border-gray-800 hover:border-red-500 px-1 bg-black"
-                                    title="Delete Log"
-                                >
-                                    ✕
-                                </button>
+                                {/* Actions Container */}
+                                <div className="absolute top-1 right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (confirm("Delete this tasting log?")) {
+                                                const updatedHistory = history.filter(h => h.id !== log.id);
+                                                setHistory(updatedHistory);
+                                                localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
+                                            }
+                                        }}
+                                        className="text-gray-600 hover:text-red-500 text-[10px] border border-gray-800 hover:border-red-500 px-1 bg-black"
+                                        title="Delete Log"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
