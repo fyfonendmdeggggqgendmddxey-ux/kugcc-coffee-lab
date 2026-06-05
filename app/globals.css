@@ -2,17 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+@layer base {
+  :root {
+    /* Default Dark Mode */
+    --color-black: #000000;
+    --color-white: #ffffff;
+    
+    --color-gray-950: #0a0a0a;
+    --color-gray-900: #111111;
+    --color-gray-800: #333333;
+    --color-gray-700: #555555;
+    --color-gray-600: #6b7280;
+    --color-gray-500: #888888;
+    --color-gray-400: #9ca3af;
+    --color-gray-300: #d1d5db;
+    --color-gray-200: #e5e7eb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-50: #f9fafb;
+    
+    --scrollbar-track: #000000;
+    --scrollbar-thumb: #333333;
+    --scrollbar-thumb-hover: #555555;
+  }
+
+  .light {
+    /* Light Mode */
+    --color-black: #ffffff;
+    --color-white: #000000;
+    
+    --color-gray-950: #f9fafb;
+    --color-gray-900: #f3f4f6;
+    --color-gray-800: #e5e7eb;
+    --color-gray-700: #d1d5db;
+    --color-gray-600: #9ca3af;
+    --color-gray-500: #888888;
+    --color-gray-400: #6b7280;
+    --color-gray-300: #555555;
+    --color-gray-200: #333333;
+    --color-gray-100: #111111;
+    --color-gray-50: #0a0a0a;
+    
+    --scrollbar-track: #ffffff;
+    --scrollbar-thumb: #e5e7eb;
+    --scrollbar-thumb-hover: #d1d5db;
+  }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: black;
+  background-color: var(--color-black);
+  color: var(--color-white);
   font-feature-settings: "tnum";
   font-variant-numeric: tabular-nums;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom Scrollbar for Lab feel */
@@ -20,12 +61,12 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--scrollbar-thumb-hover);
 }

@@ -34,6 +34,8 @@ export default function SettingsPanel() {
     const [newDefaultRoaster, setNewDefaultRoaster] = useState('');
     const [newDefaultDays, setNewDefaultDays] = useState<number | ''>('');
 
+    const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
     // Load custom lists from LocalStorage on mount
     useEffect(() => {
         const savedRoasters = localStorage.getItem('kugcc_custom_roasters');
@@ -69,6 +71,9 @@ export default function SettingsPanel() {
         
         const savedRoasterDefaults = localStorage.getItem('kugcc_roaster_defaults');
         if (savedRoasterDefaults) setRoasterDefaults(JSON.parse(savedRoasterDefaults));
+
+        const savedTheme = localStorage.getItem('kugcc_theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') setTheme(savedTheme);
     }, []);
 
     // Save helpers
@@ -115,6 +120,17 @@ export default function SettingsPanel() {
     const saveRoasterDefaults = (map: Record<string, number>) => {
         setRoasterDefaults(map);
         localStorage.setItem('kugcc_roaster_defaults', JSON.stringify(map));
+    };
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        localStorage.setItem('kugcc_theme', newTheme);
+        if (newTheme === 'light') {
+            document.documentElement.classList.add('light');
+        } else {
+            document.documentElement.classList.remove('light');
+        }
     };
 
     const addRoasterDefault = () => {
@@ -311,13 +327,34 @@ export default function SettingsPanel() {
     };
 
     return (
-        <div className="h-full flex flex-col p-6 font-mono overflow-y-auto">
-            <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-6 text-gray-500 border-b border-gray-900 pb-2">
-                Preferences Settings
+        <div className="flex flex-col h-full w-full p-6 md:p-8 font-mono overflow-y-auto pb-24">
+            <h2 className="text-white uppercase tracking-[0.3em] mb-6 md:mb-8 border-b border-gray-800 pb-4 text-sm md:text-base text-center">
+                System Config
             </h2>
 
+            {/* Theme & Appearance */}
+            <div className="mb-8">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xs text-gray-400 uppercase tracking-widest">Appearance</h3>
+                </div>
+                <div className="flex bg-gray-900/50 p-1 rounded-sm border border-gray-800 w-full max-w-xs">
+                    <button
+                        onClick={() => theme !== 'dark' && toggleTheme()}
+                        className={`flex-1 py-2 text-[10px] uppercase tracking-widest transition-all ${theme === 'dark' ? 'bg-black text-white shadow-sm border border-gray-700' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        🌙 Dark
+                    </button>
+                    <button
+                        onClick={() => theme !== 'light' && toggleTheme()}
+                        className={`flex-1 py-2 text-[10px] uppercase tracking-widest transition-all ${theme === 'light' ? 'bg-white text-black shadow-sm border border-gray-300' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        ☀️ Light
+                    </button>
+                </div>
+            </div>
+
             {/* API Integrations */}
-            <div className="mb-6 pb-6 border-b border-gray-900 border-dashed">
+            <div className="mb-8 pb-6 border-b border-gray-900 border-dashed">
                 <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>API Integrations</span>
                     <Tooltip content="Gemini APIキーを設定すると、写真からAIが自動で情報を抽出する機能が使えるようになります！" position="right">

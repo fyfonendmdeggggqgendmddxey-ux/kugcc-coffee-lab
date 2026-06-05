@@ -15,8 +15,24 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
-            <body className={`${inter.className} bg-black text-white antialiased selection:bg-white selection:text-black`}>
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function() {
+                                try {
+                                    var theme = localStorage.getItem('kugcc_theme');
+                                    if (theme === 'light') {
+                                        document.documentElement.classList.add('light');
+                                    }
+                                } catch (e) {}
+                            })();
+                        `,
+                    }}
+                />
+            </head>
+            <body className={`${inter.className} bg-black text-white antialiased selection:bg-white selection:text-black transition-colors duration-300`}>
                 {children}
             </body>
         </html>
