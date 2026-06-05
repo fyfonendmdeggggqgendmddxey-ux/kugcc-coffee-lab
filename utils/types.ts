@@ -40,15 +40,17 @@ export type Bean = {
 
 // Default Recipe Template
 export const DEFAULT_RECIPE: Recipe = {
+    name: 'Standard 4-Pour',
     beanWeight: 15,
     ratio: 16,
     temperature: 93,
     grindSize: "Medium-Fine",
     grinderModel: "S3",
     steps: [
-        { id: '1', name: 'Bloom', waterPercentage: 20, duration: 45 },
-        { id: '2', name: 'First Pour', waterPercentage: 40, duration: 45 },
-        { id: '3', name: 'Second Pour', waterPercentage: 40, duration: 45 },
+        { id: '1', name: 'Bloom', waterPercentage: 20.833333, duration: 40 }, // 50ml
+        { id: '2', name: '2nd Pour', waterPercentage: 25, duration: 40 },     // 60ml
+        { id: '3', name: '3rd Pour', waterPercentage: 27.083333, duration: 40 }, // 65ml
+        { id: '4', name: '4th Pour', waterPercentage: 27.083333, duration: 40 }, // 65ml
     ]
 };
 
