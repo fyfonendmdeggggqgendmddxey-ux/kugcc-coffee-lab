@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import { toast } from '@/components/ui/Toast';
 import BeanEntryModal from './BeanEntryModal';
+import BatchReviewModal from './BatchReviewModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
 import Tooltip from '../common/Tooltip';
@@ -25,6 +26,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     const [batchProgress, setBatchProgress] = useState("");
     const [quickFilters, setQuickFilters] = useState<string[]>(['Light', 'Dark', 'Washed', 'Natural']);
     const [sortBy, setSortBy] = useState<string>('added_desc');
+    const [scannedBatch, setScannedBatch] = useState<Bean[] | null>(null);
 
     const handleBatchImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -35,8 +37,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         setIsBatchProcessing(true);
         let newlyAddedCount = 0;
         let failedFiles: string[] = [];
-        // Need to use functional state update or ensure we have the latest beans
-        let currentBeans = [...beans];
+        let tempBatch: Bean[] = [];
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -78,7 +79,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     roastDate: finalRoastDate ? new Date(finalRoastDate).toISOString() : '',
                     recipeOverride: DEFAULT_RECIPE,
                 };
-                currentBeans.push(newBean);
+                tempBatch.push(newBean);
                 newlyAddedCount++;
             } catch (err) {
                 console.error("Batch extraction failed for image", file.name, err);
@@ -92,20 +93,25 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             }
         }
 
-        if (newlyAddedCount > 0) {
-            setBeans(currentBeans);
-            localStorage.setItem('kugcc_beans', JSON.stringify(currentBeans));
-        }
-
         setIsBatchProcessing(false);
         setBatchProgress("");
         e.target.value = "";
 
         if (failedFiles.length > 0) {
-            toast(`Added ${newlyAddedCount} beans. Failed: ${failedFiles.length} images.`, 'error');
-        } else if (newlyAddedCount > 0) {
-            toast(`Successfully added ${newlyAddedCount} beans!`);
+            toast(`Analyzed ${newlyAddedCount} beans. Failed: ${failedFiles.length} images.`, 'error');
         }
+        
+        if (tempBatch.length > 0) {
+            setScannedBatch(tempBatch);
+        }
+    };
+
+    const handleSaveBatch = (reviewedBeans: Bean[]) => {
+        const updatedBeans = [...beans, ...reviewedBeans];
+        setBeans(updatedBeans);
+        localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
+        setScannedBatch(null);
+        toast(`Successfully added ${reviewedBeans.length} beans!`);
     };
 
     // Load from LocalStorage
@@ -483,6 +489,22 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                     processes={uniqueProcesses}
                     roastLevels={uniqueRoastLevels}
                     varieties={uniqueVarieties}
+                />
+            )}
+            {/* Background Batch Processing Indicator */}
+            {isBatchProcessing && (
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-gray-900 border border-gray-700 text-white px-4 py-2 rounded-sm shadow-2xl z-50 text-[10px] tracking-widest uppercase flex items-center gap-3">
+                    <span className="animate-spin text-sm">↻</span>
+                    {batchProgress}
+                </div>
+            )}
+
+            {/* Batch Review Modal */}
+            {scannedBatch && (
+                <BatchReviewModal 
+                    scannedBeans={scannedBatch}
+                    onSaveAll={handleSaveBatch}
+                    onCancel={() => setScannedBatch(null)}
                 />
             )}
         </div>
