@@ -78,7 +78,7 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
             
             {/* Main Content Area */}
             <div 
-                className="flex-1 md:hidden overflow-y-auto overflow-x-hidden pb-[80px] relative"
+                className="flex-1 md:hidden overflow-hidden relative pb-[70px]"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >

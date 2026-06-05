@@ -379,7 +379,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 {filteredBeans.map((bean) => (
                     <div
                         key={bean.id}
-                        className={`group cursor-pointer relative py-2.5 px-2 border-l transition-all duration-300 ${selectedId === bean.id
+                        className={`group cursor-pointer relative py-2.5 pl-2 pr-16 border-l transition-all duration-300 ${selectedId === bean.id
                             ? 'border-white bg-gray-900'
                             : 'border-transparent hover:border-gray-500 hover:bg-gray-900/30'
                             }`}
