@@ -68,29 +68,48 @@ Omit missing fields. Valid JSON only.`;
         }
     };
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Gemini API Error: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
+    let lastError = null;
+    const maxRetries = 2;
     
-    try {
-        let jsonString = data.candidates[0].content.parts[0].text;
-        // Sometimes Gemini still wraps JSON in markdown blocks despite response_mime_type
-        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-        const parsed = JSON.parse(jsonString) as ExtractedBeanInfo;
-        return parsed;
-    } catch (e) {
-        console.error("Failed to parse Gemini response", data);
-        throw new Error("Failed to parse the extracted data from the AI.");
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                if (res.status === 429 && attempt < maxRetries) {
+                    // Rate limited: Wait 15 seconds before retrying (exponential backoff)
+                    const waitTime = (attempt + 1) * 15000;
+                    console.warn(`[Gemini API] 429 Rate Limit hit. Retrying in ${waitTime/1000}s... (Attempt ${attempt + 1}/${maxRetries})`);
+                    await new Promise(r => setTimeout(r, waitTime));
+                    continue;
+                }
+                throw new Error(`Gemini API Error: ${res.status} - ${errorText}`);
+            }
+
+            const data = await res.json();
+            const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!text) {
+                throw new Error("No text found in response");
+            }
+
+            const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            const result = JSON.parse(cleanedText) as ExtractedBeanInfo;
+            return result;
+            
+        } catch (error) {
+            lastError = error;
+            // Only retry if it's explicitly a 429 (handled above), otherwise break and throw
+            if (error instanceof Error && !error.message.includes('429')) {
+                throw error;
+            }
+        }
     }
+    
+    throw lastError;
 }

@@ -87,9 +87,10 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             }
 
             // Rate limiting: Delay to prevent Gemini API "429 Quota Exceeded" (15 RPM limit = 1 req / 4s)
+            // Using 6.5 seconds to comfortably stay under 15 RPM even with network jitter
             if (i < files.length - 1) {
                 setBatchProgress(`Waiting to prevent API limits... (${i + 1}/${files.length})`);
-                await new Promise(r => setTimeout(r, 4500));
+                await new Promise(r => setTimeout(r, 6500));
             }
         }
 
