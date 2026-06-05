@@ -23,6 +23,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     const [isBatchProcessing, setIsBatchProcessing] = useState(false);
     const [batchProgress, setBatchProgress] = useState("");
     const [quickFilters, setQuickFilters] = useState<string[]>(['Light', 'Dark', 'Washed', 'Natural']);
+    const [sortBy, setSortBy] = useState<string>('added_desc');
 
     const handleBatchImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -304,11 +305,18 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
         return matchesSearch && matchesFilter;
     }).sort((a, b) => {
-        // Since IDs are generated with Date.now().toString(), sorting by ID descending gives us newest first.
-        const idA = Number(a.id);
-        const idB = Number(b.id);
-        if (!isNaN(idA) && !isNaN(idB)) {
-            return idB - idA;
+        if (sortBy === 'added_desc') {
+            const idA = Number(a.id);
+            const idB = Number(b.id);
+            if (!isNaN(idA) && !isNaN(idB)) return idB - idA;
+        } else if (sortBy === 'roast_desc') {
+            const dateA = a.roastDate ? new Date(a.roastDate).getTime() : 0;
+            const dateB = b.roastDate ? new Date(b.roastDate).getTime() : 0;
+            return dateB - dateA;
+        } else if (sortBy === 'name_asc') {
+            return a.name.localeCompare(b.name);
+        } else if (sortBy === 'roaster_asc') {
+            return a.roaster.localeCompare(b.roaster);
         }
         return 0;
     });
@@ -322,15 +330,27 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 <span className="text-gray-700">{filteredBeans.length} / {beans.length}</span>
             </h2>
 
-            {/* Search & Filter */}
+            {/* Search, Sort & Filter */}
             <div className="mb-4 space-y-2">
-                <input
-                    type="text"
-                    placeholder="Search Origin / Roaster..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-gray-900/50 border-none text-xs p-2 text-white placeholder-gray-600 focus:ring-1 focus:ring-gray-700 rounded-sm"
-                />
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        placeholder="Search Origin / Roaster..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1 bg-gray-900/50 border-none text-xs p-2 text-white placeholder-gray-600 focus:ring-1 focus:ring-gray-700 rounded-sm"
+                    />
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        className="bg-gray-900/50 border-none text-xs p-2 text-gray-400 focus:ring-1 focus:ring-gray-700 rounded-sm outline-none cursor-pointer"
+                    >
+                        <option value="added_desc">Newest Added</option>
+                        <option value="roast_desc">Freshest Roast</option>
+                        <option value="name_asc">Name (A-Z)</option>
+                        <option value="roaster_asc">Roaster (A-Z)</option>
+                    </select>
+                </div>
                 <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                     {quickFilters.map(filter => (
                         <button
