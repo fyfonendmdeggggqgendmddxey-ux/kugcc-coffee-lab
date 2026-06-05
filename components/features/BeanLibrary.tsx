@@ -292,6 +292,14 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             : true;
 
         return matchesSearch && matchesFilter;
+    }).sort((a, b) => {
+        // Since IDs are generated with Date.now().toString(), sorting by ID descending gives us newest first.
+        const idA = Number(a.id);
+        const idB = Number(b.id);
+        if (!isNaN(idA) && !isNaN(idB)) {
+            return idB - idA;
+        }
+        return 0;
     });
 
     if (!isLoaded) return <div className="p-6 text-xs text-gray-600">Loading Library...</div>;
