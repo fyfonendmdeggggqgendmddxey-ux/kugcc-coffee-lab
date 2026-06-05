@@ -45,6 +45,17 @@ export default function Timer({
   const { elapsedTime, reset } = usePrecisionTimer(isRunning);
   const elapsedSeconds = elapsedTime / 1000;
 
+  // Global state class for swipe prevention
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isRunning) document.body.classList.add('timer-running');
+      else document.body.classList.remove('timer-running');
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.classList.remove('timer-running');
+    };
+  }, [isRunning]);
+
   // Auto-Advance Logic
   useEffect(() => {
     if (!isRunning || isFinished) return;

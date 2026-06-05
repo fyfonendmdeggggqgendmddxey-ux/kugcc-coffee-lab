@@ -19,7 +19,11 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
         // Prevent swipe on inputs, textareas, ranges, or explicitly horizontal-scrollable elements
         const target = e.target as HTMLElement;
         const ignoreSwipe = target.closest('.overflow-x-auto, .no-scrollbar, input, textarea, select, button');
-        if (ignoreSwipe) return;
+        
+        // Block swipe entirely if the timer is actively running
+        const isTimerRunning = document.body.classList.contains('timer-running');
+        
+        if (ignoreSwipe || isTimerRunning) return;
 
         setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
     };
