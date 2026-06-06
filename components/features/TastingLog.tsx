@@ -388,17 +388,16 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                 <span className="text-gray-700">{displayHistory.length} ENTRIES</span>
             </h2>
 
-            {!bean ? (
-                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-6">
-                    <div className="mb-4">
+            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-6 flex flex-col">
+                {!bean ? (
+                    <div className="mb-4 shrink-0">
                         <h3 className="text-[10px] uppercase tracking-widest text-gray-500 mb-4">All Tasting Logs</h3>
                     </div>
-                </div>
-            ) : (
-                <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
-                    {/* Target Bean Context Banner */}
-                    <div className="p-4 border border-gray-800 bg-gray-950/60 flex items-center justify-between relative overflow-hidden group">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gray-700 group-hover:bg-white transition-colors"></div>
+                ) : (
+                    <div className="space-y-6 shrink-0 mb-6">
+                        {/* Target Bean Context Banner */}
+                        <div className="p-4 border border-gray-800 bg-gray-950/60 flex items-center justify-between relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-gray-700 group-hover:bg-white transition-colors"></div>
                         <div>
                             <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Target Bean</p>
                             <p className="text-sm text-white font-bold tracking-wider">{bean.name}</p>
@@ -618,7 +617,7 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                     </div>
 
                     {/* History List */}
-                    <div className="space-y-4 pb-6">
+                    <div className="space-y-4 pb-2">
                         <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-4">
                             History: {bean.name}
                         </h3>
@@ -628,7 +627,7 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
             
             {/* Render Display History (Global or Filtered) */}
             {(bean || globalHistory.length > 0) && (
-                <div className={`space-y-4 ${bean ? '' : '-mt-14'}`}>
+                <div className="space-y-4 shrink-0">
                     {displayHistory.length === 0 && bean && <p className="text-xs text-gray-700 italic">No logs recorded for this bean.</p>}
                     {displayHistory.length === 0 && !bean && <p className="text-xs text-gray-700 italic">No tasting logs across all beans.</p>}
                     {displayHistory.map(log => {
@@ -814,10 +813,11 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                                     </button>
                                 </div>
                             </div>
-                        )})}
+                        );
+                    })}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
 
             {/* Image Zoom Lightbox Modal */}
             {zoomImage && (
