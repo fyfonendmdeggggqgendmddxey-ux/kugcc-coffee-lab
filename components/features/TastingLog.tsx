@@ -3,6 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Bean, Recipe } from '@/utils/types';
 import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
+import RadarChart from './RadarChart';
+import ComparisonModal from './ComparisonModal';
 
 type TastingLog = {
     id: string;
@@ -66,128 +68,6 @@ const compressAndEncodeImage = (file: File): Promise<string> => {
     });
 };
 
-const RadarChart = ({ 
-    acidity = 3, 
-    sweetness = 3, 
-    body = 3, 
-    bitterness = 3, 
-    aroma = 3,
-    size = 120
-}: {
-    acidity?: number;
-    sweetness?: number;
-    body?: number;
-    bitterness?: number;
-    aroma?: number;
-    size?: number;
-}) => {
-    const center = 50;
-    const maxRadius = 40;
-    
-    // Parameters order matching coordinates
-    const props = [acidity, sweetness, body, bitterness, aroma];
-    const labels = ["酸味", "甘味", "コク", "苦味", "香り"];
-    
-    // Coordinates generator (Starting from -90 deg for acidity)
-    const getCoordinates = (index: number, value: number) => {
-        const angle = (Math.PI * 2 / 5) * index - Math.PI / 2;
-        const radius = (value / 5) * maxRadius;
-        const x = center + radius * Math.cos(angle);
-        const y = center + radius * Math.sin(angle);
-        return { x, y };
-    };
-
-    // Concentric pentagons guidelines
-    const gridLevels = [1, 2, 3, 4, 5];
-    const gridPolygons = gridLevels.map(level => {
-        const points = [];
-        for (let i = 0; i < 5; i++) {
-            const { x, y } = getCoordinates(i, level);
-            points.push(`${x},${y}`);
-        }
-        return points.join(" ");
-    });
-
-    // Outer limit endpoints for axis lines
-    const dataPoints = props.map((val, idx) => {
-        const { x, y } = getCoordinates(idx, val);
-        return `${x},${y}`;
-    }).join(" ");
-
-    // Label coordinates
-    const labelDistance = 47; 
-    const labelPoints = labels.map((label, idx) => {
-        const angle = (Math.PI * 2 / 5) * idx - Math.PI / 2;
-        const x = center + labelDistance * Math.cos(angle);
-        const y = center + labelDistance * Math.sin(angle);
-        return { label, x, y };
-    });
-
-    return (
-        <svg viewBox="0 0 100 100" width={size} height={size} className="overflow-visible select-none text-white dark:text-white">
-            <style>
-                {`
-                    @media (prefers-color-scheme: light) {
-                        .radar-svg { color: #000; }
-                    }
-                    @media (prefers-color-scheme: dark) {
-                        .radar-svg { color: #fff; }
-                    }
-                `}
-            </style>
-            <g className="radar-svg" style={{ color: 'inherit' }}>
-                {gridPolygons.map((points, idx) => (
-                    <polygon
-                        key={idx}
-                        points={points}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeOpacity="0.2"
-                        strokeWidth="0.5"
-                    />
-                ))}
-                {[0, 1, 2, 3, 4].map(i => {
-                    const outer = getCoordinates(i, 5);
-                    return (
-                        <line
-                            key={i}
-                            x1={center}
-                            y1={center}
-                            x2={outer.x}
-                            y2={outer.y}
-                            stroke="currentColor"
-                            strokeOpacity="0.2"
-                            strokeWidth="0.5"
-                        />
-                    );
-                })}
-                <polygon
-                    points={dataPoints}
-                    fill="currentColor"
-                    fillOpacity="0.2"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="transition-all duration-300"
-                />
-                {labelPoints.map((lp, idx) => (
-                    <text
-                        key={idx}
-                        x={lp.x}
-                        y={lp.y}
-                        fill="currentColor"
-                        fillOpacity="0.6"
-                        fontSize="5"
-                        fontFamily="monospace"
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                    >
-                        {lp.label}
-                    </text>
-                ))}
-            </g>
-        </svg>
-    );
-};
 
 export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe }: TastingLogProps) {
     const [rating, setRating] = useState(3);
@@ -211,6 +91,14 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
     const [image, setImage] = useState<string>('');
     const [imagePreview, setImagePreview] = useState<string>('');
     const [zoomImage, setZoomImage] = useState<string | null>(null);
+
+    // Compare Mode states
+    const [isCompareMode, setIsCompareMode] = useState(false);
+    const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
+    const [showCompareModal, setShowCompareModal] = useState(false);
+
+    // Sort state
+    const [logSortBy, setLogSortBy] = useState<string>('date_desc');
 
     // Load logs on mount
     const [history, setHistory] = useState<TastingLog[]>([]);
@@ -330,7 +218,11 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
 
         const bestLog = [...highRatedLogs].sort((a, b) => {
             if (b.rating !== a.rating) return b.rating - a.rating;
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
+            const timeA = new Date(a.date || 0).getTime();
+            const timeB = new Date(b.date || 0).getTime();
+            const dateA = isNaN(timeA) ? 0 : timeA;
+            const dateB = isNaN(timeB) ? 0 : timeB;
+            return dateB - dateA;
         })[0];
 
         return {
@@ -342,11 +234,29 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
         };
     }, [filteredHistory, bean]);
 
-    const globalHistory = useMemo(() => {
-        return [...history].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    }, [history]);
+    const sortedHistory = useMemo(() => {
+        const baseHistory = bean ? filteredHistory : history;
+        return [...baseHistory].sort((a, b) => {
+            const timeA = new Date(a.date || 0).getTime();
+            const timeB = new Date(b.date || 0).getTime();
+            const dateA = isNaN(timeA) ? 0 : timeA;
+            const dateB = isNaN(timeB) ? 0 : timeB;
 
-    const displayHistory = bean ? filteredHistory : globalHistory;
+            if (logSortBy === 'date_desc') {
+                return dateA === dateB ? String(b.id || '').localeCompare(String(a.id || '')) : dateB - dateA;
+            } else if (logSortBy === 'date_asc') {
+                return dateA === dateB ? String(a.id || '').localeCompare(String(b.id || '')) : dateA - dateB;
+            } else if (logSortBy === 'rating_desc') {
+                const ratA = a.rating || 0;
+                const ratB = b.rating || 0;
+                if (ratA === ratB) return dateB - dateA;
+                return ratB - ratA;
+            }
+            return 0;
+        });
+    }, [history, bean, filteredHistory, logSortBy]);
+
+    const displayHistory = sortedHistory;
 
     return (
         <div className="h-full flex flex-col p-6 font-mono">
@@ -383,12 +293,33 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                 </div>
             )}
 
-            <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-gray-500 border-b border-gray-900 pb-2 flex justify-between">
+            <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-4 text-gray-500 border-b border-gray-900 pb-2 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
                 <span>Tasting Log {bean ? '' : 'History'}</span>
-                <span className="text-gray-700">{displayHistory.length} ENTRIES</span>
+                <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                    <select
+                        value={logSortBy}
+                        onChange={(e) => setLogSortBy(e.target.value)}
+                        className="bg-transparent border border-gray-800 text-[9px] uppercase tracking-widest p-1 text-gray-500 focus:ring-1 focus:ring-gray-700 rounded-sm outline-none cursor-pointer hover:text-white hover:border-gray-500 transition-colors"
+                    >
+                        <option value="date_desc">Newest First</option>
+                        <option value="date_asc">Oldest First</option>
+                        <option value="rating_desc">Highest Rated</option>
+                    </select>
+                    <button 
+                        onClick={() => {
+                            setIsCompareMode(!isCompareMode);
+                            setSelectedForCompare([]);
+                            setExpandedLogId(null);
+                        }}
+                        className={`text-[9px] px-2 py-1 rounded-sm transition-all ${isCompareMode ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50' : 'text-gray-500 border border-gray-800 hover:text-white'}`}
+                    >
+                        {isCompareMode ? 'CANCEL COMPARE' : 'COMPARE MODE'}
+                    </button>
+                    <span className="text-gray-700">{displayHistory.length} ENTRIES</span>
+                </div>
             </h2>
 
-            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-6 flex flex-col">
+            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-32 flex flex-col relative transition-all">
                 {!bean ? (
                     <div className="mb-4 shrink-0">
                         <h3 className="text-[10px] uppercase tracking-widest text-gray-500 mb-4">All Tasting Logs</h3>
@@ -624,9 +555,8 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                     </div>
                 </div>
             )}
-            
             {/* Render Display History (Global or Filtered) */}
-            {(bean || globalHistory.length > 0) && (
+            {(bean || history.length > 0) && (
                 <div className="space-y-4 shrink-0">
                     {displayHistory.length === 0 && bean && <p className="text-xs text-gray-700 italic">No logs recorded for this bean.</p>}
                     {displayHistory.length === 0 && !bean && <p className="text-xs text-gray-700 italic">No tasting logs across all beans.</p>}
@@ -638,14 +568,37 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                             <div 
                                 key={log.id} 
                                 id={`log-card-${log.id}`} 
-                                onClick={() => setExpandedLogId(isExpanded ? null : log.id)}
-                                className={`border-l pl-4 py-2.5 transition-all group relative bg-black cursor-pointer ${
-                                    isExpanded ? 'border-white pb-6 my-4' : 'border-gray-800 hover:border-gray-500 flex justify-between items-center gap-4'
+                                onClick={() => {
+                                    if (isCompareMode) {
+                                        if (selectedForCompare.includes(log.id)) {
+                                            setSelectedForCompare(prev => prev.filter(id => id !== log.id));
+                                        } else if (selectedForCompare.length < 2) {
+                                            setSelectedForCompare(prev => [...prev, log.id]);
+                                        }
+                                    } else {
+                                        setExpandedLogId(isExpanded ? null : log.id);
+                                    }
+                                }}
+                                className={`border-l pl-4 py-2.5 transition-all group relative cursor-pointer ${
+                                    isExpanded ? 'border-white pb-6 my-4 bg-black' : 'hover:border-gray-500 flex justify-between items-center gap-4 bg-black'
+                                } ${
+                                    isCompareMode 
+                                        ? selectedForCompare.includes(log.id)
+                                            ? 'border-orange-500 border-l-[3px] bg-gray-950'
+                                            : 'border-gray-800'
+                                        : 'border-gray-800'
                                 }`}
                             >
                                 {/* ---- COMPACT VIEW ---- */}
                                 {!isExpanded && (
                                     <>
+                                        {isCompareMode && (
+                                            <div className={`w-4 h-4 shrink-0 rounded-sm border flex items-center justify-center mr-2 transition-colors ${
+                                                selectedForCompare.includes(log.id) ? 'bg-orange-500 border-orange-500 text-white' : 'border-gray-600'
+                                            }`}>
+                                                {selectedForCompare.includes(log.id) && <span className="text-[10px]">✓</span>}
+                                            </div>
+                                        )}
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-start mb-1">
                                                 <div className="flex flex-col">
@@ -819,6 +772,41 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                 )}
             </div>
 
+            {/* Brutalist Bottom Action Bar */}
+            {isCompareMode && (
+                <div className="absolute bottom-0 left-0 w-full bg-black border-t border-gray-800 z-40">
+                    <div className="w-full p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="text-[10px] text-gray-400 font-bold tracking-widest uppercase flex items-center gap-2">
+                            {selectedForCompare.length === 0 && <span>Select 2 logs</span>}
+                            {selectedForCompare.length === 1 && <span className="text-orange-400">Select 1 more</span>}
+                            {selectedForCompare.length === 2 && <span className="text-orange-500">Ready!</span>}
+                        </div>
+                        <div className="flex gap-4 w-full sm:w-auto">
+                            <button 
+                                onClick={() => {
+                                    setIsCompareMode(false);
+                                    setSelectedForCompare([]);
+                                }}
+                                className="flex-1 sm:flex-none text-[10px] text-gray-500 hover:text-white border border-gray-800 hover:border-gray-500 px-6 py-3 uppercase tracking-widest bg-black transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={() => setShowCompareModal(true)}
+                                disabled={selectedForCompare.length !== 2}
+                                className={`flex-1 sm:flex-none text-[10px] px-8 py-3 uppercase tracking-widest font-bold transition-colors ${
+                                    selectedForCompare.length === 2 
+                                        ? 'bg-orange-600 text-white border border-orange-500 hover:bg-orange-500' 
+                                        : 'bg-gray-900 text-gray-600 border border-gray-800 cursor-not-allowed'
+                                }`}
+                            >
+                                Compare
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Image Zoom Lightbox Modal */}
             {zoomImage && (
                 <div 
@@ -839,6 +827,14 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                         </button>
                     </div>
                 </div>
+            )}
+            {/* Comparison Modal */}
+            {showCompareModal && selectedForCompare.length === 2 && (
+                <ComparisonModal 
+                    log1={history.find(h => h.id === selectedForCompare[0])}
+                    log2={history.find(h => h.id === selectedForCompare[1])}
+                    onClose={() => setShowCompareModal(false)}
+                />
             )}
         </div>
     );

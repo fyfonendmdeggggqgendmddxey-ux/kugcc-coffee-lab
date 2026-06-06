@@ -23,6 +23,7 @@ export type Recipe = {
 export type Bean = {
     id: string;
     name: string;
+    englishName?: string; // e.g. "Ethiopia Yirgacheffe G1"
     roaster: string;
     origin?: string;
     variety?: string; // e.g. Geisha, Bourbon

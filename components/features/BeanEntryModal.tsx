@@ -33,6 +33,7 @@ export default function BeanEntryModal({
     
     const [formData, setFormData] = useState({
         name: initialBean?.name || '',
+        englishName: initialBean?.englishName || '',
         roaster: initialBean?.roaster || '',
         origin: initialBean?.origin || '',
         variety: initialBean?.variety || '',
@@ -77,6 +78,7 @@ export default function BeanEntryModal({
         const newBean: Bean = {
             id: initialBean?.id || Date.now().toString(),
             name: finalName,
+            englishName: formData.englishName,
             roaster: finalRoaster,
             origin: formData.origin,
             variety: formData.variety,
@@ -235,6 +237,18 @@ export default function BeanEntryModal({
                             onChange={handleChange}
                             placeholder="e.g. Ethiopia Yirgacheffe"
                             className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                        />
+                    </div>
+
+                    <div className="flex flex-col mb-6">
+                        <label className="text-[10px] text-gray-500 uppercase tracking-widest mb-1 ml-2">English Name (Optional)</label>
+                        <input
+                            type="text"
+                            name="englishName"
+                            value={formData.englishName}
+                            onChange={handleChange}
+                            placeholder="e.g. Ethiopia Yirgacheffe G1"
+                            className="w-full bg-black border-b-2 border-gray-800 p-2 text-sm text-gray-300 font-mono focus:outline-none focus:border-white transition-colors"
                         />
                     </div>
 
@@ -413,10 +427,11 @@ export default function BeanEntryModal({
                                     value={formData.idealAgingDays}
                                     onChange={handleChange}
                                     placeholder="e.g. 14"
-                                    className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                                    className="w-full bg-black border-b-2 border-gray-800 p-2 text-xl font-bold text-white focus:outline-none focus:border-white transition-colors"
                                 />
                             </div>
-                            <div className="flex flex-col gap-2">
+
+                            <div className="flex flex-col relative">
                                 <label className="text-[10px] uppercase text-gray-500 tracking-widest" title="Shop recommended days until peak">Shop Rec (Days)</label>
                                 <input
                                     type="number"

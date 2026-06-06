@@ -313,18 +313,31 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
         return matchesSearch && matchesFilter;
     }).sort((a, b) => {
-        if (sortBy === 'added_desc') {
+        if (sortBy === 'added_desc' || sortBy === 'added_asc') {
             const idA = Number(a.id);
             const idB = Number(b.id);
-            if (!isNaN(idA) && !isNaN(idB)) return idB - idA;
+            const numA = isNaN(idA) ? 0 : idA;
+            const numB = isNaN(idB) ? 0 : idB;
+            
+            if (numA === numB) {
+                const strCmp = String(b.id || '').localeCompare(String(a.id || ''));
+                return sortBy === 'added_desc' ? strCmp : -strCmp;
+            }
+            return sortBy === 'added_desc' ? numB - numA : numA - numB;
         } else if (sortBy === 'roast_desc') {
-            const dateA = a.roastDate ? new Date(a.roastDate).getTime() : 0;
-            const dateB = b.roastDate ? new Date(b.roastDate).getTime() : 0;
+            const timeA = a.roastDate ? new Date(a.roastDate).getTime() : 0;
+            const timeB = b.roastDate ? new Date(b.roastDate).getTime() : 0;
+            const dateA = isNaN(timeA) ? 0 : timeA;
+            const dateB = isNaN(timeB) ? 0 : timeB;
             return dateB - dateA;
         } else if (sortBy === 'name_asc') {
-            return a.name.localeCompare(b.name);
+            const nameA = a.name || '';
+            const nameB = b.name || '';
+            return nameA.localeCompare(nameB);
         } else if (sortBy === 'roaster_asc') {
-            return a.roaster.localeCompare(b.roaster);
+            const roasterA = a.roaster || '';
+            const roasterB = b.roaster || '';
+            return roasterA.localeCompare(roasterB);
         }
         return 0;
     });
@@ -354,6 +367,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                         className="bg-gray-900/50 border-none text-xs p-2 text-gray-400 focus:ring-1 focus:ring-gray-700 rounded-sm outline-none cursor-pointer"
                     >
                         <option value="added_desc">Newest Added</option>
+                        <option value="added_asc">Oldest Added</option>
                         <option value="roast_desc">Freshest Roast</option>
                         <option value="name_asc">Name (A-Z)</option>
                         <option value="roaster_asc">Roaster (A-Z)</option>
