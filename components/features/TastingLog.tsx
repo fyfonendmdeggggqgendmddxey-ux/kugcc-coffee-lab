@@ -22,6 +22,7 @@ type TastingLog = {
 
 interface TastingLogProps {
     bean?: Bean;
+    allBeans?: Bean[];
     activeRecipe?: Recipe;
     onLoadRecipe?: (recipe: Recipe) => void;
 }
@@ -188,7 +189,7 @@ const RadarChart = ({
     );
 };
 
-export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: TastingLogProps) {
+export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe }: TastingLogProps) {
     const [rating, setRating] = useState(3);
     const [notes, setNotes] = useState('');
     const [saved, setSaved] = useState(false);
@@ -341,6 +342,12 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
         };
     }, [filteredHistory, bean]);
 
+    const globalHistory = useMemo(() => {
+        return [...history].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }, [history]);
+
+    const displayHistory = bean ? filteredHistory : globalHistory;
+
     return (
         <div className="h-full flex flex-col p-6 font-mono">
             {sweetSpotData && (
@@ -377,15 +384,15 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
             )}
 
             <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-gray-500 border-b border-gray-900 pb-2 flex justify-between">
-                <span>Tasting Log</span>
-                <span className="text-gray-700">{filteredHistory.length} ENTRIES</span>
+                <span>Tasting Log {bean ? '' : 'History'}</span>
+                <span className="text-gray-700">{displayHistory.length} ENTRIES</span>
             </h2>
 
             {!bean ? (
-                <div className="text-xs text-gray-600 uppercase tracking-widest text-center mt-20">
-                    AWAITING BEAN SELECTION
-                    <br />
-                    <span className="text-[10px] opacity-30">Select a bean to view or add logs</span>
+                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-6">
+                    <div className="mb-4">
+                        <h3 className="text-[10px] uppercase tracking-widest text-gray-500 mb-4">All Tasting Logs</h3>
+                    </div>
                 </div>
             ) : (
                 <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
@@ -611,15 +618,24 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                     </div>
 
                     {/* History List */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 pb-6">
                         <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-4">
                             History: {bean.name}
                         </h3>
-                        {filteredHistory.length === 0 && <p className="text-xs text-gray-700 italic">No logs recorded.</p>}
-                        {filteredHistory.map(log => {
-                            const isExpanded = expandedLogId === log.id;
-                            
-                            return (
+                    </div>
+                </div>
+            )}
+            
+            {/* Render Display History (Global or Filtered) */}
+            {(bean || globalHistory.length > 0) && (
+                <div className={`space-y-4 ${bean ? '' : '-mt-14'}`}>
+                    {displayHistory.length === 0 && bean && <p className="text-xs text-gray-700 italic">No logs recorded for this bean.</p>}
+                    {displayHistory.length === 0 && !bean && <p className="text-xs text-gray-700 italic">No tasting logs across all beans.</p>}
+                    {displayHistory.map(log => {
+                        const isExpanded = expandedLogId === log.id;
+                        const logBean = allBeans?.find(b => b.id === log.beanId);
+                        
+                        return (
                             <div 
                                 key={log.id} 
                                 id={`log-card-${log.id}`} 
@@ -633,8 +649,13 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                     <>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-start mb-1">
-                                                <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
-                                                <div className="flex gap-1 pr-6">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] text-gray-500">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                                    {!bean && logBean && (
+                                                        <span className="text-xs text-white font-bold tracking-widest mt-0.5 truncate max-w-[200px]">{logBean.name}</span>
+                                                    )}
+                                                </div>
+                                                <div className="flex gap-1 pr-6 mt-1">
                                                     {[...Array(5)].map((_, i) => {
                                                         const isFull = log.rating >= i + 1;
                                                         const isHalf = log.rating > i && log.rating < i + 1;
@@ -694,7 +715,12 @@ export default function TastingLog({ bean, activeRecipe, onLoadRecipe }: Tasting
                                 {isExpanded && (
                                     <div className="flex flex-col gap-6 animate-fade-in pr-4">
                                         <div className="flex justify-between items-start">
-                                            <span className="text-sm text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm text-white font-bold tracking-widest">{log.date ? log.date.split('T')[0] : 'N/A'}</span>
+                                                {!bean && logBean && (
+                                                    <span className="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">{logBean.name}</span>
+                                                )}
+                                            </div>
                                             <div className="flex gap-2 items-center">
                                                 <span className="text-[10px] text-gray-500 font-mono mr-1">{log.rating.toFixed(1)} / 5.0</span>
                                                 {[...Array(5)].map((_, i) => {

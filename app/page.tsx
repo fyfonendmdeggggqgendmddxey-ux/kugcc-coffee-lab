@@ -205,6 +205,7 @@ export default function Home() {
             right={
                 <RightPanel 
                     bean={selectedBean} 
+                    allBeans={beans}
                     recipe={activeRecipe} 
                     globalRecipes={globalRecipes}
                     onLoadRecipe={handleLoadRecipe} 

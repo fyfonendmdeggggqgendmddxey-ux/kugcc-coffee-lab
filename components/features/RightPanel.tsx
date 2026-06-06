@@ -10,6 +10,7 @@ import { Bean, Recipe } from '@/utils/types';
 
 interface RightPanelProps {
     bean?: Bean;
+    allBeans?: Bean[];
     recipe?: Recipe;
     globalRecipes?: Recipe[];
     onLoadRecipe?: (recipe: Recipe) => void;
@@ -22,7 +23,7 @@ interface RightPanelProps {
 }
 
 export default function RightPanel({ 
-    bean, recipe, globalRecipes = [], 
+    bean, allBeans, recipe, globalRecipes = [], 
     onLoadRecipe, onToggleStar, onDeleteRecipe,
     onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe,
     onSwipeToTimer
@@ -199,7 +200,7 @@ export default function RightPanel({
             {/* Content Area */}
             <div className="flex-1 min-h-0 relative">
                 {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} />}
-                {activeTab === 'log' && <TastingLog bean={bean} activeRecipe={recipe} onLoadRecipe={onLoadRecipe} />}
+                {activeTab === 'log' && <TastingLog bean={bean} allBeans={allBeans} activeRecipe={recipe} onLoadRecipe={onLoadRecipe} />}
                 {activeTab === 'settings' && <SettingsPanel />}
                 {activeTab === 'help' && <HelpPanel />}
                 {activeTab === 'recipes' && (
