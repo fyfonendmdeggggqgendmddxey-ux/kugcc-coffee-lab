@@ -235,29 +235,8 @@ export default function Timer({
                               </option>
                           ))}
                       </optgroup>
-                  )}
                   </select>
               </div>
-
-          {/* Test Mode Toggle */}
-          <div className="flex items-center justify-end gap-2 mt-2 pointer-events-auto bg-black/60 px-2 py-1.5 rounded border border-gray-800">
-            <span className={`text-[9px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Std</span>
-            <button
-                onClick={() => {
-                    setIsTestMode(prev => !prev);
-                    setIsRunning(false);
-                    setIsFinished(false);
-                    setCurrentStepIndex(0);
-                    setManualLaps([]);
-                    reset();
-                }}
-                className={`relative w-8 h-4 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
-            >
-                <div className={`absolute top-[1px] w-2.5 h-2.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[17px]' : 'left-[1px]'}`} />
-            </button>
-            <span className={`text-[9px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test</span>
-          </div>
-
         </div>
       </div>
 
@@ -392,7 +371,7 @@ export default function Timer({
       )}
 
       {/* Bottom Panel */}
-      <div className="flex gap-12 text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6">
+      <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
         <div className="flex flex-col items-center">
           <span className="text-[10px] text-gray-600 mb-1">Ratio</span>
           <span className="font-mono text-white">1:{recipe.ratio}</span>
@@ -404,6 +383,27 @@ export default function Timer({
         <div className="flex flex-col items-center">
           <span className="text-[10px] text-gray-600 mb-1">Temp</span>
           <span className="font-mono text-white">{recipe.temperature}°C</span>
+        </div>
+        
+        {/* Test Mode Toggle in Bottom Panel */}
+        <div className="flex flex-col items-center">
+          <span className={`text-[9px] mb-1.5 transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>
+            {isTestMode ? 'TEST DRIP' : 'STANDARD'}
+          </span>
+          <button
+            onClick={(e) => {
+                e.stopPropagation();
+                setIsTestMode(prev => !prev);
+                setIsRunning(false);
+                setIsFinished(false);
+                setCurrentStepIndex(0);
+                setManualLaps([]);
+                reset();
+            }}
+            className={`relative w-8 h-4 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
+          >
+            <div className={`absolute top-[1px] w-2.5 h-2.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[17px]' : 'left-[1px]'}`} />
+          </button>
         </div>
       </div>
 
