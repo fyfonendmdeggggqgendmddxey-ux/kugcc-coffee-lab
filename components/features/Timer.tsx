@@ -237,7 +237,29 @@ export default function Timer({
                       </optgroup>
                   )}
                   </select>
-        {/* Main Container */}
+              </div>
+
+          {/* Test Mode Toggle */}
+          <div className="flex items-center justify-end gap-2 mt-2 pointer-events-auto bg-black/60 px-2 py-1.5 rounded border border-gray-800">
+            <span className={`text-[9px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Std</span>
+            <button
+                onClick={() => {
+                    setIsTestMode(prev => !prev);
+                    setIsRunning(false);
+                    setIsFinished(false);
+                    setCurrentStepIndex(0);
+                    setManualLaps([]);
+                    reset();
+                }}
+                className={`relative w-8 h-4 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
+            >
+                <div className={`absolute top-[1px] w-2.5 h-2.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[17px]' : 'left-[1px]'}`} />
+            </button>
+            <span className={`text-[9px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test</span>
+          </div>
+
+        </div>
+      </div>
 
       {/* Circular UI (Clickable Button) */}
       <button
@@ -258,7 +280,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-4 md:mb-6 scale-[0.85] sm:scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-6 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -442,25 +464,6 @@ export default function Timer({
         >
           {isTestMode ? (isRunning ? 'Lap' : 'Start') : (isRunning ? 'Pause' : 'Start')}
         </button>
-      </div>
-
-      {/* Test Mode Toggle (Moved to bottom to prevent top header interference) */}
-      <div className="flex items-center gap-3 z-20 pointer-events-auto mt-6">
-        <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
-        <button
-            onClick={() => {
-                setIsTestMode(prev => !prev);
-                setIsRunning(false);
-                setIsFinished(false);
-                setCurrentStepIndex(0);
-                setManualLaps([]);
-                reset();
-            }}
-            className={`relative w-10 h-5 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
-        >
-            <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[22px]' : 'left-0.5'}`} />
-        </button>
-        <span className={`text-[10px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test Drip</span>
       </div>
 
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
