@@ -37,6 +37,7 @@ export type Bean = {
     idealAgingDays?: number; // Optional: Theoretical ideal aging days
     shopRecommendedDays?: number; // Optional: Shop's recommended aging days
     storageLocation?: 'Room' | 'HighTemp' | 'Fridge' | 'Freezer'; // Optional: Storage location
+    purchaseDate?: string; // Optional: ISO Date string for when it was added to storage
     flavorTags?: string[]; // Optional: Flavor profile tags
 };
 

@@ -253,23 +253,52 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             const roastDateOnly = new Date(roast.getFullYear(), roast.getMonth(), roast.getDate());
             const now = new Date();
             const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            const diffTime = todayDateOnly.getTime() - roastDateOnly.getTime();
-            const physicalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            if (isNaN(physicalDays)) return null;
 
-            // Compute effective aging days based on storage and roast level
-            let multiplier = 1.0;
-            if (bean.roastLevel === 'Light') multiplier *= 0.8;
-            else if (bean.roastLevel === 'Dark') multiplier *= 1.2;
+            // Get purchase date or default to roast date
+            let purchaseDateOnly = roastDateOnly;
+            if (bean.purchaseDate) {
+                const purchase = new Date(bean.purchaseDate);
+                if (!isNaN(purchase.getTime())) {
+                    purchaseDateOnly = new Date(purchase.getFullYear(), purchase.getMonth(), purchase.getDate());
+                }
+            }
 
-            if (bean.storageLocation === 'HighTemp') multiplier *= 1.5;
-            else if (bean.storageLocation === 'Fridge') multiplier *= 0.2;
-            else if (bean.storageLocation === 'Freezer') multiplier *= 0.05;
+            // Ensure dates are logical
+            if (purchaseDateOnly.getTime() < roastDateOnly.getTime()) {
+                purchaseDateOnly = roastDateOnly;
+            }
+            if (purchaseDateOnly.getTime() > todayDateOnly.getTime()) {
+                purchaseDateOnly = todayDateOnly;
+            }
 
-            const effectiveDays = physicalDays * multiplier;
-            const isModified = multiplier !== 1.0;
-            const displayDays = isModified ? effectiveDays.toFixed(1) : physicalDays.toString();
+            // Phase 1: Roast to Purchase (Shop Aging) - Room temp
+            const phase1Time = purchaseDateOnly.getTime() - roastDateOnly.getTime();
+            const phase1Days = Math.floor(phase1Time / (1000 * 60 * 60 * 24));
+
+            // Phase 2: Purchase to Today (Home Aging) - Storage temp
+            const phase2Time = todayDateOnly.getTime() - purchaseDateOnly.getTime();
+            const phase2Days = Math.floor(phase2Time / (1000 * 60 * 60 * 24));
+
+            const totalPhysicalDays = phase1Days + phase2Days;
+            if (isNaN(totalPhysicalDays)) return null;
+
+            // Roast level multiplier applies to BOTH phases
+            let roastMultiplier = 1.0;
+            if (bean.roastLevel === 'Light') roastMultiplier = 0.8;
+            else if (bean.roastLevel === 'Dark') roastMultiplier = 1.2;
+
+            // Storage multiplier applies ONLY to Phase 2
+            let storageMultiplier = 1.0;
+            if (bean.storageLocation === 'HighTemp') storageMultiplier = 1.5;
+            else if (bean.storageLocation === 'Fridge') storageMultiplier = 0.2;
+            else if (bean.storageLocation === 'Freezer') storageMultiplier = 0.05;
+
+            const phase1Effective = phase1Days * roastMultiplier;
+            const phase2Effective = phase2Days * roastMultiplier * storageMultiplier;
+            const effectiveDays = phase1Effective + phase2Effective;
+
+            const isModified = roastMultiplier !== 1.0 || (storageMultiplier !== 1.0 && phase2Days > 0);
+            const displayDays = isModified ? effectiveDays.toFixed(1) : totalPhysicalDays.toString();
 
             const diffDays = effectiveDays;
 
@@ -278,7 +307,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             const goodEnd = peakEnd + 16;
 
             const tooltipTitle = isModified 
-                ? `Physical: ${physicalDays}d, Multiplier: x${multiplier.toFixed(2)}`
+                ? `Shop: ${phase1Days}d, Home: ${phase2Days}d (Storage x${storageMultiplier})`
                 : '';
 
             if (diffDays < 0) {

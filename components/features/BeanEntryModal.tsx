@@ -40,6 +40,7 @@ export default function BeanEntryModal({
         roastLevel: initialBean?.roastLevel || 'Light',
         process: initialBean?.process || 'Washed',
         roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : '',
+        purchaseDate: (initialBean && initialBean.purchaseDate) ? initialBean.purchaseDate.split('T')[0] : '',
         idealAgingDays: initialBean?.idealAgingDays?.toString() || '',
         shopRecommendedDays: initialBean?.shopRecommendedDays?.toString() || '',
         storageLocation: initialBean?.storageLocation || '',
@@ -75,6 +76,11 @@ export default function BeanEntryModal({
             finalRoaster = 'Unknown Roaster';
         }
 
+        let finalPurchaseDate = formData.purchaseDate;
+        if (!finalPurchaseDate) {
+            finalPurchaseDate = new Date().toISOString().split('T')[0];
+        }
+
         const newBean: Bean = {
             id: initialBean?.id || Date.now().toString(),
             name: finalName,
@@ -85,6 +91,7 @@ export default function BeanEntryModal({
             roastLevel: formData.roastLevel,
             process: formData.process,
             roastDate: formData.roastDate ? new Date(formData.roastDate).toISOString() : '',
+            purchaseDate: new Date(finalPurchaseDate).toISOString(),
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
@@ -314,7 +321,7 @@ export default function BeanEntryModal({
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col gap-2">
                             <label className="text-[10px] uppercase text-gray-500 tracking-widest">Roast Date</label>
                             <input
@@ -322,7 +329,19 @@ export default function BeanEntryModal({
                                 name="roastDate"
                                 value={formData.roastDate}
                                 onChange={handleChange}
-                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none block w-full"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none block w-full text-xs"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest flex items-center gap-1">
+                                Purchase Date
+                            </label>
+                            <input
+                                type="date"
+                                name="purchaseDate"
+                                value={formData.purchaseDate}
+                                onChange={handleChange}
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none block w-full text-xs"
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -334,12 +353,12 @@ export default function BeanEntryModal({
                                 name="storageLocation"
                                 value={formData.storageLocation || 'Room'}
                                 onChange={handleChange}
-                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors text-xs"
                             >
-                                <option value="Room" className="bg-gray-900">常温 (20-25℃)</option>
-                                <option value="HighTemp" className="bg-gray-900">夏場/高温 (&gt;30℃)</option>
-                                <option value="Fridge" className="bg-gray-900">冷蔵庫 (4℃)</option>
-                                <option value="Freezer" className="bg-gray-900">冷凍庫 (-18℃)</option>
+                                <option value="Room" className="bg-gray-900">常温</option>
+                                <option value="HighTemp" className="bg-gray-900">高温</option>
+                                <option value="Fridge" className="bg-gray-900">冷蔵</option>
+                                <option value="Freezer" className="bg-gray-900">冷凍</option>
                             </select>
                         </div>
                     </div>

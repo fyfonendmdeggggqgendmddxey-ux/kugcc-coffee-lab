@@ -28,20 +28,34 @@ export function calculateStepWater(totalWater: number, percentage: number): numb
  * Calculates aging adjustments based on days since roast and roast level.
  * Implements Scientific Aging Matrix.
  */
-export function getAgingAdjustments(roastDate: Date, roastLevel: string = 'Medium', storageLocation: string = 'Room'): BrewingAdjustments {
+export function getAgingAdjustments(roastDate: Date, roastLevel: string = 'Medium', storageLocation: string = 'Room', purchaseDate?: Date): BrewingAdjustments {
   const today = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
-  const physicalDays = Math.floor((today.getTime() - roastDate.getTime()) / oneDay);
+  
+  let validPurchaseDate = purchaseDate;
+  if (!validPurchaseDate || isNaN(validPurchaseDate.getTime())) {
+      validPurchaseDate = roastDate;
+  }
+  if (validPurchaseDate.getTime() < roastDate.getTime()) {
+      validPurchaseDate = roastDate;
+  }
+  if (validPurchaseDate.getTime() > today.getTime()) {
+      validPurchaseDate = today;
+  }
 
-  let multiplier = 1.0;
-  if (roastLevel === 'Light' || roastLevel === '浅煎り') multiplier *= 0.8;
-  else if (roastLevel === 'Dark' || roastLevel === '深煎り') multiplier *= 1.2;
+  const phase1Days = Math.floor((validPurchaseDate.getTime() - roastDate.getTime()) / oneDay);
+  const phase2Days = Math.floor((today.getTime() - validPurchaseDate.getTime()) / oneDay);
 
-  if (storageLocation === 'HighTemp') multiplier *= 1.5;
-  else if (storageLocation === 'Fridge') multiplier *= 0.2;
-  else if (storageLocation === 'Freezer') multiplier *= 0.05;
+  let roastMultiplier = 1.0;
+  if (roastLevel === 'Light' || roastLevel === '浅煎り') roastMultiplier = 0.8;
+  else if (roastLevel === 'Dark' || roastLevel === '深煎り') roastMultiplier = 1.2;
 
-  const effectiveDaysRaw = physicalDays * multiplier;
+  let storageMultiplier = 1.0;
+  if (storageLocation === 'HighTemp') storageMultiplier = 1.5;
+  else if (storageLocation === 'Fridge') storageMultiplier = 0.2;
+  else if (storageLocation === 'Freezer') storageMultiplier = 0.05;
+
+  const effectiveDaysRaw = (phase1Days * roastMultiplier) + (phase2Days * roastMultiplier * storageMultiplier);
   const daysSinceRoast = Math.floor(effectiveDaysRaw); // Use floored effective days for the matrix
 
   let adjustments: BrewingAdjustments = {
@@ -51,7 +65,7 @@ export function getAgingAdjustments(roastDate: Date, roastLevel: string = 'Mediu
   };
 
   const level = roastLevel.toLowerCase();
-  const storageText = multiplier !== 1.0 ? ` (実質${daysSinceRoast}日相当)` : ``;
+  const storageText = (storageMultiplier !== 1.0 || roastMultiplier !== 1.0) ? ` (実質${daysSinceRoast}日相当)` : ``;
 
   // Matrix Logic based on EFFECTIVE days
   if (level === 'light' || level === '浅煎り') {
