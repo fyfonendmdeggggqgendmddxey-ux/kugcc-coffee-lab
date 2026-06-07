@@ -20,13 +20,14 @@ interface RightPanelProps {
     onToggleGlobalStar?: (recipe: Recipe) => void;
     onDeleteGlobalRecipe?: (recipe: Recipe) => void;
     onSwipeToTimer?: () => void;
+    onUpdateBean?: (bean: Bean) => void;
 }
 
 export default function RightPanel({ 
     bean, allBeans, recipe, globalRecipes = [], 
     onLoadRecipe, onToggleStar, onDeleteRecipe,
     onAddGlobalRecipe, onToggleGlobalStar, onDeleteGlobalRecipe,
-    onSwipeToTimer
+    onSwipeToTimer, onUpdateBean
 }: RightPanelProps) {
     const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<'coach' | 'log' | 'recipes' | 'settings' | 'help'>('coach');
@@ -202,7 +203,7 @@ export default function RightPanel({
 
             {/* Content Area */}
             <div className="flex-1 min-h-0 relative">
-                {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} />}
+                {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} onUpdateBean={onUpdateBean} />}
                 {activeTab === 'log' && <TastingLog bean={bean} allBeans={allBeans} activeRecipe={recipe} onLoadRecipe={onLoadRecipe} />}
                 {activeTab === 'settings' && <SettingsPanel />}
                 {activeTab === 'help' && <HelpPanel />}

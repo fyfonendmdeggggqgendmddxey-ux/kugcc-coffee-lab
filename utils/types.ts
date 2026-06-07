@@ -28,9 +28,13 @@ export type Bean = {
     roaster: string;
     origin?: string;
     variety?: string; // e.g. Geisha, Bourbon
+    altitude?: string; // e.g. "1800m-2000m"
     roastLevel: string; // Light, Medium, Dark
     process: string; // Washed, Natural, Honey
     roastDate: string; // ISO Date string
+    openedDate?: string; // ISO Date string, when the bag was opened
+    isFrozen?: boolean; // True if currently in freezer
+    frozenDate?: string; // ISO Date string, when it was put in the freezer
     isStarred?: boolean; // New: Favorite/Pin status
     recipeOverride?: Recipe; // Kept for backward compatibility or "active" state
     recipes?: Recipe[]; // New: List of saved recipes

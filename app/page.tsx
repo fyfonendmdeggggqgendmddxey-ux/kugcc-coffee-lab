@@ -174,6 +174,14 @@ export default function Home() {
         localStorage.setItem('kugcc_recipes', JSON.stringify(updated));
     };
 
+    const handleUpdateBean = (updatedBean: Bean) => {
+        const updatedBeans = beans.map(b => b.id === updatedBean.id ? updatedBean : b);
+        setBeans(updatedBeans);
+        localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
+        // Force re-render of BeanLibrary if needed, though state update should do it
+        window.dispatchEvent(new Event('kugcc_beans_updated'));
+    };
+
     return (
         <DashboardLayout
             activeTab={activeTab}
@@ -224,6 +232,7 @@ export default function Home() {
                     onToggleGlobalStar={handleToggleGlobalRecipeStar}
                     onDeleteGlobalRecipe={handleDeleteGlobalRecipe}
                     onSwipeToTimer={() => setActiveTab('timer')}
+                    onUpdateBean={handleUpdateBean}
                 />
             }
         />

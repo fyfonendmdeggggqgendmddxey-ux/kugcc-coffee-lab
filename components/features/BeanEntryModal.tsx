@@ -37,6 +37,7 @@ export default function BeanEntryModal({
         roaster: initialBean?.roaster || '',
         origin: initialBean?.origin || '',
         variety: initialBean?.variety || '',
+        altitude: initialBean?.altitude || '',
         roastLevel: initialBean?.roastLevel || 'Light',
         process: initialBean?.process || 'Washed',
         roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : '',
@@ -88,10 +89,14 @@ export default function BeanEntryModal({
             roaster: finalRoaster,
             origin: formData.origin,
             variety: formData.variety,
+            altitude: formData.altitude,
             roastLevel: formData.roastLevel,
             process: formData.process,
             roastDate: formData.roastDate ? new Date(formData.roastDate).toISOString() : '',
             purchaseDate: new Date(finalPurchaseDate).toISOString(),
+            openedDate: initialBean?.openedDate,
+            isFrozen: initialBean?.isFrozen,
+            frozenDate: initialBean?.frozenDate,
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
@@ -363,19 +368,31 @@ export default function BeanEntryModal({
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="text-[10px] uppercase text-gray-500 tracking-widest">Variety (Optional)</label>
-                        <input
-                            list="varieties-list"
-                            name="variety"
-                            value={formData.variety}
-                            onChange={handleChange}
-                            placeholder="e.g. Geisha, Bourbon"
-                            className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
-                        />
-                        <datalist id="varieties-list">
-                            {varieties.map(v => <option key={v} value={v} />)}
-                        </datalist>
+                    <div className="grid grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Variety (Optional)</label>
+                            <input
+                                list="varieties-list"
+                                name="variety"
+                                value={formData.variety}
+                                onChange={handleChange}
+                                placeholder="e.g. Geisha"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                            />
+                            <datalist id="varieties-list">
+                                {varieties.map(v => <option key={v} value={v} />)}
+                            </datalist>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Altitude (Optional)</label>
+                            <input
+                                name="altitude"
+                                value={formData.altitude}
+                                onChange={handleChange}
+                                placeholder="e.g. 1800m-2000m"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                            />
+                        </div>
                     </div>
 
                     <div className="pt-4 border-t border-gray-900 mt-2">

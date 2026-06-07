@@ -5,6 +5,11 @@ export type BrewingAdjustments = {
   bloomTimeAdjustment: number; // seconds
   tempAdjustment: number; // degrees Celsius
   advice: string;
+  filterPeak: number[];
+  espressoPeak: number[];
+  currentPhase: 'Degas' | 'Peak' | 'Good' | 'Aged';
+  gasLevel: number;
+  effectiveDays: number;
 };
 
 /**
@@ -23,87 +28,120 @@ export function calculateStepWater(totalWater: number, percentage: number): numb
 }
 
 /**
- * Calculates aging adjustments based on days since roast.
- * D <= 6: Bloom +15s, Temp -1°C (Too fresh, needs off-gassing)
- * D >= 22: Bloom -5s, Temp +2°C (Aged, needs higher extraction)
- */
-/**
  * Calculates aging adjustments based on days since roast and roast level.
- * Implements Scientific Aging Matrix.
+ * Implements Scientific Aging Matrix with Altitude, Freezer, and Open Date factors.
  */
-export function getAgingAdjustments(roastDate: Date, roastLevel: string = 'Medium', storageLocation: string = 'Room', purchaseDate?: Date): BrewingAdjustments {
+export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   const today = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
   
-  let validPurchaseDate = purchaseDate;
-  if (!validPurchaseDate || isNaN(validPurchaseDate.getTime())) {
-      validPurchaseDate = roastDate;
-  }
-  if (validPurchaseDate.getTime() < roastDate.getTime()) {
-      validPurchaseDate = roastDate;
-  }
-  if (validPurchaseDate.getTime() > today.getTime()) {
-      validPurchaseDate = today;
+  if (!bean.roastDate) {
+    return {
+      bloomTimeAdjustment: 0, tempAdjustment: 0, advice: "焙煎日が未設定です。",
+      filterPeak: [7, 14], espressoPeak: [14, 21], currentPhase: 'Degas', gasLevel: 100, effectiveDays: 0
+    };
   }
 
-  const phase1Days = Math.floor((validPurchaseDate.getTime() - roastDate.getTime()) / oneDay);
-  const phase2Days = Math.floor((today.getTime() - validPurchaseDate.getTime()) / oneDay);
+  const roastDate = new Date(bean.roastDate);
+  let effectiveDaysRaw = 0;
 
+  // Roast Level Multiplier (Dark roasts degas faster)
   let roastMultiplier = 1.0;
-  if (roastLevel === 'Light' || roastLevel === '浅煎り') roastMultiplier = 0.8;
-  else if (roastLevel === 'Dark' || roastLevel === '深煎り') roastMultiplier = 1.2;
+  const level = (bean.roastLevel || 'Medium').toLowerCase();
+  if (level === 'light' || level === '浅煎り') roastMultiplier = 0.8;
+  else if (level === 'dark' || level === '深煎り') roastMultiplier = 1.3;
 
-  let storageMultiplier = 1.0;
-  if (storageLocation === 'HighTemp') storageMultiplier = 1.5;
-  else if (storageLocation === 'Fridge') storageMultiplier = 0.2;
-  else if (storageLocation === 'Freezer') storageMultiplier = 0.05;
+  // Altitude/Density Multiplier (Higher altitude = slower degassing)
+  let densityMultiplier = 1.0;
+  if (bean.altitude) {
+    const num = parseInt(bean.altitude.replace(/[^0-9]/g, ''));
+    if (!isNaN(num)) {
+      if (num > 1600) densityMultiplier = 0.9; // SHB/SHG: 10% slower
+      else if (num < 1200) densityMultiplier = 1.1; // Softer bean: 10% faster
+    }
+  }
 
-  const effectiveDaysRaw = (phase1Days * roastMultiplier) + (phase2Days * roastMultiplier * storageMultiplier);
-  const daysSinceRoast = Math.floor(effectiveDaysRaw); // Use floored effective days for the matrix
+  // Calculate chronological days
+  const chronoDays = Math.max(0, (today.getTime() - roastDate.getTime()) / oneDay);
+
+  // Apply freezer pause
+  if (bean.isFrozen && bean.frozenDate) {
+    const frozenDate = new Date(bean.frozenDate);
+    const daysBeforeFreezing = Math.max(0, (frozenDate.getTime() - roastDate.getTime()) / oneDay);
+    const daysInFreezer = Math.max(0, (today.getTime() - frozenDate.getTime()) / oneDay);
+    effectiveDaysRaw = daysBeforeFreezing + (daysInFreezer * 0.05); // 95% slower in freezer
+  } else {
+    effectiveDaysRaw = chronoDays;
+  }
+
+  // Final effective days combining roast degree and density kinetics
+  const effectiveDays = effectiveDaysRaw * roastMultiplier * (1 / densityMultiplier);
+
+  // Peak calculations (base values adjusted by multipliers)
+  const baseFilterStart = 6;
+  const baseFilterEnd = 20;
+  const filterPeak = [
+    Math.round(baseFilterStart / (roastMultiplier * (1 / densityMultiplier))),
+    Math.round(baseFilterEnd / (roastMultiplier * (1 / densityMultiplier)))
+  ];
+
+  const espressoPeak = [
+    Math.round(14 / (roastMultiplier * (1 / densityMultiplier))),
+    Math.round(28 / (roastMultiplier * (1 / densityMultiplier)))
+  ];
+
+  // Determine current phase based on effective days
+  let currentPhase: 'Degas' | 'Peak' | 'Good' | 'Aged' = 'Degas';
+  if (effectiveDays < baseFilterStart) currentPhase = 'Degas';
+  else if (effectiveDays <= baseFilterEnd) currentPhase = 'Peak';
+  else if (effectiveDays <= baseFilterEnd + 15) currentPhase = 'Good';
+  else currentPhase = 'Aged';
+
+  // Open Bag Oxidation Override
+  if (bean.openedDate && !bean.isFrozen) {
+    const openedDate = new Date(bean.openedDate);
+    const daysOpen = Math.max(0, (today.getTime() - openedDate.getTime()) / oneDay);
+    // After 14 days open, forcefully shift to Aged due to oxidation
+    if (daysOpen > 14) currentPhase = 'Aged';
+    else if (daysOpen > 7 && currentPhase === 'Peak') currentPhase = 'Good';
+  }
+
+  // Calculate theoretical gas level (Exponential decay: N = N0 * e^(-kt))
+  // k is chosen so that gas is ~5% at effective day 30
+  const k = 0.1; 
+  let gasLevel = 100 * Math.exp(-k * effectiveDays);
+  gasLevel = Math.max(0, Math.min(100, Math.round(gasLevel)));
 
   let adjustments: BrewingAdjustments = {
     bloomTimeAdjustment: 0,
     tempAdjustment: 0,
     advice: "エイジング適正範囲内（Peak）。標準的なガス抜け状態です。",
+    filterPeak,
+    espressoPeak,
+    currentPhase,
+    gasLevel,
+    effectiveDays
   };
 
-  const level = roastLevel.toLowerCase();
-  const storageText = (storageMultiplier !== 1.0 || roastMultiplier !== 1.0) ? ` (実質${daysSinceRoast}日相当)` : ``;
+  const storageText = ` (実質${Math.floor(effectiveDays)}日相当)`;
 
-  // Matrix Logic based on EFFECTIVE days
-  // 温度調整のアドバイスは5D抽出モデル側に任せるため、ここでは「ガスの状態」のアドバイスのみを行う
-  if (level === 'light' || level === '浅煎り') {
-    if (daysSinceRoast <= 10) {
-      adjustments.advice = `[Light/Fresh] ガス放出過多${storageText}。お湯が強く弾かれるため、非常に成分が溶け出しにくい状態です。`;
-    } else if (daysSinceRoast >= 26) {
-      adjustments.advice = `[Light/Aged] エイジング進行済み${storageText}。ガスが抜けきり成分が出やすくなっています。`;
-    } else {
-      adjustments.advice = `[Light/Peak] 飲み頃です${storageText}。ガス抜けが適度で、クリーンなフレーバーが最大化される完璧な状態です。`;
-    }
-  } else if (level === 'dark' || level === '深煎り') {
-    if (daysSinceRoast <= 3) {
-      adjustments.advice = `[Dark/Fresh] 極めてガスが多い状態${storageText}。お湯が非常に強く弾かれる状態です。`;
-    } else if (daysSinceRoast >= 15) {
-      adjustments.advice = `[Dark/Aged] エイジング進行済み${storageText}。オイルが表面に浮き、成分が極めて早く出ます。過抽出に注意してください。`;
-    } else {
-      adjustments.advice = `[Dark/Peak] 飲み頃です${storageText}。余分なガスが抜け、ダークロースト特有の甘みとコクが最も綺麗に出る状態です。`;
-    }
+  if (currentPhase === 'Degas') {
+    adjustments.advice = `[Fresh] ガス放出過多${storageText}。お湯が強く弾かれるため、非常に成分が溶け出しにくい状態です。蒸らし時間を長めに取ってください。`;
+  } else if (currentPhase === 'Aged') {
+    adjustments.advice = `[Aged] エイジング進行済み${storageText}。酸化が進んでおり、ガスが抜けきり成分が出やすくなっています。お湯の温度を少し下げると雑味を防げます。`;
+  } else if (currentPhase === 'Peak') {
+    adjustments.advice = `[Peak] 飲み頃です${storageText}。ガス抜けが適度で、クリーンなフレーバーが最大化される完璧な状態です。`;
   } else {
-    // Medium (Default)
-    if (daysSinceRoast <= 6) {
-      adjustments.advice = `[Medium/Fresh] ガス放出過多${storageText}。お湯が弾かれやすく成分が溶け出しにくい状態です。`;
-    } else if (daysSinceRoast >= 22) {
-      adjustments.advice = `[Medium/Aged] エイジング進行済み${storageText}。ガスが抜けきっているため、お湯がスッと浸透します。`;
-    } else {
-      adjustments.advice = `[Medium/Peak] 飲み頃です${storageText}。抽出効率が最も安定するベストな状態です。`;
-    }
+    adjustments.advice = `[Good] まだまだ美味しく飲めます${storageText}。`;
   }
 
-  // Inject specific freezer advice
-  if (storageLocation === 'Freezer') {
-      adjustments.advice += " 冷凍保存されているため、エイジング進行がストップしています。";
-  } else if (storageLocation === 'HighTemp') {
-      adjustments.advice += " 高温環境のため、エイジング（劣化）が非常に早く進行しています。";
+  // Inject specific storage advice
+  if (bean.isFrozen) {
+      adjustments.advice += " ❄️冷凍保存中：エイジング進行がほぼストップしています。";
+  }
+  if (bean.openedDate) {
+      const daysOpen = Math.floor((today.getTime() - new Date(bean.openedDate).getTime()) / oneDay);
+      adjustments.advice += ` ✂️開封から${daysOpen}日経過：酸化スピードが加速しています。早めに飲み切ることを推奨します。`;
   }
 
   return adjustments;

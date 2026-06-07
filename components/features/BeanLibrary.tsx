@@ -472,6 +472,16 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                 {getAgingBadge(bean)}
                             </div>
                         </Tooltip>
+                        {bean.isFrozen && (
+                            <div className="mt-1 text-[10px] text-blue-400 font-bold flex items-center gap-1">
+                                ❄️ Frozen
+                            </div>
+                        )}
+                        {bean.openedDate && !bean.isFrozen && (
+                            <div className="mt-1 text-[10px] text-amber-500 font-bold flex items-center gap-1">
+                                ✂️ Opened
+                            </div>
+                        )}
                         {bean.storageLocation && (
                             <div className="mt-1.5 text-[9px] text-gray-600 font-mono flex items-center gap-1 border border-gray-900/50 w-fit px-1 bg-gray-950/30">
                                 <span className="uppercase tracking-widest">Loc:</span> <span className="text-gray-400">{bean.storageLocation}</span>
