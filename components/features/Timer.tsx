@@ -228,26 +228,26 @@ export default function Timer({
                   )}
                   </select>
               </div>
+        </div>
+      </div>
 
-              {/* Test Mode Toggle */}
-              <div className="flex items-center gap-2 mt-4 pointer-events-auto">
-                <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
-                <button
-                    onClick={() => {
-                        setIsTestMode(prev => !prev);
-                        setIsRunning(false);
-                        setIsFinished(false);
-                        setCurrentStepIndex(0);
-                        setManualLaps([]);
-                        reset();
-                    }}
-                    className={`relative w-10 h-5 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
-                >
-                    <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[22px]' : 'left-0.5'}`} />
-                </button>
-                <span className={`text-[10px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test Drip</span>
-              </div>
-            </div>
+      {/* Test Mode Toggle */}
+      <div className="flex items-center gap-3 z-20 pointer-events-auto mt-24 md:mt-4 mb-2">
+        <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
+        <button
+            onClick={() => {
+                setIsTestMode(prev => !prev);
+                setIsRunning(false);
+                setIsFinished(false);
+                setCurrentStepIndex(0);
+                setManualLaps([]);
+                reset();
+            }}
+            className={`relative w-10 h-5 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
+        >
+            <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[22px]' : 'left-0.5'}`} />
+        </button>
+        <span className={`text-[10px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test Drip</span>
       </div>
 
       {/* Circular UI (Clickable Button) */}
@@ -276,7 +276,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-6 mt-16 md:mt-0 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-6 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -288,6 +288,7 @@ export default function Timer({
           stepIndex={currentStepIndex}
           isFinished={isFinished}
           grinderSetting={recipe.grinderModel ? `(${recipe.grinderModel}: ${recipe.grindSize})` : undefined}
+          isTestMode={isTestMode}
         />
       </button>
 

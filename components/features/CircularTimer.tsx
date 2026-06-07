@@ -11,6 +11,7 @@ interface CircularTimerProps {
     stepIndex: number; // For forcing generic reset
     isFinished?: boolean;
     grinderSetting?: string; // e.g. "(C40: 22)"
+    isTestMode?: boolean;
 }
 
 export default function CircularTimer({
@@ -21,7 +22,8 @@ export default function CircularTimer({
     stepAddedVolume,
     stepIndex,
     isFinished,
-    grinderSetting
+    grinderSetting,
+    isTestMode
 }: CircularTimerProps) {
     const radius = 160;
     const stroke = 4;
@@ -34,7 +36,7 @@ export default function CircularTimer({
         const s = Math.floor(seconds % 60);
         return (
             <>
-                <span className="text-8xl font-bold tracking-tighter text-white transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] select-none">
+                <span className={`text-8xl font-bold tracking-tighter transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] select-none ${isTestMode ? 'text-[#3b82f6]' : 'text-white'}`}>
                     {m.toString().padStart(2, '0')}:{s.toString().padStart(2, '0')}
                 </span>
             </>
@@ -63,7 +65,7 @@ export default function CircularTimer({
                 <circle
                     key={stepIndex} // Force re-mount on step change to eliminate transition lag
                     stroke="currentColor"
-                    className="text-white"
+                    className={isTestMode ? 'text-[#3b82f6]' : 'text-white'}
                     strokeWidth={stroke}
                     strokeLinecap="round"
                     fill="transparent"
