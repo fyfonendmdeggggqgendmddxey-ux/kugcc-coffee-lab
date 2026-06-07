@@ -42,6 +42,7 @@ export default function BeanEntryModal({
         process: initialBean?.process || 'Washed',
         roastDate: (initialBean && initialBean.roastDate) ? initialBean.roastDate.split('T')[0] : '',
         purchaseDate: (initialBean && initialBean.purchaseDate) ? initialBean.purchaseDate.split('T')[0] : '',
+        openedDate: (initialBean && initialBean.openedDate) ? initialBean.openedDate.split('T')[0] : '',
         idealAgingDays: initialBean?.idealAgingDays?.toString() || '',
         shopRecommendedDays: initialBean?.shopRecommendedDays?.toString() || '',
         storageLocation: initialBean?.storageLocation || '',
@@ -94,9 +95,9 @@ export default function BeanEntryModal({
             process: formData.process,
             roastDate: formData.roastDate ? new Date(formData.roastDate).toISOString() : '',
             purchaseDate: new Date(finalPurchaseDate).toISOString(),
-            openedDate: initialBean?.openedDate,
-            isFrozen: initialBean?.isFrozen,
-            frozenDate: initialBean?.frozenDate,
+            openedDate: formData.openedDate ? new Date(formData.openedDate).toISOString() : undefined,
+            isFrozen: formData.storageLocation === 'Freezer',
+            frozenDate: formData.storageLocation === 'Freezer' ? (initialBean?.frozenDate || new Date().toISOString()) : undefined,
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
@@ -500,14 +501,13 @@ export default function BeanEntryModal({
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Storage Location</label>
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Opened Date (Optional)</label>
                             <input
-                                type="text"
-                                name="storageLocation"
-                                value={formData.storageLocation}
+                                type="date"
+                                name="openedDate"
+                                value={formData.openedDate}
                                 onChange={handleChange}
-                                placeholder="e.g. Freezer, Wine Cellar, Room Temp"
-                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors text-xs"
                             />
                         </div>
                     </div>

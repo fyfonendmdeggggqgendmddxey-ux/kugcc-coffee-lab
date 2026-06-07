@@ -12,32 +12,7 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
     const adjustments = bean ? getAgingAdjustments(bean) : null;
     const dynamics = bean && recipe ? analyzeExtractionDynamics(bean, recipe) : null;
 
-    const handleToggleFreeze = () => {
-        if (!bean || !onUpdateBean) return;
-        const updatedBean = { ...bean };
-        const isCurrentlyFrozen = updatedBean.isFrozen || updatedBean.storageLocation === 'Freezer';
-        
-        updatedBean.isFrozen = !isCurrentlyFrozen;
-        if (updatedBean.isFrozen) {
-            updatedBean.storageLocation = 'Freezer';
-            updatedBean.frozenDate = new Date().toISOString();
-        } else {
-            updatedBean.storageLocation = 'Room';
-            updatedBean.frozenDate = undefined;
-        }
-        onUpdateBean(updatedBean);
-    };
-
-    const handleToggleOpen = () => {
-        if (!bean || !onUpdateBean) return;
-        const updatedBean = { ...bean };
-        if (updatedBean.openedDate) {
-            updatedBean.openedDate = undefined;
-        } else {
-            updatedBean.openedDate = new Date().toISOString();
-        }
-        onUpdateBean(updatedBean);
-    };
+    // Toggle functions removed as per user request to keep UI clean
 
     const peakDay = adjustments ? (adjustments.filterPeak[0] + adjustments.filterPeak[1]) / 2 : 14;
     const currentDay = adjustments ? adjustments.effectiveDays : 0;
@@ -157,30 +132,6 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                                 <p className="text-[9px] text-gray-600 uppercase tracking-widest mb-1">Filter Peak</p>
                                 <p className="text-sm text-emerald-400 font-mono mt-1">{adjustments.filterPeak[0]} - {adjustments.filterPeak[1]} <span className="text-[10px] text-gray-500">Days</span></p>
                             </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex gap-2 border-t border-gray-900 pt-4">
-                            <button 
-                                onClick={handleToggleOpen}
-                                className={`flex-1 py-2 text-[9px] font-bold uppercase tracking-widest border transition-all ${
-                                    bean.openedDate 
-                                        ? 'border-amber-900 bg-amber-950/20 text-amber-500 hover:bg-amber-900/40' 
-                                        : 'border-gray-800 text-gray-500 hover:text-white hover:border-gray-600'
-                                }`}
-                            >
-                                {bean.openedDate ? '✂️ Bag Opened' : 'Open Bag'}
-                            </button>
-                            <button 
-                                onClick={handleToggleFreeze}
-                                className={`flex-1 py-2 text-[9px] font-bold uppercase tracking-widest border transition-all ${
-                                    bean.isFrozen || bean.storageLocation === 'Freezer'
-                                        ? 'border-blue-900 bg-blue-950/20 text-blue-400 hover:bg-blue-900/40' 
-                                        : 'border-gray-800 text-gray-500 hover:text-white hover:border-gray-600'
-                                }`}
-                            >
-                                {bean.isFrozen || bean.storageLocation === 'Freezer' ? '❄️ In Freezer' : 'Put in Freezer'}
-                            </button>
                         </div>
                     </div>
 
