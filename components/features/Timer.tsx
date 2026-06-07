@@ -376,7 +376,7 @@ export default function Timer({
                   }}
                   className="mt-4 w-full py-2 bg-[#3b82f6] hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-widest rounded transition-colors focus:outline-none active:scale-[0.98]"
               >
-                  Edit & Save as New Recipe
+                  Save Dial-in as New Recipe
               </button>
           </div>
       )}
