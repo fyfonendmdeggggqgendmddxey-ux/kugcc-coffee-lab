@@ -68,7 +68,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 }
 
                 const newBean: Bean = {
-                    id: Date.now().toString() + i,
+                    id: (Date.now() + i).toString(),
                     name: extracted.name || 'Unnamed Coffee',
                     roaster: extracted.roaster || 'Unknown Roaster',
                     origin: extracted.origin || '',
@@ -314,10 +314,16 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         return matchesSearch && matchesFilter;
     }).sort((a, b) => {
         if (sortBy === 'added_desc' || sortBy === 'added_asc') {
-            const idA = Number(a.id);
-            const idB = Number(b.id);
-            const numA = isNaN(idA) ? 0 : idA;
-            const numB = isNaN(idB) ? 0 : idB;
+            const getTimestamp = (id: string) => {
+                const num = Number(id);
+                // Fix for the old batch upload bug that appended '0' making the string 14+ digits
+                if (!isNaN(num) && (id?.length || 0) > 13) {
+                    return Number(id.substring(0, 13));
+                }
+                return isNaN(num) ? 0 : num;
+            };
+            const numA = getTimestamp(a.id || '');
+            const numB = getTimestamp(b.id || '');
             
             if (numA === numB) {
                 const strCmp = String(b.id || '').localeCompare(String(a.id || ''));
