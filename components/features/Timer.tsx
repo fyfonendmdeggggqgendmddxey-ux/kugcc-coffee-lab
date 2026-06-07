@@ -168,7 +168,7 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className="flex flex-col items-center w-full relative min-h-full px-4 py-6 md:py-12 select-none">
+    <div className="flex flex-col items-center w-full relative h-full overflow-y-auto overflow-x-hidden px-4 py-6 md:py-12 select-none">
       {/* Top Header Row (Bean/Equipment & Actions) */}
       <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
