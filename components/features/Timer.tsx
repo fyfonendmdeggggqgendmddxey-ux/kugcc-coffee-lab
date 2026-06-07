@@ -168,7 +168,7 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className="flex flex-col items-center w-full relative h-full overflow-y-auto overflow-x-hidden px-4 py-6 md:py-12 select-none">
+    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
       <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
@@ -241,11 +241,8 @@ export default function Timer({
         </div>
       </div>
 
-      {/* Main Content Wrapper (Centers content but protects from top header) */}
-      <div className="my-auto w-full flex flex-col items-center pt-28 md:pt-16 pb-12">
-        
-        {/* Test Mode Toggle */}
-        <div className="flex items-center gap-3 z-20 pointer-events-auto mb-6 md:mb-10">
+      {/* Test Mode Toggle */}
+      <div className="flex items-center gap-3 z-20 pointer-events-auto mb-4 md:mb-8 mt-4 md:mt-0">
         <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
         <button
             onClick={() => {
@@ -471,8 +468,6 @@ export default function Timer({
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
         Space / Enter: Toggle • Esc: Reset
       </div>
-      
-      </div> {/* End Main Content Wrapper */}
     </div>
   );
 }
