@@ -92,7 +92,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
     const isValid = Math.abs(currentTotalMl - totalWater) < 0.5;
 
     return (
-        <div id="recipe-editor-export" className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto">
+        <div id="recipe-editor-export" className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto block-swipe">
             <h2 className="text-white uppercase tracking-[0.3em] mb-8 md:mb-12 border-b border-gray-800 pb-4 w-full text-center text-sm md:text-base">
                 Recipe Configuration
             </h2>

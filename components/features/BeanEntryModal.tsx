@@ -209,7 +209,7 @@ export default function BeanEntryModal({
     };
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] sm:p-4" onClick={() => onCancel()}>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] sm:p-4 block-swipe" onClick={() => onCancel()}>
             <div className="bg-black border border-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-md p-5 sm:p-8 relative flex flex-col font-mono" onClick={e => e.stopPropagation()}>
                 <h2 className="text-sm font-bold tracking-[0.2em] uppercase mb-4 sm:mb-8 text-white border-b border-gray-900 pb-4 shrink-0 mt-8 sm:mt-0 flex justify-between items-center">
                     <span>{initialBean ? 'Edit Bean Entry' : 'New Bean Entry'}</span>
