@@ -13,18 +13,6 @@ export const GRINDER_TABLE = {
     }
 } as const;
 
-export const GRINDER_PROFILES: Record<string, { micronsPerClick: number; finesRatio: { medium: number; coarse: number } }> = {
-    "C40_MK4": { micronsPerClick: 30, finesRatio: { medium: 25, coarse: 18 } },
-    "C40_MK4_REDCLIX": { micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } },
-    "K_ULTRA": { micronsPerClick: 22, finesRatio: { medium: 24, coarse: 20 } },
-    "K6": { micronsPerClick: 16, finesRatio: { medium: 22, coarse: 22 } },
-    "TIMEMORE_C2": { micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
-    "TIMEMORE_C3": { micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
-    "X_LITE": { micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } }, 
-    "S3": { micronsPerClick: 15, finesRatio: { medium: 27, coarse: 24 } },
-    "EPEIOS_GO": { micronsPerClick: 20, finesRatio: { medium: 28, coarse: 26 } }
-};
-
 // Grind Size Mapping based on user request:
 // Fine(4), Mid-Fine(5), Medium(6), Mid-Coarse(6), Coarse(6).
 // The value represents the index in the GRINDER_TABLE array for that specific grind size category.
