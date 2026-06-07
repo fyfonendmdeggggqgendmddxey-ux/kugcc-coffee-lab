@@ -14,6 +14,7 @@ interface TimerProps {
   globalRecipes?: Recipe[];
   onLoadRecipe?: (recipe: Recipe) => void;
   onEdit?: () => void;
+  onSaveTestRecipe?: (newRecipe: Recipe) => void;
 }
 
 export default function Timer({ 
@@ -22,11 +23,14 @@ export default function Timer({
     beanRecipes = [], 
     globalRecipes = [], 
     onLoadRecipe, 
-    onEdit 
+    onEdit,
+    onSaveTestRecipe
 }: TimerProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [isTestMode, setIsTestMode] = useState(false);
+  const [manualLaps, setManualLaps] = useState<number[]>([]);
   const lastTickRef = useRef(-1);
 
   // Derived Values
@@ -58,7 +62,7 @@ export default function Timer({
 
   // Auto-Advance Logic
   useEffect(() => {
-    if (!isRunning || isFinished) return;
+    if (!isRunning || isFinished || isTestMode) return;
 
     const currentIntSec = Math.floor(elapsedSeconds);
 
@@ -97,7 +101,13 @@ export default function Timer({
   // Progress within current step
   const previousThreshold = currentStepIndex > 0 ? stepThresholds[currentStepIndex - 1] : 0;
   const currentStepDuration = currentStep.duration;
-  const timeInStep = Math.max(0, elapsedSeconds - previousThreshold);
+  let timeInStep = 0;
+  if (isTestMode) {
+      const currentLapStart = manualLaps[currentStepIndex] || 0;
+      timeInStep = Math.max(0, elapsedSeconds - currentLapStart);
+  } else {
+      timeInStep = Math.max(0, elapsedSeconds - previousThreshold);
+  }
   const stepProgress = Math.min(timeInStep / currentStepDuration, 1);
   // Ensure we consistently show 100% when finished or past this step in other contexts
 
@@ -121,6 +131,7 @@ export default function Timer({
       setIsRunning(false);
       setIsFinished(false);
       setCurrentStepIndex(0);
+      setManualLaps([]);
       reset();
       lastRecipeId.current = currentRecipeId;
     }
@@ -135,8 +146,9 @@ export default function Timer({
     if (e.code === 'Escape' || e.key === 'Escape') {
       setIsRunning(false);
       setIsFinished(false);
-      reset();
       setCurrentStepIndex(0);
+      setManualLaps([]);
+      reset();
     }
   }, [isFinished, reset]);
 
@@ -214,15 +226,55 @@ export default function Timer({
                           ))}
                       </optgroup>
                   )}
-              </select>
-          </div>
-        </div>
+                  </select>
+              </div>
+
+              {/* Test Mode Toggle */}
+              <div className="flex items-center gap-2 mt-4 pointer-events-auto">
+                <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
+                <button
+                    onClick={() => {
+                        setIsTestMode(prev => !prev);
+                        setIsRunning(false);
+                        setIsFinished(false);
+                        setCurrentStepIndex(0);
+                        setManualLaps([]);
+                        reset();
+                    }}
+                    className={`relative w-10 h-5 rounded-full border transition-colors focus:outline-none ${isTestMode ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-transparent border-gray-600'}`}
+                >
+                    <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${isTestMode ? 'left-[22px]' : 'left-0.5'}`} />
+                </button>
+                <span className={`text-[10px] uppercase tracking-widest transition-colors ${isTestMode ? 'text-[#3b82f6] font-bold' : 'text-gray-600'}`}>Test Drip</span>
+              </div>
+            </div>
       </div>
 
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
-          if (!isFinished) setIsRunning(prev => !prev);
+          if (isTestMode) {
+              if (isFinished) return;
+              if (!isRunning) {
+                  setIsRunning(true);
+                  setManualLaps([0]);
+                  audioEngine?.playStart();
+              } else {
+                  const newLaps = [...manualLaps, elapsedSeconds];
+                  setManualLaps(newLaps);
+                  audioEngine?.playStart();
+                  
+                  if (currentStepIndex < recipe.steps.length - 1) {
+                      setCurrentStepIndex(prev => prev + 1);
+                  } else {
+                      setIsFinished(true);
+                      setIsRunning(false);
+                      audioEngine?.playComplete();
+                  }
+              }
+          } else {
+              if (!isFinished) setIsRunning(prev => !prev);
+          }
         }}
         className="relative z-10 mb-6 mt-16 md:mt-0 md:mb-10 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
@@ -275,6 +327,59 @@ export default function Timer({
         })}
       </div>
 
+      {/* Test Mode Summary */}
+      {isFinished && isTestMode && (
+          <div className="w-full max-w-md mb-6 bg-gray-900/40 border border-gray-800 p-4 rounded z-30">
+              <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span className="text-[#3b82f6]">●</span> Dial-in Summary
+              </h3>
+              <div className="flex flex-col gap-2">
+                  {recipe.steps.map((step, idx) => {
+                      const targetDuration = step.duration;
+                      const manualStart = manualLaps[idx] || 0;
+                      const manualEnd = idx < manualLaps.length - 1 ? manualLaps[idx + 1] : elapsedSeconds;
+                      const actualDuration = manualEnd - manualStart;
+                      const delta = actualDuration - targetDuration;
+                      const isOver = delta > 0;
+                      return (
+                          <div key={idx} className="flex justify-between items-center text-xs font-mono border-b border-gray-800/50 pb-1">
+                              <span className="text-gray-400 w-1/3 truncate">{step.name}</span>
+                              <span className="text-gray-300">{actualDuration.toFixed(1)}s</span>
+                              <span className={`w-16 text-right ${Math.abs(delta) < 1 ? 'text-gray-500' : (isOver ? 'text-red-400' : 'text-[#3b82f6]')}`}>
+                                  {delta > 0 ? '+' : ''}{delta.toFixed(1)}s
+                              </span>
+                          </div>
+                      );
+                  })}
+              </div>
+              <button
+                  onClick={() => {
+                      if (!onSaveTestRecipe) return;
+                      const newSteps = recipe.steps.map((step, idx) => {
+                          const manualStart = manualLaps[idx] || 0;
+                          const manualEnd = idx < manualLaps.length - 1 ? manualLaps[idx + 1] : elapsedSeconds;
+                          return {
+                              ...step,
+                              duration: Math.round(manualEnd - manualStart)
+                          };
+                      });
+                      const newRecipe: Recipe = {
+                          ...recipe,
+                          id: Date.now().toString(),
+                          name: `${recipe.name || 'Recipe'} (Dial-in)`,
+                          steps: newSteps,
+                          isStarred: false,
+                          isShopRecipe: false
+                      };
+                      onSaveTestRecipe(newRecipe);
+                  }}
+                  className="mt-4 w-full py-2 bg-[#3b82f6] hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-widest rounded transition-colors focus:outline-none active:scale-[0.98]"
+              >
+                  Edit & Save as New Recipe
+              </button>
+          </div>
+      )}
+
       {/* Bottom Panel */}
       <div className="flex gap-12 text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6">
         <div className="flex flex-col items-center">
@@ -297,8 +402,9 @@ export default function Timer({
           onClick={() => {
             setIsRunning(false);
             setIsFinished(false);
-            reset();
             setCurrentStepIndex(0);
+            setManualLaps([]);
+            reset();
           }}
           className="h-14 px-8 text-xs uppercase tracking-widest text-gray-500 border border-gray-800 hover:border-red-500 hover:text-red-500 transition-all active:scale-95"
           aria-label="Reset Timer"
@@ -308,9 +414,30 @@ export default function Timer({
 
         <button
           onClick={() => {
-            if (!isFinished) {
-                if (!isRunning) audioEngine?.playStart();
-                setIsRunning(prev => !prev);
+            if (isTestMode) {
+                if (isFinished) return;
+                if (!isRunning) {
+                    setIsRunning(true);
+                    setManualLaps([0]);
+                    audioEngine?.playStart();
+                } else {
+                    const newLaps = [...manualLaps, elapsedSeconds];
+                    setManualLaps(newLaps);
+                    audioEngine?.playStart();
+                    
+                    if (currentStepIndex < recipe.steps.length - 1) {
+                        setCurrentStepIndex(prev => prev + 1);
+                    } else {
+                        setIsFinished(true);
+                        setIsRunning(false);
+                        audioEngine?.playComplete();
+                    }
+                }
+            } else {
+                if (!isFinished) {
+                    if (!isRunning) audioEngine?.playStart();
+                    setIsRunning(prev => !prev);
+                }
             }
           }}
           className={`h-16 px-10 text-sm uppercase tracking-widest font-bold border transition-all active:scale-95 ${isRunning
@@ -318,7 +445,7 @@ export default function Timer({
             : "bg-white text-black border-white hover:bg-gray-200"
             }`}
         >
-          {isRunning ? 'Pause' : 'Start'}
+          {isTestMode ? (isRunning ? 'Lap' : 'Start') : (isRunning ? 'Pause' : 'Start')}
         </button>
       </div>
 

@@ -200,6 +200,11 @@ export default function Home() {
                             setIsEditing(true);
                             setActiveTab('timer');
                         }}
+                        onSaveTestRecipe={(newRecipe) => {
+                            setCustomRecipe(newRecipe);
+                            setIsEditing(true);
+                            setActiveTab('timer');
+                        }}
                     />
             }
             right={
