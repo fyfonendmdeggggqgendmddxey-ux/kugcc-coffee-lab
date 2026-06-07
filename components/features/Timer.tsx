@@ -235,6 +235,7 @@ export default function Timer({
                               </option>
                           ))}
                       </optgroup>
+                  )}
                   </select>
               </div>
         </div>
