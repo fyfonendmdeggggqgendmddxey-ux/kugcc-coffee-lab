@@ -1,5 +1,5 @@
 import { Bean, Recipe } from '@/utils/types';
-import { getAgingAdjustments } from '@/utils/coffee-math';
+import { getAgingAdjustments, analyzeExtractionDynamics } from '@/utils/coffee-math';
 import { GRINDER_TABLE } from '@/utils/grinder-table';
 
 interface AICoachProps {
@@ -17,6 +17,8 @@ export default function AICoach({ bean, recipe }: AICoachProps) {
           )
         : null;
 
+    const dynamics = bean && recipe ? analyzeExtractionDynamics(bean, recipe) : null;
+
     return (
         <div className="h-full flex flex-col p-6 font-mono border-l border-gray-900 overflow-y-auto">
             <h2 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-gray-500 border-b border-gray-900 pb-2">
@@ -27,7 +29,7 @@ export default function AICoach({ bean, recipe }: AICoachProps) {
                 <div className="space-y-8">
                     <div className="border-l border-white pl-4 py-1 relative">
                         <div className="absolute -left-[1px] top-0 w-[1px] h-4 bg-white"></div>
-                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Analysis Status</p>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Aging Analysis</p>
                         <p className="text-sm text-gray-300">
                             TARGET: <span className="text-white font-bold">{bean.name}</span>
                         </p>
@@ -43,6 +45,21 @@ export default function AICoach({ bean, recipe }: AICoachProps) {
                             {adjustments.advice}
                         </div>
                     </div>
+
+                    {dynamics && (
+                        <div className="border-l border-[#3b82f6] pl-4 py-1 relative">
+                            <div className="absolute -left-[1px] top-0 w-[1px] h-4 bg-[#3b82f6]"></div>
+                            <p className="text-[10px] text-[#3b82f6] uppercase tracking-widest mb-2">Extraction Dynamics (4D Model)</p>
+                            <p className="text-[10px] text-gray-500 mt-1">
+                                SCORE: {dynamics.score > 0 ? '+' : ''}{dynamics.score.toFixed(1)} 
+                                {dynamics.score > 18 ? ' [OVER-EXTRACTED]' : dynamics.score < -18 ? ' [UNDER-EXTRACTED]' : ' [SWEET SPOT]'}
+                            </p>
+                            <div className="mt-3 p-3 border border-[#3b82f6]/30 bg-[#3b82f6]/5 text-xs text-gray-300 leading-relaxed font-sans">
+                                <span className="text-[#3b82f6] block mb-1 uppercase tracking-wider text-[10px] font-mono">[BARISTA ADVICE]</span>
+                                {dynamics.advice}
+                            </div>
+                        </div>
+                    )}
 
                     <div className="border-l border-gray-800 pl-4 py-1">
                         <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Variable Adjustments</p>

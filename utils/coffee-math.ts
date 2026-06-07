@@ -1,3 +1,6 @@
+import { Bean, Recipe } from './types';
+import { GRINDER_PROFILES, getGrinderClicks } from './grinder-table';
+
 export type BrewingAdjustments = {
   bloomTimeAdjustment: number; // seconds
   tempAdjustment: number; // degrees Celsius
@@ -110,4 +113,79 @@ export function getAgingAdjustments(roastDate: Date, roastLevel: string = 'Mediu
   }
 
   return adjustments;
+}
+
+export type DynamicsAdvice = {
+  score: number;
+  advice: string;
+};
+
+export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsAdvice {
+  let score = 0;
+
+  // 1. Roast Level (Light: -15, Medium: 0, Dark: +15)
+  // 浅煎り＝多孔性が低く成分が出にくい(マイナス)。深煎り＝成分が出やすい(プラス)。
+  const roast = (bean.roastLevel || 'Medium').toLowerCase();
+  if (roast === 'light' || roast === '浅煎り') score -= 15;
+  else if (roast === 'dark' || roast === '深煎り') score += 15;
+
+  // 2. Temperature (Base: 90°C)
+  // 高温＝メラノイジン等の溶解度が上がり抽出が早い(プラス)。低温＝抽出が遅い(マイナス)。
+  const tempDiff = recipe.temperature - 90;
+  score += tempDiff * 1.5;
+
+  // 3. Fines & Microns (Grinder Profile)
+  let finesRatio = 22; // Default (stable)
+  let absoluteMicrons = 600; // Default (medium)
+
+  const grinderModel = recipe.grinderModel || "C40_MK4";
+  const profile = GRINDER_PROFILES[grinderModel];
+
+  if (profile) {
+      // Calculate absolute gap size using the relative clicks
+      const clicks = getGrinderClicks(grinderModel, recipe.grindSize);
+      if (typeof clicks === 'number') {
+          // コニカル刃の幾何学的減衰係数（0.55）をかけて実際の隙間に近似
+          absoluteMicrons = clicks * profile.micronsPerClick * 0.55;
+      }
+
+      // Fines Ratio
+      const isCoarse = recipe.grindSize === 'Coarse' || recipe.grindSize === 'Medium-Coarse';
+      finesRatio = isCoarse ? profile.finesRatio.coarse : profile.finesRatio.medium;
+  }
+
+  // Microns scoring (Base: 500μm). 細かいほど表面積が増えて抽出が早い(プラス)。
+  score += (500 - absoluteMicrons) / 15;
+
+  // Fines scoring (Base: 20%). 微粉が多いほど過抽出・目詰まりリスク大(プラス)。
+  score += (finesRatio - 20) * 1.5;
+
+  // 4. Pour Structure (Contact Time & Flow)
+  // 注ぎの回数が多い（多投）＝ 内部拡散（Diffusion）が促進され抽出が進む（プラス）。
+  const stepsCount = recipe.steps?.length || 3;
+  score += (stepsCount - 3) * 3;
+
+  // Evaluate the final score (-100 to +100 range conceptually)
+  let advice = "";
+  if (score > 18) {
+      // 極度の過抽出リスク
+      advice = `少し濃く出すぎる（渋みや苦味が強くなる）組み合わせです。お湯の温度を少し下げるか、注ぎの回数を減らして早めに切り上げるとよりスッキリと甘くなります。`;
+      if (finesRatio >= 26) {
+          advice += `また、使用中のグラインダー（${grinderModel}）は微粉が出やすいため、後半の注ぎは勢いをつけず優しく置いてあげるイメージで注ぐと目詰まりを防げます。`;
+      }
+  } else if (score < -18) {
+      // 極度の未抽出リスク
+      advice = `少しサッパリしすぎて、酸味が際立つ（薄く感じる）かもしれません。もう少しお湯の温度を上げるか、注ぐ回数を増やしてあげると、甘みとコクがしっかり引き出せます。`;
+      if (absoluteMicrons > 700) {
+          advice += `挽き目がかなり粗いため、お湯が早く抜けすぎている可能性があります。挽き目を少し細かくするのもおすすめです。`;
+      }
+  } else {
+      // スイートスポット
+      advice = `抽出バランス（甘み・酸味・コク）が非常に整いやすい、理想的なスイートスポット設定です！`;
+      if (finesRatio <= 18) {
+          advice += `お使いのグラインダー（${grinderModel}）のこの設定は微粉が非常に少なくクリーンなため、フレーバーがとても綺麗に出ます。`;
+      }
+  }
+
+  return { score, advice };
 }
