@@ -17,6 +17,7 @@ export type Recipe = {
     accessories?: string[]; // e.g. ["Paragon", "Melodrip", "Sifter"]
     isStarred?: boolean; // New: Favorite status for recipe
     isShopRecipe?: boolean; // New: Model/Shop recipe flag
+    notes?: string; // New: Optional notes
     steps: RecipeStep[];
 };
 

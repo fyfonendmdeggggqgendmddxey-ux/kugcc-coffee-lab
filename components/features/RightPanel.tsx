@@ -77,6 +77,9 @@ export default function RightPanel({
                         {r.accessories && r.accessories.length > 0 && (
                             <p className="italic">+ {r.accessories.join(', ')}</p>
                         )}
+                        {r.notes && (
+                            <p className="mt-2 text-gray-400 border-t border-gray-800 pt-1 line-clamp-2 leading-relaxed">{r.notes}</p>
+                        )}
                     </div>
                 </button>
 

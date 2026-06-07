@@ -170,6 +170,14 @@ export default function Timer({
               )}
             </div>
           </div>
+          {recipe.notes && (
+            <div className="opacity-60">
+              <div className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Notes</div>
+              <div className="text-[10px] md:text-xs text-gray-400 border-l-2 border-gray-600 pl-2 line-clamp-3 italic leading-relaxed whitespace-pre-wrap">
+                {recipe.notes}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Actions */}

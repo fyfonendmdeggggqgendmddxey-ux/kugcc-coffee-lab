@@ -114,9 +114,14 @@ export default function CircularTimer({
                     </span>
                     <span className="text-sm font-mono text-white border-b border-gray-700 pb-0.5 transition-colors duration-300 group-hover:border-gray-500">
                         Target: {Math.round(currentStepVolume)}ml
-                        {!isFinished && (
+                        {!isFinished && Math.round(stepAddedVolume) > 0 && (
                             <span className="text-gray-500 ml-1">
                                 (+{Math.round(stepAddedVolume)}ml)
+                            </span>
+                        )}
+                        {!isFinished && Math.round(stepAddedVolume) === 0 && (
+                            <span className="text-orange-500 ml-2 text-[10px] uppercase tracking-widest font-sans font-bold">
+                                [ACTION]
                             </span>
                         )}
                     </span>

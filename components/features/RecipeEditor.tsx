@@ -308,6 +308,17 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                 </button>
             </div>
 
+            {/* Notes Field */}
+            <div className="w-full max-w-4xl mb-6 md:mb-12">
+                <label className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 block">Recipe Notes</label>
+                <textarea
+                    value={recipe.notes || ''}
+                    onChange={(e) => setRecipe({ ...recipe, notes: e.target.value })}
+                    placeholder="Enter any notes, special techniques, or flavor intentions..."
+                    className="w-full bg-black border border-gray-800 text-gray-300 font-mono text-xs p-4 focus:outline-none focus:border-white transition-colors min-h-[100px] resize-y"
+                />
+            </div>
+
             {/* Save Target & Actions */}
             <div className="w-full max-w-4xl mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6 pb-20">
                 <div className="flex flex-col gap-2">
