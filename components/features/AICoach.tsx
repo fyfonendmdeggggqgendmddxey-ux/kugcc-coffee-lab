@@ -9,7 +9,7 @@ interface AICoachProps {
 
 export default function AICoach({ bean, recipe }: AICoachProps) {
     const adjustments = bean
-        ? getAgingAdjustments(new Date(bean.roastDate), bean.roastLevel)
+        ? getAgingAdjustments(new Date(bean.roastDate), bean.roastLevel, bean.storageLocation)
         : null;
 
     return (

@@ -314,15 +314,34 @@ export default function BeanEntryModal({
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="text-[10px] uppercase text-gray-500 tracking-widest">Roast Date</label>
-                        <input
-                            type="date"
-                            name="roastDate"
-                            value={formData.roastDate}
-                            onChange={handleChange}
-                            className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none block w-full"
-                        />
+                    <div className="grid grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Roast Date</label>
+                            <input
+                                type="date"
+                                name="roastDate"
+                                value={formData.roastDate}
+                                onChange={handleChange}
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none block w-full"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest flex items-center gap-1">
+                                Storage
+                                <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1 py-0.5 rounded">NEW</span>
+                            </label>
+                            <select
+                                name="storageLocation"
+                                value={formData.storageLocation || 'Room'}
+                                onChange={handleChange}
+                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors"
+                            >
+                                <option value="Room" className="bg-gray-900">常温 (20-25℃)</option>
+                                <option value="HighTemp" className="bg-gray-900">夏場/高温 (&gt;30℃)</option>
+                                <option value="Fridge" className="bg-gray-900">冷蔵庫 (4℃)</option>
+                                <option value="Freezer" className="bg-gray-900">冷凍庫 (-18℃)</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-2">

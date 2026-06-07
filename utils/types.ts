@@ -36,7 +36,7 @@ export type Bean = {
     recipes?: Recipe[]; // New: List of saved recipes
     idealAgingDays?: number; // Optional: Theoretical ideal aging days
     shopRecommendedDays?: number; // Optional: Shop's recommended aging days
-    storageLocation?: string; // Optional: Storage location (e.g., Freezer, Wine Cellar)
+    storageLocation?: 'Room' | 'HighTemp' | 'Fridge' | 'Freezer'; // Optional: Storage location
     flavorTags?: string[]; // Optional: Flavor profile tags
 };
 

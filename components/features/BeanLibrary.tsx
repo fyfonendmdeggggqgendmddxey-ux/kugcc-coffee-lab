@@ -255,44 +255,63 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             
             const diffTime = todayDateOnly.getTime() - roastDateOnly.getTime();
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            if (isNaN(diffDays)) return null;
+            const physicalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            if (isNaN(physicalDays)) return null;
+
+            // Compute effective aging days based on storage and roast level
+            let multiplier = 1.0;
+            if (bean.roastLevel === 'Light') multiplier *= 0.8;
+            else if (bean.roastLevel === 'Dark') multiplier *= 1.2;
+
+            if (bean.storageLocation === 'HighTemp') multiplier *= 1.5;
+            else if (bean.storageLocation === 'Fridge') multiplier *= 0.2;
+            else if (bean.storageLocation === 'Freezer') multiplier *= 0.05;
+
+            const effectiveDays = physicalDays * multiplier;
+            const isModified = multiplier !== 1.0;
+            const displayDays = isModified ? effectiveDays.toFixed(1) : physicalDays.toString();
+
+            const diffDays = effectiveDays;
 
             const degasEnd = bean.shopRecommendedDays ?? bean.idealAgingDays ?? 4;
             const peakEnd = degasEnd + 10;
             const goodEnd = peakEnd + 16;
 
+            const tooltipTitle = isModified 
+                ? `Physical: ${physicalDays}d, Multiplier: x${multiplier.toFixed(2)}`
+                : '';
+
             if (diffDays < 0) {
                 return (
-                    <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-purple-900 bg-purple-950/20 text-purple-400 font-bold rounded-sm">
+                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-purple-900 bg-purple-950/20 text-purple-400 font-bold rounded-sm">
                         Future
                     </span>
                 );
             }
             if (diffDays <= degasEnd) {
                 return (
-                    <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-amber-900 bg-amber-950/20 text-amber-500 font-bold rounded-sm">
-                        Degas ({diffDays}d)
+                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-amber-900 bg-amber-950/20 text-amber-500 font-bold rounded-sm">
+                        Degas ({displayDays}d)
                     </span>
                 );
             }
             if (diffDays <= peakEnd) {
                 return (
-                    <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-emerald-900 bg-emerald-950/20 text-emerald-400 font-bold rounded-sm animate-pulse">
-                        Peak ({diffDays}d)
+                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-emerald-900 bg-emerald-950/20 text-emerald-400 font-bold rounded-sm animate-pulse">
+                        Peak ({displayDays}d)
                     </span>
                 );
             }
             if (diffDays <= goodEnd) {
                 return (
-                    <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-sky-900 bg-sky-950/20 text-sky-400 font-bold rounded-sm">
-                        Good ({diffDays}d)
+                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-sky-900 bg-sky-950/20 text-sky-400 font-bold rounded-sm">
+                        Good ({displayDays}d)
                     </span>
                 );
             }
             return (
-                <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">
-                    Aged ({diffDays}d)
+                <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">
+                    Aged ({displayDays}d)
                 </span>
             );
         } catch (e) {
