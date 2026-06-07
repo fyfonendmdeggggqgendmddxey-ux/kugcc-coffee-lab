@@ -43,8 +43,8 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
         const absDx = Math.abs(dx);
         const absDy = Math.abs(dy);
         
-        // Threshold: at least 70px horizontal movement, and must be clearly more horizontal than vertical
-        if (absDx > 70 && absDx > absDy * 2) {
+        // Threshold: at least 120px horizontal movement, and must be clearly more horizontal than vertical
+        if (absDx > 120 && absDx > absDy * 2.5) {
             const tabs = ['library', 'timer', 'recipes'] as const;
             const currentIndex = tabs.indexOf(activeTab);
             
