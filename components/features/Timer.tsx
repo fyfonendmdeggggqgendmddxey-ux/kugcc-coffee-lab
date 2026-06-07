@@ -232,7 +232,7 @@ export default function Timer({
       </div>
 
       {/* Test Mode Toggle */}
-      <div className="flex items-center gap-3 z-20 pointer-events-auto mt-24 md:mt-4 mb-2">
+      <div className="flex items-center gap-3 z-20 pointer-events-auto mt-24 md:mt-6 mb-6 md:mb-10">
         <span className={`text-[10px] uppercase tracking-widest transition-colors ${!isTestMode ? 'text-white' : 'text-gray-600'}`}>Standard</span>
         <button
             onClick={() => {
