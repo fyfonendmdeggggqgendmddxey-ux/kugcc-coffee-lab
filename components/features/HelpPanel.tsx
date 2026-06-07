@@ -13,11 +13,12 @@ export default function HelpPanel() {
                 <section>
                     <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">🚀 1. はじめに（Getting Started）</h3>
                     <p className="mb-2">
-                        Coffee Labへようこそ！このアプリは、あなたが購入したコーヒー豆の情報を管理し、日々の抽出（ドリップ）レシピを記録するためのツールです。
+                        Coffee Labへようこそ！このアプリは、あなたが購入したコーヒー豆の情報を管理し、日々の抽出（ドリップ）レシピを記録・実行するためのプロフェッショナル向けツールです。
                     </p>
                     <ul className="list-disc pl-4 space-y-1">
                         <li><strong>Library:</strong> 購入した豆を登録・一覧表示します。</li>
-                        <li><strong>Timer:</strong> ドリップ時のタイマーとレシピを表示します。</li>
+                        <li><strong>Timer:</strong> ドリップ時のタイマーとレシピを表示し、抽出をガイドします。</li>
+                        <li><strong>Recipes:</strong> 汎用レシピや豆ごとのレシピを管理します。</li>
                         <li><strong>Logs:</strong> 抽出ごとの評価（Tasting Log）を記録します。</li>
                     </ul>
                 </section>
@@ -36,35 +37,62 @@ export default function HelpPanel() {
                             <li>Libraryタブの 📸 アイコンから写真をアップロードすると自動解析が始まります！</li>
                         </ol>
                     </div>
-                    <p className="text-[10px] text-gray-500">※ 写真から焙煎日が読み取れなかった場合、Settingsで設定した「Roaster Aging Defaults（店舗ごとのデフォルト日数）」が自動適用されます。</p>
                 </section>
 
-                {/* 3. Aging */}
+                {/* 3. Brewing Timer & Test Drip */}
                 <section>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">⏳ 3. エイジング管理（Aging）</h3>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">⏱️ 3. タイマーとTest Drip（ダイヤルイン）</h3>
                     <p className="mb-2">
-                        コーヒー豆は焙煎直後からガスが抜け（Degas）、味が落ち着いて飲み頃（Peak）を迎えます。
+                        タイマータブでは、レシピに沿った抽出ガイドと、自由な抽出を記録するTest Dripモードが使えます。
                     </p>
-                    <ul className="list-disc pl-4 space-y-2">
+                    <div className="space-y-3">
+                        <div>
+                            <strong className="text-gray-300">【通常モード（Standard）】</strong>
+                            <p>レシピ通りに時間を計るモードです。タイマーを開始すると、設定したステップ（蒸らし、第1投など）に合わせてカウントダウンが進行し、注ぐべき目標湯量が画面にリアルタイム表示されます。</p>
+                        </div>
+                        <div>
+                            <strong className="text-blue-400">【Test Drip（ダイヤルイン・モード）】</strong>
+                            <p>「あなたが実際に注いだタイミングを記録し、後からレシピ化する」ための逆算型タイマーです。初めての豆や、微調整を行いたい時に最適です。</p>
+                            <ol className="list-decimal pl-4 mt-1 space-y-1">
+                                <li>画面下部のパネル右端にあるスイッチを <strong className="text-blue-400">TEST DRIP</strong> に切り替えます。</li>
+                                <li>スタートすると、タイマーが1周60秒のストップウォッチとしてシームレスに回転します。</li>
+                                <li>湯を注ぐタイミングで「LAP」ボタン（またはSpaceキー）を押し、ラップを刻みます（回数無制限）。</li>
+                                <li>「FINISH」を押すと、実測秒数とレシピのズレがサマリーとして表示されます。</li>
+                                <li>そのまま「Save Dial-in as New Recipe」を押せば、実測データが反映された新規レシピとして保存できます！</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 4. Aging Theory */}
+                <section>
+                    <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">⏳ 4. エイジングと科学理論（Aging Theory）</h3>
+                    <p className="mb-2">
+                        コーヒー豆は焙煎直後からガスが抜け（Degas）、味が落ち着いて飲み頃（Peak）を迎えます。当アプリは以下の科学的理論に基づいてエイジングを管理します。
+                    </p>
+                    <ul className="list-disc pl-4 space-y-2 mb-4">
                         <li><span className="px-1.5 py-0.5 text-[8px] border border-amber-900 bg-amber-950/20 text-amber-500 rounded-sm">Degas</span> 焙煎直後。まだガスが多く、味が安定していない状態です。</li>
                         <li><span className="px-1.5 py-0.5 text-[8px] border border-emerald-900 bg-emerald-950/20 text-emerald-400 rounded-sm">Peak</span> 飲み頃のピーク！味が最も開いて美味しい時期です。</li>
                         <li><span className="px-1.5 py-0.5 text-[8px] border border-sky-900 bg-sky-950/20 text-sky-400 rounded-sm">Good</span> ピークは過ぎましたが、まだまだ美味しく飲めます。</li>
                         <li><span className="px-1.5 py-0.5 text-[8px] border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">Aged</span> 焙煎からかなり日数が経過した状態です。</li>
                     </ul>
-                    <p className="mt-2 text-[10px]">※ 豆の登録時に「Ideal Peak (Days)」を設定することで、Peakを迎える日数をカスタマイズできます。</p>
-                </section>
-
-                {/* 4. Brewing */}
-                <section>
-                    <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">⏱️ 4. ドリップ・タイマー（Brewing Timer）</h3>
-                    <p className="mb-2">
-                        豆ごとに「独自のレシピ」を保存することができます。
-                    </p>
-                    <ul className="list-disc pl-4 space-y-1">
-                        <li>Libraryから豆を選択し、「Timer」タブに移動します。</li>
-                        <li>デフォルトでは「Standard V60 Recipe」が適用されます。</li>
-                        <li>「📝 EDIT RECIPE」ボタンから、豆の量・湯温・お湯を注ぐタイミング（%）を自分好みに変更できます。</li>
-                    </ul>
+                    
+                    <div className="bg-gray-900/30 p-3 border border-gray-800 rounded">
+                        <strong className="text-gray-300 block mb-2">🔬 脱ガス（Degassing）のメカニズムと速度論</strong>
+                        <p className="mb-2">
+                            焙煎中に生成された二酸化炭素（CO₂）が豆の多孔質構造から放出される現象です。脱ガスの速度はフィックの拡散の法則（Fick's law）に従い、時間に対して指数関数的に減少（Exponential decay）します。
+                        </p>
+                        <ul className="list-disc pl-4 space-y-1 mb-3">
+                            <li><strong>焙煎度:</strong> 深煎りほど細胞壁が脆くガス放出が速い。</li>
+                            <li><strong>温度:</strong> 保管温度が高いほど拡散速度が速い（アレニウスの式）。</li>
+                        </ul>
+                        <strong className="text-gray-400 block mb-1 text-[10px]">📚 参考文献（References）:</strong>
+                        <ul className="list-disc pl-4 space-y-1 text-[9px] text-gray-500">
+                            <li>Smrke, S., et al. (2018). "Time-Resolved Gravimetric Method to Assess Degassing of Roasted Coffee."</li>
+                            <li>Shimoni, E., & Labuza, T. P. (2000). "Degassing Kinetics and Sorption Equilibrium of Carbon Dioxide in Fresh Roasted and Ground Coffee."</li>
+                            <li>Wang, X., & Lim, L. T. (2014). "Effect of Roasting Conditions on Carbon Dioxide Degassing Behavior in Coffee."</li>
+                        </ul>
+                    </div>
                 </section>
 
                 {/* 5. Data & Backup */}
@@ -77,7 +105,7 @@ export default function HelpPanel() {
                         ⚠️ ブラウザの履歴やキャッシュを完全に消去すると、データが消えてしまいます！
                     </p>
                     <p>
-                        定期的に <strong>Settingsタブ</strong> の一番下にある「Export Backup」ボタンを押し、JSONファイルとしてバックアップを保存することをおすすめします。別のスマホやPCにデータを移す際も、このファイルから「Import Data」できます。
+                        定期的に <strong>Settingsタブ</strong> の一番下にある「Export Backup」ボタンを押し、JSONファイルとしてバックアップを保存することをおすすめします。
                     </p>
                 </section>
 
