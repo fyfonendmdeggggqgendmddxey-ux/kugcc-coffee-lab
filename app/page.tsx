@@ -205,12 +205,9 @@ export default function Home() {
                             setActiveTab('timer');
                         }}
                         onSaveTestRecipe={(newRecipe) => {
-                            if (selectedBeanId) {
-                                handleRecipeSave(newRecipe, 'bean');
-                            } else {
-                                handleRecipeSave(newRecipe, 'global');
-                            }
-                            // The user stays on the Timer tab with the new recipe active.
+                            setCustomRecipe(newRecipe);
+                            setIsEditing(true);
+                            setActiveTab('timer');
                         }}
                     />
             }
