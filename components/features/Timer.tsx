@@ -106,14 +106,15 @@ export default function Timer({
   // Progress within current step
   const previousThreshold = currentStepIndex > 0 ? stepThresholds[currentStepIndex - 1] : 0;
   const currentStepDuration = currentStep.duration;
-  let timeInStep = 0;
+  let stepProgress = 0;
+  
   if (isTestMode) {
-      const currentLapStart = manualLaps[currentStepIndex] || 0;
-      timeInStep = Math.max(0, elapsedSeconds - currentLapStart);
+      // In Test Mode, the ring acts as a 60-second sweeping hand (classic stopwatch)
+      stepProgress = (elapsedSeconds % 60) / 60;
   } else {
-      timeInStep = Math.max(0, elapsedSeconds - previousThreshold);
+      const timeInStep = Math.max(0, elapsedSeconds - previousThreshold);
+      stepProgress = Math.min(timeInStep / currentStepDuration, 1);
   }
-  const stepProgress = Math.min(timeInStep / currentStepDuration, 1);
   // Ensure we consistently show 100% when finished or past this step in other contexts
 
 
