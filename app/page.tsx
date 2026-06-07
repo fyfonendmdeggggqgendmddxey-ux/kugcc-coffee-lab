@@ -30,8 +30,8 @@ export default function Home() {
 
     const selectedBean = beans.find(b => b.id === selectedBeanId);
 
-    // Determine active recipe: Bean Override -> Custom Session Recipe -> Default
-    const activeRecipe = selectedBean?.recipeOverride || customRecipe || DEFAULT_RECIPE;
+    // Determine active recipe: Custom Session Recipe (e.g. from Test Drip or Add Global) -> Bean Override -> Default
+    const activeRecipe = customRecipe || selectedBean?.recipeOverride || DEFAULT_RECIPE;
 
     const handleRecipeSave = (newRecipe: Recipe, scope: 'default' | 'bean' | 'global') => {
         const recipeToSave = { ...newRecipe, id: newRecipe.id || Date.now().toString() };
@@ -89,6 +89,7 @@ export default function Home() {
             const updatedBeans = beans.map(b => b.id === selectedBeanId ? { ...b, recipeOverride: recipe } : b);
             setBeans(updatedBeans);
             localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
+            setCustomRecipe(null); // Clear custom recipe so the bean override is used
         } else {
             setCustomRecipe(recipe);
         }
@@ -180,7 +181,10 @@ export default function Home() {
             left={
                 <BeanLibrary
                     selectedId={selectedBeanId}
-                    onSelect={(id) => setSelectedBeanId(id)}
+                    onSelect={(id) => {
+                        setSelectedBeanId(id);
+                        setCustomRecipe(null);
+                    }}
                 />
             }
             center={
