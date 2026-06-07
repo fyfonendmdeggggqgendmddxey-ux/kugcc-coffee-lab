@@ -64,12 +64,18 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   // Calculate chronological days
   const chronoDays = Math.max(0, (today.getTime() - roastDate.getTime()) / oneDay);
 
-  // Apply freezer pause
-  if (bean.isFrozen && bean.frozenDate) {
-    const frozenDate = new Date(bean.frozenDate);
+  // Apply freezer pause & storage location kinetics
+  const isFreezer = bean.isFrozen || bean.storageLocation === 'Freezer';
+  if (isFreezer) {
+    // If frozenDate isn't set, assume it was frozen on purchaseDate or roastDate
+    const frozenDate = bean.frozenDate ? new Date(bean.frozenDate) : (bean.purchaseDate ? new Date(bean.purchaseDate) : roastDate);
     const daysBeforeFreezing = Math.max(0, (frozenDate.getTime() - roastDate.getTime()) / oneDay);
     const daysInFreezer = Math.max(0, (today.getTime() - frozenDate.getTime()) / oneDay);
     effectiveDaysRaw = daysBeforeFreezing + (daysInFreezer * 0.05); // 95% slower in freezer
+  } else if (bean.storageLocation === 'Fridge') {
+    effectiveDaysRaw = chronoDays * 0.3; // 70% slower in fridge
+  } else if (bean.storageLocation === 'HighTemp') {
+    effectiveDaysRaw = chronoDays * 1.5; // 50% faster in high temp
   } else {
     effectiveDaysRaw = chronoDays;
   }
@@ -136,10 +142,14 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   }
 
   // Inject specific storage advice
-  if (bean.isFrozen) {
-      adjustments.advice += " ❄️冷凍保存中：エイジング進行がほぼストップしています。";
+  if (isFreezer) {
+      adjustments.advice += " ❄️冷凍保存中：エイジング進行が約95%ストップしています。";
+  } else if (bean.storageLocation === 'Fridge') {
+      adjustments.advice += " 🧊冷蔵保存中：エイジング進行が約70%遅くなっています。";
+  } else if (bean.storageLocation === 'HighTemp') {
+      adjustments.advice += " 🔥高温保管中：エイジング進行が1.5倍加速しています。";
   }
-  if (bean.openedDate) {
+  if (bean.openedDate && !isFreezer) {
       const daysOpen = Math.floor((today.getTime() - new Date(bean.openedDate).getTime()) / oneDay);
       adjustments.advice += ` ✂️開封から${daysOpen}日経過：酸化スピードが加速しています。早めに飲み切ることを推奨します。`;
   }

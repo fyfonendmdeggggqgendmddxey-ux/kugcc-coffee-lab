@@ -15,10 +15,14 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
     const handleToggleFreeze = () => {
         if (!bean || !onUpdateBean) return;
         const updatedBean = { ...bean };
-        updatedBean.isFrozen = !updatedBean.isFrozen;
+        const isCurrentlyFrozen = updatedBean.isFrozen || updatedBean.storageLocation === 'Freezer';
+        
+        updatedBean.isFrozen = !isCurrentlyFrozen;
         if (updatedBean.isFrozen) {
+            updatedBean.storageLocation = 'Freezer';
             updatedBean.frozenDate = new Date().toISOString();
         } else {
+            updatedBean.storageLocation = 'Room';
             updatedBean.frozenDate = undefined;
         }
         onUpdateBean(updatedBean);
@@ -170,12 +174,12 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                             <button 
                                 onClick={handleToggleFreeze}
                                 className={`flex-1 py-2 text-[9px] font-bold uppercase tracking-widest border transition-all ${
-                                    bean.isFrozen 
+                                    bean.isFrozen || bean.storageLocation === 'Freezer'
                                         ? 'border-blue-900 bg-blue-950/20 text-blue-400 hover:bg-blue-900/40' 
                                         : 'border-gray-800 text-gray-500 hover:text-white hover:border-gray-600'
                                 }`}
                             >
-                                {bean.isFrozen ? '❄️ In Freezer' : 'Put in Freezer'}
+                                {bean.isFrozen || bean.storageLocation === 'Freezer' ? '❄️ In Freezer' : 'Put in Freezer'}
                             </button>
                         </div>
                     </div>
