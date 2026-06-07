@@ -60,24 +60,6 @@ export default function AICoach({ bean, recipe }: AICoachProps) {
                             </div>
                         </div>
                     )}
-
-                    <div className="border-l border-gray-800 pl-4 py-1">
-                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Variable Adjustments</p>
-                        <div className="grid grid-cols-2 gap-4 text-xs">
-                            <div>
-                                <span className="text-gray-600 block">BLOOM</span>
-                                <span className="text-white text-lg">
-                                    {adjustments.bloomTimeAdjustment > 0 ? '+' : ''}{adjustments.bloomTimeAdjustment}s
-                                </span>
-                            </div>
-                            <div>
-                                <span className="text-gray-600 block">TEMP</span>
-                                <span className="text-white text-lg">
-                                    {adjustments.tempAdjustment > 0 ? '+' : ''}{adjustments.tempAdjustment}°C
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             ) : (
                 <div className="text-xs text-gray-600 uppercase tracking-widest text-center mt-20 mb-20">
