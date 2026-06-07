@@ -168,7 +168,7 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full relative h-full px-4 py-6 md:py-12 select-none">
+    <div className="flex flex-col items-center justify-start md:justify-center w-full relative min-h-full px-4 py-6 md:py-12 select-none pb-12">
       {/* Top Header Row (Bean/Equipment & Actions) */}
       <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
@@ -338,7 +338,7 @@ export default function Timer({
               <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-3 flex items-center gap-2">
                   <span className="text-[#3b82f6]">●</span> Dial-in Summary
               </h3>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
                   {manualLaps.map((manualStart, idx) => {
                       const step = recipe.steps[idx] || { name: `Pour ${idx + 1}`, duration: 0, waterPercentage: 0 };
                       const targetDuration = step.duration;
