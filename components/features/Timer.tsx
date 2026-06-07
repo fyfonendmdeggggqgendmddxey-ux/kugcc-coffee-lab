@@ -96,7 +96,12 @@ export default function Timer({
 
 
   // Current Context Calculation
-  const currentStep = recipe.steps[currentStepIndex];
+  const currentStep = recipe.steps[currentStepIndex] || {
+      id: `virtual-${currentStepIndex}`,
+      name: `Pour ${currentStepIndex + 1}`,
+      duration: 0,
+      waterPercentage: 0
+  };
 
   // Progress within current step
   const previousThreshold = currentStepIndex > 0 ? stepThresholds[currentStepIndex - 1] : 0;
@@ -114,9 +119,13 @@ export default function Timer({
 
   // Cumulative Target Volume Logic
   const cumulativeTargetVolume = useMemo(() => {
-    return recipe.steps
-      .slice(0, currentStepIndex + 1)
-      .reduce((acc, step) => acc + (totalWater * (step.waterPercentage / 100)), 0);
+    let acc = 0;
+    for (let i = 0; i <= currentStepIndex; i++) {
+        if (i < recipe.steps.length) {
+            acc += totalWater * (recipe.steps[i].waterPercentage / 100);
+        }
+    }
+    return acc;
   }, [recipe.steps, currentStepIndex, totalWater]);
 
 
@@ -263,14 +272,7 @@ export default function Timer({
                   const newLaps = [...manualLaps, elapsedSeconds];
                   setManualLaps(newLaps);
                   audioEngine?.playStart();
-                  
-                  if (currentStepIndex < recipe.steps.length - 1) {
-                      setCurrentStepIndex(prev => prev + 1);
-                  } else {
-                      setIsFinished(true);
-                      setIsRunning(false);
-                      audioEngine?.playComplete();
-                  }
+                  setCurrentStepIndex(prev => prev + 1);
               }
           } else {
               if (!isFinished) setIsRunning(prev => !prev);
@@ -296,7 +298,8 @@ export default function Timer({
 
       {/* Steps Visualization (Mini Timeline) */}
       <div className="flex gap-1 w-full max-w-[400px] h-1 bg-gray-900 rounded-full overflow-hidden mb-6 md:mb-8">
-        {recipe.steps.map((step, idx) => {
+        {Array.from({ length: Math.max(recipe.steps.length, currentStepIndex + 1) }).map((_, idx) => {
+          const step = recipe.steps[idx] || { id: `virtual-${idx}` };
           const isPast = idx < currentStepIndex;
           const isFuture = idx > currentStepIndex;
           const isActive = idx === currentStepIndex;
@@ -335,19 +338,19 @@ export default function Timer({
                   <span className="text-[#3b82f6]">●</span> Dial-in Summary
               </h3>
               <div className="flex flex-col gap-2">
-                  {recipe.steps.map((step, idx) => {
+                  {manualLaps.map((manualStart, idx) => {
+                      const step = recipe.steps[idx] || { name: `Pour ${idx + 1}`, duration: 0, waterPercentage: 0 };
                       const targetDuration = step.duration;
-                      const manualStart = manualLaps[idx] || 0;
                       const manualEnd = idx < manualLaps.length - 1 ? manualLaps[idx + 1] : elapsedSeconds;
                       const actualDuration = manualEnd - manualStart;
-                      const delta = actualDuration - targetDuration;
+                      const delta = targetDuration > 0 ? actualDuration - targetDuration : 0;
                       const isOver = delta > 0;
                       return (
                           <div key={idx} className="flex justify-between items-center text-xs font-mono border-b border-gray-800/50 pb-1">
                               <span className="text-gray-400 w-1/3 truncate">{step.name}</span>
                               <span className="text-gray-300">{actualDuration.toFixed(1)}s</span>
-                              <span className={`w-16 text-right ${Math.abs(delta) < 1 ? 'text-gray-500' : (isOver ? 'text-red-400' : 'text-[#3b82f6]')}`}>
-                                  {delta > 0 ? '+' : ''}{delta.toFixed(1)}s
+                              <span className={`w-16 text-right ${targetDuration === 0 ? 'text-gray-600' : (Math.abs(delta) < 1 ? 'text-gray-500' : (isOver ? 'text-red-400' : 'text-[#3b82f6]'))}`}>
+                                  {targetDuration > 0 && delta > 0 ? '+' : ''}{targetDuration > 0 ? delta.toFixed(1) + 's' : '-'}
                               </span>
                           </div>
                       );
@@ -356,8 +359,13 @@ export default function Timer({
               <button
                   onClick={() => {
                       if (!onSaveTestRecipe) return;
-                      const newSteps = recipe.steps.map((step, idx) => {
-                          const manualStart = manualLaps[idx] || 0;
+                      const newSteps = manualLaps.map((manualStart, idx) => {
+                          const step = recipe.steps[idx] || {
+                              id: `extra-${Date.now()}-${idx}`,
+                              name: `Pour ${idx + 1}`,
+                              duration: 0,
+                              waterPercentage: 0
+                          };
                           const manualEnd = idx < manualLaps.length - 1 ? manualLaps[idx + 1] : elapsedSeconds;
                           return {
                               ...step,
@@ -413,6 +421,19 @@ export default function Timer({
           Reset
         </button>
 
+        {isTestMode && isRunning && !isFinished && (
+            <button
+                onClick={() => {
+                    setIsFinished(true);
+                    setIsRunning(false);
+                    audioEngine?.playComplete();
+                }}
+                className="h-14 px-8 text-xs uppercase tracking-widest text-[#3b82f6] border border-[#3b82f6] hover:bg-[#3b82f6]/20 transition-all active:scale-95"
+            >
+                Finish
+            </button>
+        )}
+
         <button
           onClick={() => {
             if (isTestMode) {
@@ -425,14 +446,7 @@ export default function Timer({
                     const newLaps = [...manualLaps, elapsedSeconds];
                     setManualLaps(newLaps);
                     audioEngine?.playStart();
-                    
-                    if (currentStepIndex < recipe.steps.length - 1) {
-                        setCurrentStepIndex(prev => prev + 1);
-                    } else {
-                        setIsFinished(true);
-                        setIsRunning(false);
-                        audioEngine?.playComplete();
-                    }
+                    setCurrentStepIndex(prev => prev + 1);
                 }
             } else {
                 if (!isFinished) {
