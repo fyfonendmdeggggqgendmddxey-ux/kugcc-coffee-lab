@@ -16,6 +16,11 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
     const [touchStart, setTouchStart] = useState<{x: number, y: number} | null>(null);
 
     const handleTouchStart = (e: React.TouchEvent) => {
+        // If an input is currently focused, do not allow swiping (prevents accidental tab switches while typing)
+        if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+            return;
+        }
+
         // Prevent swipe on inputs, textareas, ranges, or explicitly horizontal-scrollable elements
         const target = e.target as HTMLElement;
         const ignoreSwipe = target.closest('.overflow-x-auto, .no-scrollbar, input, textarea, select, button');
