@@ -88,7 +88,7 @@ export default function BeanEntryModal({
             recipeOverride: initialBean?.recipeOverride || DEFAULT_RECIPE,
             idealAgingDays: formData.idealAgingDays ? parseInt(formData.idealAgingDays, 10) : undefined,
             shopRecommendedDays: formData.shopRecommendedDays ? parseInt(formData.shopRecommendedDays, 10) : undefined,
-            storageLocation: formData.storageLocation || undefined,
+            storageLocation: (formData.storageLocation as 'Room' | 'HighTemp' | 'Fridge' | 'Freezer') || undefined,
             flavorTags: formData.flavorTags
         };
         onSave(newBean);
