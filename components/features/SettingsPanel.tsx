@@ -351,7 +351,7 @@ export default function SettingsPanel() {
     };
 
     return (
-        <div className="flex flex-col h-full w-full p-4 md:p-6 font-mono overflow-y-auto pb-24">
+        <div className="h-full flex flex-col p-4 md:p-6 font-mono overflow-y-auto pb-24 overflow-x-hidden w-full max-w-full">
             <h2 className="text-white uppercase tracking-[0.3em] mb-6 md:mb-8 border-b border-gray-800 pb-4 text-sm md:text-base text-center">
                 System Config
             </h2>
@@ -418,7 +418,7 @@ export default function SettingsPanel() {
                             placeholder="AIzaSy..." 
                             value={geminiApiKey}
                             onChange={(e) => saveGeminiApiKey(e.target.value)}
-                            className="flex-1 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-500 focus:ring-1 focus:ring-gray-600 rounded-sm font-sans"
+                            className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-500 focus:ring-1 focus:ring-gray-600 rounded-sm font-sans"
                         />
                     </div>
                 </div>
@@ -443,7 +443,7 @@ export default function SettingsPanel() {
                         value={newRoaster}
                         onChange={(e) => setNewRoaster(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addRoaster()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoaster} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -477,7 +477,7 @@ export default function SettingsPanel() {
                     <select 
                         value={newDefaultRoaster}
                         onChange={(e) => setNewDefaultRoaster(e.target.value)}
-                        className="flex-[2] bg-gray-900/50 border-none text-[10px] p-2 text-white focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-[2] min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     >
                         <option value="">店舗を選択...</option>
                         {roasters.map(r => <option key={r} value={r}>{r}</option>)}
@@ -489,7 +489,7 @@ export default function SettingsPanel() {
                         value={newDefaultDays}
                         onChange={(e) => setNewDefaultDays(e.target.value === '' ? '' : parseInt(e.target.value))}
                         onKeyDown={(e) => e.key === 'Enter' && addRoasterDefault()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoasterDefault} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">追加</button>
                 </div>
@@ -520,7 +520,7 @@ export default function SettingsPanel() {
                         value={newQuickFilter}
                         onChange={(e) => setNewQuickFilter(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addQuickFilter()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addQuickFilter} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">追加</button>
                 </div>
@@ -545,7 +545,7 @@ export default function SettingsPanel() {
                         value={newOrigin}
                         onChange={(e) => setNewOrigin(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addOrigin()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addOrigin} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -570,7 +570,7 @@ export default function SettingsPanel() {
                         value={newProcess}
                         onChange={(e) => setNewProcess(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addProcess()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addProcess} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -595,7 +595,7 @@ export default function SettingsPanel() {
                         value={newRoastLevel}
                         onChange={(e) => setNewRoastLevel(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addRoastLevel()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addRoastLevel} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -620,7 +620,7 @@ export default function SettingsPanel() {
                         value={newVariety}
                         onChange={(e) => setNewVariety(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addVariety()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addVariety} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -645,7 +645,7 @@ export default function SettingsPanel() {
                         value={newDripper}
                         onChange={(e) => setNewDripper(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addDripper()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addDripper} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
@@ -670,7 +670,7 @@ export default function SettingsPanel() {
                         value={newAccessory}
                         onChange={(e) => setNewAccessory(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && addAccessory()}
-                        className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                        className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
                     />
                     <button onClick={addAccessory} className="px-3 py-1.5 border border-gray-800 hover:border-white text-[10px] text-gray-400 hover:text-white uppercase transition-colors shrink-0">Add</button>
                 </div>
