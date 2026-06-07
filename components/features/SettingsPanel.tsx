@@ -351,7 +351,7 @@ export default function SettingsPanel() {
     };
 
     return (
-        <div className="flex flex-col h-full w-full p-6 md:p-8 font-mono overflow-y-auto pb-24">
+        <div className="flex flex-col h-full w-full p-4 md:p-6 font-mono overflow-y-auto pb-24">
             <h2 className="text-white uppercase tracking-[0.3em] mb-6 md:mb-8 border-b border-gray-800 pb-4 text-sm md:text-base text-center">
                 System Config
             </h2>
@@ -400,7 +400,7 @@ export default function SettingsPanel() {
 
             {/* API Integrations */}
             <div className="mb-8 pb-6 border-b border-gray-900 border-dashed">
-                <h3 className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <h3 className="text-[10px] text-gray-300 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>API Integrations</span>
                     <Tooltip content="Gemini APIキーを設定すると、写真からAIが自動で情報を抽出する機能が使えるようになります！" position="right">
                         <span className="text-gray-400 cursor-help">[?]</span>
@@ -408,8 +408,8 @@ export default function SettingsPanel() {
                     <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
                 </h3>
                 <div className="flex flex-col gap-2">
-                    <label className="text-[10px] text-gray-400 leading-relaxed">
-                        <strong>Google Gemini API Key</strong><br/>
+                    <label className="text-[10px] text-gray-300 leading-relaxed">
+                        <strong className="text-white">Google Gemini API Key</strong><br/>
                         Used for "Auto-fill from Photo" feature. Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-blue-300">Google AI Studio</a>.
                     </label>
                     <div className="flex gap-2">
@@ -418,7 +418,7 @@ export default function SettingsPanel() {
                             placeholder="AIzaSy..." 
                             value={geminiApiKey}
                             onChange={(e) => saveGeminiApiKey(e.target.value)}
-                            className="flex-1 bg-gray-900/50 border-none text-[10px] p-2 text-white placeholder-gray-700 focus:ring-1 focus:ring-gray-700 rounded-sm font-sans"
+                            className="flex-1 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-500 focus:ring-1 focus:ring-gray-600 rounded-sm font-sans"
                         />
                     </div>
                 </div>
