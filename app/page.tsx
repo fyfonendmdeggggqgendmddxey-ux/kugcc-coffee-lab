@@ -18,14 +18,25 @@ export default function Home() {
 
     // Sync with localStorage
     useEffect(() => {
-        const saved = localStorage.getItem('kugcc_beans');
-        if (saved) {
-            setBeans(JSON.parse(saved));
-        }
-        const savedGlobal = localStorage.getItem('kugcc_recipes');
-        if (savedGlobal) {
-            setGlobalRecipes(JSON.parse(savedGlobal));
-        }
+        const load = () => {
+            const saved = localStorage.getItem('kugcc_beans');
+            if (saved) {
+                setBeans(JSON.parse(saved));
+            }
+            const savedGlobal = localStorage.getItem('kugcc_recipes');
+            if (savedGlobal) {
+                setGlobalRecipes(JSON.parse(savedGlobal));
+            }
+        };
+        
+        load();
+        window.addEventListener('kugcc_beans_updated', load);
+        window.addEventListener('storage', load);
+        
+        return () => {
+            window.removeEventListener('kugcc_beans_updated', load);
+            window.removeEventListener('storage', load);
+        };
     }, []);
 
     const selectedBean = beans.find(b => b.id === selectedBeanId);

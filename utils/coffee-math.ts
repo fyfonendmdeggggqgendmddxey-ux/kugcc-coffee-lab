@@ -47,6 +47,9 @@ export function getStorageMultiplier(location: string | undefined, date: Date): 
   if (location === 'HighTemp') {
     return getArrheniusMultiplier(30); // ~1.63
   }
+  if (location === 'Shop') {
+    return getArrheniusMultiplier(22); // Standard shop room temp (1.0x)
+  }
   // Room temp defaults to Yokohama average for the month
   const month = date.getMonth(); // 0-11
   const roomTemp = YOKOHAMA_TEMPS[month];
@@ -111,7 +114,7 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   const daysInShop = Math.min(chronoDays, daysInShopRaw);
   const daysAtHome = Math.max(0, chronoDays - daysInShop);
   
-  const roomMultiplier = getStorageMultiplier('Room', roastDate);
+  const roomMultiplier = getStorageMultiplier('Shop', roastDate);
   let homeMultiplier = getStorageMultiplier(bean.storageLocation, homeStorageStartDate);
 
   const isFreezer = bean.isFrozen || bean.storageLocation === 'Freezer';

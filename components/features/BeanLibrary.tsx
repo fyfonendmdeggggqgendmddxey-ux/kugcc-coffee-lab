@@ -112,6 +112,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
         const updatedBeans = [...beans, ...reviewedBeans];
         setBeans(updatedBeans);
         localStorage.setItem('kugcc_beans', JSON.stringify(updatedBeans));
+        window.dispatchEvent(new Event('kugcc_beans_updated'));
         setScannedBatch(null);
         toast(`Successfully added ${reviewedBeans.length} beans!`);
     };
@@ -142,6 +143,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
     useEffect(() => {
         if (isLoaded) {
             localStorage.setItem('kugcc_beans', JSON.stringify(beans));
+            window.dispatchEvent(new Event('kugcc_beans_updated'));
         }
     }, [beans, isLoaded]);
 
