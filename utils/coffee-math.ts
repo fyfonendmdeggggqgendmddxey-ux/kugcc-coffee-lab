@@ -102,21 +102,23 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   // Calculate chronological days
   const chronoDays = Math.max(0, (today.getTime() - roastDate.getTime()) / oneDay);
 
-  // Apply freezer pause & storage location kinetics via Arrhenius
+  // Apply storage location kinetics via Arrhenius
+  const shopDate = bean.purchaseDate ? new Date(bean.purchaseDate) : roastDate;
+  // If frozenDate is earlier than purchaseDate (unlikely, but just in case), use frozenDate
+  const homeStorageStartDate = bean.frozenDate && new Date(bean.frozenDate) > shopDate ? new Date(bean.frozenDate) : shopDate;
+
+  const daysInShop = Math.max(0, (homeStorageStartDate.getTime() - roastDate.getTime()) / oneDay);
+  const daysAtHome = Math.max(0, (today.getTime() - homeStorageStartDate.getTime()) / oneDay);
+  
+  const roomMultiplier = getStorageMultiplier('Room', roastDate);
+  let homeMultiplier = getStorageMultiplier(bean.storageLocation, homeStorageStartDate);
+
   const isFreezer = bean.isFrozen || bean.storageLocation === 'Freezer';
   if (isFreezer) {
-    // If frozenDate isn't set, assume it was frozen on purchaseDate or roastDate
-    const frozenDate = bean.frozenDate ? new Date(bean.frozenDate) : (bean.purchaseDate ? new Date(bean.purchaseDate) : roastDate);
-    const daysBeforeFreezing = Math.max(0, (frozenDate.getTime() - roastDate.getTime()) / oneDay);
-    const daysInFreezer = Math.max(0, (today.getTime() - frozenDate.getTime()) / oneDay);
-    
-    const roomMultiplier = getStorageMultiplier('Room', roastDate);
-    const freezerMultiplier = getStorageMultiplier('Freezer', today);
-    effectiveDaysRaw = (daysBeforeFreezing * roomMultiplier) + (daysInFreezer * freezerMultiplier);
-  } else {
-    const multiplier = getStorageMultiplier(bean.storageLocation, roastDate);
-    effectiveDaysRaw = chronoDays * multiplier;
+    homeMultiplier = getStorageMultiplier('Freezer', today);
   }
+  
+  effectiveDaysRaw = (daysInShop * roomMultiplier) + (daysAtHome * homeMultiplier);
 
   // Final effective days combining roast degree, processing method, and density kinetics
   const effectiveDays = effectiveDaysRaw * roastMultiplier * processMultiplier * (1 / densityMultiplier);

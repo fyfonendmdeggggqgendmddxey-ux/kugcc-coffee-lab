@@ -7,7 +7,7 @@ import BeanEntryModal from './BeanEntryModal';
 import BatchReviewModal from './BatchReviewModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
-import { getStorageMultiplier } from '@/utils/coffee-math';
+import { getAgingAdjustments } from '@/utils/coffee-math';
 import Tooltip from '../common/Tooltip';
 
 interface BeanLibraryProps {
@@ -246,114 +246,41 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
 
     const getAgingBadge = (bean: Bean) => {
-        if (!bean.roastDate) return null;
-        try {
-            const roast = new Date(bean.roastDate);
-            if (isNaN(roast.getTime())) return null;
-            
-            const roastDateOnly = new Date(roast.getFullYear(), roast.getMonth(), roast.getDate());
-            const now = new Date();
-            const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const adj = getAgingAdjustments(bean);
+        
+        if (!bean.roastDate || adj.effectiveDays === 0) {
+            return <span className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">Unknown</span>;
+        }
 
-            // Get purchase date or default to roast date
-            let purchaseDateOnly = roastDateOnly;
-            if (bean.purchaseDate) {
-                const purchase = new Date(bean.purchaseDate);
-                if (!isNaN(purchase.getTime())) {
-                    purchaseDateOnly = new Date(purchase.getFullYear(), purchase.getMonth(), purchase.getDate());
-                }
-            }
+        const displayDays = adj.effectiveDays.toFixed(1);
+        const tooltipTitle = `実質経過日数: ${displayDays}日`;
 
-            // Ensure dates are logical
-            if (purchaseDateOnly.getTime() < roastDateOnly.getTime()) {
-                purchaseDateOnly = roastDateOnly;
-            }
-            if (purchaseDateOnly.getTime() > todayDateOnly.getTime()) {
-                purchaseDateOnly = todayDateOnly;
-            }
-
-            // Phase 1: Roast to Purchase (Shop Aging) - Room temp
-            const phase1Time = purchaseDateOnly.getTime() - roastDateOnly.getTime();
-            const phase1Days = Math.floor(phase1Time / (1000 * 60 * 60 * 24));
-
-            // Phase 2: Purchase to Today (Home Aging) - Storage temp
-            const phase2Time = todayDateOnly.getTime() - purchaseDateOnly.getTime();
-            const phase2Days = Math.floor(phase2Time / (1000 * 60 * 60 * 24));
-
-            const totalPhysicalDays = phase1Days + phase2Days;
-            if (isNaN(totalPhysicalDays)) return null;
-
-            // Roast level multiplier applies to BOTH phases
-            let roastMultiplier = 1.0;
-            if (bean.roastLevel === 'Light') roastMultiplier = 0.8;
-            else if (bean.roastLevel === 'Dark') roastMultiplier = 1.2;
-
-            // Storage multiplier applies ONLY to Phase 2
-            // Phase 1 (Shop): Assume room temp
-            const phase1RoomMultiplier = getStorageMultiplier('Room', roast);
-            
-            let storageMultiplier = 1.0;
-            if (bean.isFrozen || bean.storageLocation === 'Freezer') {
-                storageMultiplier = getStorageMultiplier('Freezer', today);
-            } else {
-                storageMultiplier = getStorageMultiplier(bean.storageLocation, today);
-            }
-
-            // Phase 1 (Shop): Apply room multiplier
-            // Phase 2 (Home): Apply storage multiplier
-            const phase1Effective = phase1Days * roastMultiplier * phase1RoomMultiplier;
-            const phase2Effective = phase2Days * roastMultiplier * storageMultiplier;
-            const effectiveDays = phase1Effective + phase2Effective;
-
-            const isModified = roastMultiplier !== 1.0 || storageMultiplier !== phase1RoomMultiplier;
-            const displayDays = isModified ? effectiveDays.toFixed(1) : totalPhysicalDays.toString();
-
-            const diffDays = effectiveDays;
-
-            const degasEnd = bean.shopRecommendedDays ?? bean.idealAgingDays ?? 4;
-            const peakEnd = degasEnd + 10;
-            const goodEnd = peakEnd + 16;
-
-            const tooltipTitle = isModified 
-                ? `Shop: ${phase1Days}d, Home: ${phase2Days}d (Storage x${storageMultiplier.toFixed(2)})`
-                : '';
-
-            if (diffDays < 0) {
-                return (
-                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-purple-900 bg-purple-950/20 text-purple-400 font-bold rounded-sm">
-                        Future
-                    </span>
-                );
-            }
-            if (diffDays <= degasEnd) {
-                return (
-                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-amber-900 bg-amber-950/20 text-amber-500 font-bold rounded-sm">
-                        Degas ({displayDays}d)
-                    </span>
-                );
-            }
-            if (diffDays <= peakEnd) {
-                return (
-                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-emerald-900 bg-emerald-950/20 text-emerald-400 font-bold rounded-sm animate-pulse">
-                        Peak ({displayDays}d)
-                    </span>
-                );
-            }
-            if (diffDays <= goodEnd) {
-                return (
-                    <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-sky-900 bg-sky-950/20 text-sky-400 font-bold rounded-sm">
-                        Good ({displayDays}d)
-                    </span>
-                );
-            }
+        if (adj.currentPhase === 'Degas') {
             return (
-                <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">
-                    Aged ({displayDays}d)
+                <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-amber-900 bg-amber-950/20 text-amber-500 font-bold rounded-sm">
+                    Degas ({displayDays}d)
                 </span>
             );
-        } catch (e) {
-            return null;
         }
+        if (adj.currentPhase === 'Peak') {
+            return (
+                <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-emerald-900 bg-emerald-950/20 text-emerald-400 font-bold rounded-sm animate-pulse">
+                    Peak ({displayDays}d)
+                </span>
+            );
+        }
+        if (adj.currentPhase === 'Good') {
+            return (
+                <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-sky-900 bg-sky-950/20 text-sky-400 font-bold rounded-sm">
+                    Good ({displayDays}d)
+                </span>
+            );
+        }
+        return (
+            <span title={tooltipTitle} className="ml-2 px-1.5 py-0.5 text-[8px] tracking-wider uppercase border border-gray-800 bg-gray-900/40 text-gray-500 rounded-sm">
+                Aged ({displayDays}d)
+            </span>
+        );
     };
 
     // Filter Logic
