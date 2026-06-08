@@ -242,13 +242,21 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
       finesRatio = isCoarse ? profile.finesRatio.coarse : profile.finesRatio.medium;
   }
 
-  // 表面積の逆二乗の法則：粒径が半分になれば表面積は4倍になる
+  // 表面積の反比例の法則：同じ質量の豆なら、粒径が半分になれば総表面積は2倍になる
   // 500μmを基準(1.0)とした表面積比率を算出
-  const surfaceAreaRatio = Math.pow(500 / Math.max(100, absoluteMicrons), 2);
-  score += (surfaceAreaRatio - 1) * 20;
+  const surfaceAreaRatio = 500 / Math.max(100, absoluteMicrons);
+  // スコアへの影響を *60 に調整して現実の溶出スピードの体感に合わせる
+  score += (surfaceAreaRatio - 1) * 60;
 
-  // 微粉は過抽出と目詰まりの最大要因（抽出を極端に加速させる）
-  score += (finesRatio - 20) * 1.8;
+  // 微粉（Fines）によるチャネリングペナルティと過抽出リスクの非線形化
+  // Gagné理論: 微粉は一定割合(例:20%)までは過抽出スコアを線形に上げるが、
+  // それを超えるとチャネリングにより予測不能な渋み（局所的な過抽出）を誘発する。
+  if (finesRatio <= 20) {
+      score += (finesRatio - 20) * 1.5;
+  } else {
+      // 20%を超えると指数関数的に抽出が暴走する（スコアが跳ね上がる＝過抽出判定）
+      score += Math.pow((finesRatio - 20), 1.5) * 2.0;
+  }
 
   // 4. Pour Structure (Fick's Law of Diffusion & Concentration Gradient)
   // 注ぎ回数が多い＝フレッシュな溶媒が追加され濃度勾配が維持される＝抽出効率が上がる
