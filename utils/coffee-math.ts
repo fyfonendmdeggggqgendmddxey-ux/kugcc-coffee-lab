@@ -77,15 +77,15 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   if (level === 'light' || level === '浅煎り') roastMultiplier = 0.8;
   else if (level === 'dark' || level === '深煎り') roastMultiplier = 1.3;
 
-  // Processing Method Multiplier (Naturals/Anaerobics degas faster due to degraded cell walls)
+  // Processing Method Multiplier (Anaerobics and Naturals hold gas longer due to complex chemical structures)
   let processMultiplier = 1.0;
   const process = (bean.process || '').toLowerCase();
   if (process.includes('anaerobic') || process.includes('maceration') || process.includes('嫌気性') || process.includes('アナエロビック')) {
-      processMultiplier = 1.25;
+      processMultiplier = 0.60; // Extremely slow degassing
   } else if (process.includes('natural') || process.includes('dry') || process.includes('ナチュラル')) {
-      processMultiplier = 1.15;
+      processMultiplier = 0.85; // Slower degassing
   } else if (process.includes('washed') || process.includes('wet') || process.includes('ウォッシュト') || process.includes('ウォッシュド')) {
-      processMultiplier = 0.85;
+      processMultiplier = 1.20; // Fastest degassing
   }
 
   // Altitude/Density Multiplier (Continuous gradient: Higher altitude = slower degassing)
