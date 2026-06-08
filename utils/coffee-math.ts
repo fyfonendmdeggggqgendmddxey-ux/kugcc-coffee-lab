@@ -107,8 +107,9 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   // If frozenDate is earlier than purchaseDate (unlikely, but just in case), use frozenDate
   const homeStorageStartDate = bean.frozenDate && new Date(bean.frozenDate) > shopDate ? new Date(bean.frozenDate) : shopDate;
 
-  const daysInShop = Math.max(0, (homeStorageStartDate.getTime() - roastDate.getTime()) / oneDay);
-  const daysAtHome = Math.max(0, (today.getTime() - homeStorageStartDate.getTime()) / oneDay);
+  const daysInShopRaw = Math.max(0, (homeStorageStartDate.getTime() - roastDate.getTime()) / oneDay);
+  const daysInShop = Math.min(chronoDays, daysInShopRaw);
+  const daysAtHome = Math.max(0, chronoDays - daysInShop);
   
   const roomMultiplier = getStorageMultiplier('Room', roastDate);
   let homeMultiplier = getStorageMultiplier(bean.storageLocation, homeStorageStartDate);
@@ -264,21 +265,20 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
   score += (stepsCount - 3) * 4.2;
 
   // 5. Aging Kinetics (CO2 Off-gassing and Cell degradation)
-  // 焙煎からの経過日数によるガスの抜け具合と抽出効率の変化
+  // 実質経過日数（effectiveDays）によるガスの抜け具合と抽出効率の変化
+  // ※冷凍保存などを考慮するため、カレンダー上の日数ではなく実質日数を使う
   if (bean.roastDate) {
-      const today = new Date();
-      const roastDate = new Date(bean.roastDate);
-      const oneDay = 1000 * 60 * 60 * 24;
-      const daysSinceRoast = Math.floor((today.getTime() - roastDate.getTime()) / oneDay);
+      const adj = getAgingAdjustments(bean);
+      const effectiveDays = adj.effectiveDays;
       
       let agingScore = 0;
-      // ガスが大量に残っている場合（7日以内）、お湯が弾かれて極端に成分が出にくい
-      if (daysSinceRoast <= 7) {
-          agingScore = -10 * (1 - Math.max(0, daysSinceRoast)/7);
+      // ガスが大量に残っている場合（実質7日以内）、お湯が弾かれて極端に成分が出にくい
+      if (effectiveDays <= 7) {
+          agingScore = -10 * (1 - Math.max(0, effectiveDays)/7);
       } 
-      // エイジングが進んでいる場合（25日以上）、細胞が崩壊しオイルが浮くため成分が極めて出やすい
-      else if (daysSinceRoast >= 25) {
-          agingScore = Math.min(10, (daysSinceRoast - 25) * 0.5);
+      // エイジングが進んでいる場合（実質25日以上）、細胞が崩壊しオイルが浮くため成分が極めて出やすい
+      else if (effectiveDays >= 25) {
+          agingScore = Math.min(10, (effectiveDays - 25) * 0.5);
       }
       score += agingScore * roastMultiplier;
   }
