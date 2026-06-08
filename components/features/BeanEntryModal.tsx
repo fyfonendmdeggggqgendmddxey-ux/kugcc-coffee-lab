@@ -500,16 +500,7 @@ export default function BeanEntryModal({
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <label className="text-[10px] uppercase text-gray-500 tracking-widest">Opened Date (Optional)</label>
-                            <input
-                                type="date"
-                                name="openedDate"
-                                value={formData.openedDate}
-                                onChange={handleChange}
-                                className="bg-transparent border-b border-gray-800 text-white p-2 focus:border-white focus:outline-none transition-colors text-xs"
-                            />
-                        </div>
+
                     </div>
                 </div>
 

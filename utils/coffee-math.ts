@@ -77,13 +77,25 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   if (level === 'light' || level === '浅煎り') roastMultiplier = 0.8;
   else if (level === 'dark' || level === '深煎り') roastMultiplier = 1.3;
 
-  // Altitude/Density Multiplier (Higher altitude = slower degassing)
+  // Processing Method Multiplier (Naturals/Anaerobics degas faster due to degraded cell walls)
+  let processMultiplier = 1.0;
+  const process = (bean.process || '').toLowerCase();
+  if (process.includes('anaerobic') || process.includes('maceration') || process.includes('嫌気性') || process.includes('アナエロビック')) {
+      processMultiplier = 1.25;
+  } else if (process.includes('natural') || process.includes('dry') || process.includes('ナチュラル')) {
+      processMultiplier = 1.15;
+  } else if (process.includes('washed') || process.includes('wet') || process.includes('ウォッシュト') || process.includes('ウォッシュド')) {
+      processMultiplier = 0.85;
+  }
+
+  // Altitude/Density Multiplier (Continuous gradient: Higher altitude = slower degassing)
   let densityMultiplier = 1.0;
   if (bean.altitude) {
-    const num = parseInt(bean.altitude.replace(/[^0-9]/g, ''));
-    if (!isNaN(num)) {
-      if (num > 1600) densityMultiplier = 0.9; // SHB/SHG: 10% slower
-      else if (num < 1200) densityMultiplier = 1.1; // Softer bean: 10% faster
+    const matches = bean.altitude.match(/\d+/g);
+    if (matches && matches.length > 0) {
+      const avgAltitude = matches.reduce((acc, val) => acc + parseInt(val, 10), 0) / matches.length;
+      densityMultiplier = 1.0 - ((avgAltitude - 1400) / 4000);
+      densityMultiplier = Math.max(0.6, Math.min(1.4, densityMultiplier)); // clamp
     }
   }
 
@@ -106,20 +118,20 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
     effectiveDaysRaw = chronoDays * multiplier;
   }
 
-  // Final effective days combining roast degree and density kinetics
-  const effectiveDays = effectiveDaysRaw * roastMultiplier * (1 / densityMultiplier);
+  // Final effective days combining roast degree, processing method, and density kinetics
+  const effectiveDays = effectiveDaysRaw * roastMultiplier * processMultiplier * (1 / densityMultiplier);
 
   // Peak calculations (base values adjusted by multipliers)
   const baseFilterStart = 6;
   const baseFilterEnd = 20;
   const filterPeak = [
-    Math.round(baseFilterStart / (roastMultiplier * (1 / densityMultiplier))),
-    Math.round(baseFilterEnd / (roastMultiplier * (1 / densityMultiplier)))
+    Math.round(baseFilterStart / (roastMultiplier * processMultiplier * (1 / densityMultiplier))),
+    Math.round(baseFilterEnd / (roastMultiplier * processMultiplier * (1 / densityMultiplier)))
   ];
 
   const espressoPeak = [
-    Math.round(14 / (roastMultiplier * (1 / densityMultiplier))),
-    Math.round(28 / (roastMultiplier * (1 / densityMultiplier)))
+    Math.round(14 / (roastMultiplier * processMultiplier * (1 / densityMultiplier))),
+    Math.round(28 / (roastMultiplier * processMultiplier * (1 / densityMultiplier)))
   ];
 
   // Determine current phase based on effective days
@@ -129,15 +141,7 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   else if (effectiveDays <= baseFilterEnd + 15) currentPhase = 'Good';
   else currentPhase = 'Aged';
 
-  // Open Bag Oxidation Override
-  if (bean.openedDate && !bean.isFrozen) {
-    const openedDate = new Date(bean.openedDate);
-    const daysOpen = Math.max(0, (today.getTime() - openedDate.getTime()) / oneDay);
-    // After 14 days open, forcefully shift to Aged due to oxidation
-    if (daysOpen > 14) currentPhase = 'Aged';
-    else if (daysOpen > 7 && currentPhase === 'Peak') currentPhase = 'Good';
-  }
-
+  // Removed Open Bag Oxidation Override as per user request
   // Calculate theoretical gas level (Exponential decay: N = N0 * e^(-kt))
   // k is chosen so that gas is ~5% at effective day 30
   const k = 0.1; 
@@ -174,10 +178,6 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
       adjustments.advice += " 🧊冷蔵保存中：エイジング進行が約70%遅くなっています。";
   } else if (bean.storageLocation === 'HighTemp') {
       adjustments.advice += " 🔥高温保管中：エイジング進行が1.5倍加速しています。";
-  }
-  if (bean.openedDate && !isFreezer) {
-      const daysOpen = Math.floor((today.getTime() - new Date(bean.openedDate).getTime()) / oneDay);
-      adjustments.advice += ` ✂️開封から${daysOpen}日経過：酸化スピードが加速しています。早めに飲み切ることを推奨します。`;
   }
 
   return adjustments;
