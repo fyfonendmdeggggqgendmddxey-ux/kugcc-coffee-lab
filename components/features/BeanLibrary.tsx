@@ -414,11 +414,6 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                                 ❄️ Frozen
                             </div>
                         )}
-                        {bean.openedDate && !(bean.isFrozen || bean.storageLocation === 'Freezer') && (
-                            <div className="mt-1 text-[10px] text-amber-500 font-bold flex items-center gap-1">
-                                ✂️ Opened
-                            </div>
-                        )}
                         {bean.storageLocation && bean.storageLocation !== 'Freezer' && (
                             <div className="mt-1.5 text-[9px] text-gray-600 font-mono flex items-center gap-1 border border-gray-900/50 w-fit px-1 bg-gray-950/30">
                                 <span className="uppercase tracking-widest">Loc:</span> <span className="text-gray-400">{bean.storageLocation}</span>
