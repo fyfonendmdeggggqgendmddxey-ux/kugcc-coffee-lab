@@ -7,6 +7,7 @@ import BeanEntryModal from './BeanEntryModal';
 import BatchReviewModal from './BatchReviewModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
 import { analyzeCoffeeBagImage } from '@/utils/gemini';
+import { getStorageMultiplier } from '@/utils/coffee-math';
 import Tooltip from '../common/Tooltip';
 
 interface BeanLibraryProps {
@@ -288,16 +289,23 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             else if (bean.roastLevel === 'Dark') roastMultiplier = 1.2;
 
             // Storage multiplier applies ONLY to Phase 2
+            // Phase 1 (Shop): Assume room temp
+            const phase1RoomMultiplier = getStorageMultiplier('Room', roast);
+            
             let storageMultiplier = 1.0;
-            if (bean.storageLocation === 'HighTemp') storageMultiplier = 1.5;
-            else if (bean.storageLocation === 'Fridge') storageMultiplier = 0.3; // Sync with coffee-math.ts
-            else if (bean.storageLocation === 'Freezer' || bean.isFrozen) storageMultiplier = 0.05;
+            if (bean.isFrozen || bean.storageLocation === 'Freezer') {
+                storageMultiplier = getStorageMultiplier('Freezer', today);
+            } else {
+                storageMultiplier = getStorageMultiplier(bean.storageLocation, today);
+            }
 
-            const phase1Effective = phase1Days * roastMultiplier;
+            // Phase 1 (Shop): Apply room multiplier
+            // Phase 2 (Home): Apply storage multiplier
+            const phase1Effective = phase1Days * roastMultiplier * phase1RoomMultiplier;
             const phase2Effective = phase2Days * roastMultiplier * storageMultiplier;
             const effectiveDays = phase1Effective + phase2Effective;
 
-            const isModified = roastMultiplier !== 1.0 || (storageMultiplier !== 1.0 && phase2Days > 0);
+            const isModified = roastMultiplier !== 1.0 || storageMultiplier !== phase1RoomMultiplier;
             const displayDays = isModified ? effectiveDays.toFixed(1) : totalPhysicalDays.toString();
 
             const diffDays = effectiveDays;
@@ -307,7 +315,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
             const goodEnd = peakEnd + 16;
 
             const tooltipTitle = isModified 
-                ? `Shop: ${phase1Days}d, Home: ${phase2Days}d (Storage x${storageMultiplier})`
+                ? `Shop: ${phase1Days}d, Home: ${phase2Days}d (Storage x${storageMultiplier.toFixed(2)})`
                 : '';
 
             if (diffDays < 0) {

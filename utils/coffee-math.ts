@@ -27,6 +27,32 @@ export function calculateStepWater(totalWater: number, percentage: number): numb
   return totalWater * (percentage / 100);
 }
 
+const YOKOHAMA_TEMPS = [6.1, 6.8, 9.8, 14.8, 19.4, 22.8, 26.8, 28.1, 24.4, 18.9, 13.6, 8.7];
+
+export function getArrheniusMultiplier(tempCelsius: number): number {
+  // Base temperature is 22°C (295.15K) where multiplier is 1.0
+  // Ea/R ≈ 5472 K
+  const baseK = 295.15;
+  const targetK = tempCelsius + 273.15;
+  return Math.exp(5472 * (1 / baseK - 1 / targetK));
+}
+
+export function getStorageMultiplier(location: string | undefined, date: Date): number {
+  if (location === 'Freezer') {
+    return getArrheniusMultiplier(-18); // ~0.05
+  }
+  if (location === 'Fridge') {
+    return getArrheniusMultiplier(4); // ~0.28
+  }
+  if (location === 'HighTemp') {
+    return getArrheniusMultiplier(30); // ~1.63
+  }
+  // Room temp defaults to Yokohama average for the month
+  const month = date.getMonth(); // 0-11
+  const roomTemp = YOKOHAMA_TEMPS[month];
+  return getArrheniusMultiplier(roomTemp);
+}
+
 /**
  * Calculates aging adjustments based on days since roast and roast level.
  * Implements Scientific Aging Matrix with Altitude, Freezer, and Open Date factors.
@@ -64,20 +90,20 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
   // Calculate chronological days
   const chronoDays = Math.max(0, (today.getTime() - roastDate.getTime()) / oneDay);
 
-  // Apply freezer pause & storage location kinetics
+  // Apply freezer pause & storage location kinetics via Arrhenius
   const isFreezer = bean.isFrozen || bean.storageLocation === 'Freezer';
   if (isFreezer) {
     // If frozenDate isn't set, assume it was frozen on purchaseDate or roastDate
     const frozenDate = bean.frozenDate ? new Date(bean.frozenDate) : (bean.purchaseDate ? new Date(bean.purchaseDate) : roastDate);
     const daysBeforeFreezing = Math.max(0, (frozenDate.getTime() - roastDate.getTime()) / oneDay);
     const daysInFreezer = Math.max(0, (today.getTime() - frozenDate.getTime()) / oneDay);
-    effectiveDaysRaw = daysBeforeFreezing + (daysInFreezer * 0.05); // 95% slower in freezer
-  } else if (bean.storageLocation === 'Fridge') {
-    effectiveDaysRaw = chronoDays * 0.3; // 70% slower in fridge
-  } else if (bean.storageLocation === 'HighTemp') {
-    effectiveDaysRaw = chronoDays * 1.5; // 50% faster in high temp
+    
+    const roomMultiplier = getStorageMultiplier('Room', roastDate);
+    const freezerMultiplier = getStorageMultiplier('Freezer', today);
+    effectiveDaysRaw = (daysBeforeFreezing * roomMultiplier) + (daysInFreezer * freezerMultiplier);
   } else {
-    effectiveDaysRaw = chronoDays;
+    const multiplier = getStorageMultiplier(bean.storageLocation, roastDate);
+    effectiveDaysRaw = chronoDays * multiplier;
   }
 
   // Final effective days combining roast degree and density kinetics
