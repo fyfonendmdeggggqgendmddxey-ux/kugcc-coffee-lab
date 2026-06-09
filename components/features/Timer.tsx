@@ -168,9 +168,9 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex-1 flex flex-col items-center justify-between w-full relative h-full px-4 md:px-8 select-none py-6 md:py-8 ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden !justify-start pb-12' : 'overflow-hidden'}`}>
+    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none origin-center [@media(max-height:800px)]:scale-[0.85] [@media(max-height:700px)]:scale-[0.75] ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
-      <div className="w-full z-20 flex justify-between items-start pointer-events-none shrink-0">
+      <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
         {/* Left Info */}
         <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
@@ -241,8 +241,6 @@ export default function Timer({
         </div>
       </div>
 
-      {/* Middle Section (Timer & Timeline) */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-0 z-10">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -262,7 +260,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer scale-[0.75] [@media(min-height:700px)]:scale-90 [@media(min-height:800px)]:scale-100"
+        className="relative z-10 mb-6 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -315,7 +313,6 @@ export default function Timer({
             </div>
           )
         })}
-      </div>
       </div>
 
       {/* Test Mode Summary */}
@@ -376,9 +373,6 @@ export default function Timer({
           </div>
       )}
 
-      {/* Bottom Section */}
-      <div className="w-full flex flex-col items-center z-20 pointer-events-none shrink-0">
-      <div className="pointer-events-auto flex flex-col items-center w-full">
       {/* Bottom Panel */}
       <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
         <div className="flex flex-col items-center">
@@ -474,11 +468,9 @@ export default function Timer({
           {isTestMode ? (isRunning ? 'Lap' : 'Start') : (isRunning ? 'Pause' : 'Start')}
         </button>
       </div>
-      </div>
 
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
         Space / Enter: Toggle • Esc: Reset
-      </div>
       </div>
     </div>
   );
