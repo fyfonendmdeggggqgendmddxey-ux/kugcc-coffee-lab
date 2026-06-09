@@ -242,7 +242,7 @@ export default function Timer({
       </div>
 
       {/* Middle Section (Timer & Timeline) */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px] md:min-h-[450px]">
+      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-0">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -262,7 +262,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-6 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-2 md:mb-6 scale-[0.85] sm:scale-95 md:scale-100 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
