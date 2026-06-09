@@ -1,0 +1,679 @@
+{
+  "Timemore C2": {
+    "description": "Excelデータからインポート (Timemoreシリーズ)",
+    "table": [
+      {
+        "label": "10",
+        "microns": 317.0
+      },
+      {
+        "label": "15",
+        "microns": 475.0
+      },
+      {
+        "label": "20",
+        "microns": 633.0
+      },
+      {
+        "label": "25",
+        "microns": 792.0
+      },
+      {
+        "label": "30",
+        "microns": 950.0
+      }
+    ]
+  },
+  "Timemore C3": {
+    "description": "Excelデータからインポート (Timemoreシリーズ)",
+    "table": [
+      {
+        "label": "8",
+        "microns": 304.0
+      },
+      {
+        "label": "12",
+        "microns": 456.0
+      },
+      {
+        "label": "16",
+        "microns": 608.0
+      },
+      {
+        "label": "20",
+        "microns": 760.0
+      },
+      {
+        "label": "25",
+        "microns": 950.0
+      }
+    ]
+  },
+  "Timemore S3": {
+    "description": "Excelデータからインポート (Timemoreシリーズ)",
+    "table": [
+      {
+        "label": "0.0",
+        "microns": 330.0
+      },
+      {
+        "label": "2.0",
+        "microns": 488.0
+      },
+      {
+        "label": "4.0",
+        "microns": 655.0
+      },
+      {
+        "label": "6.0",
+        "microns": 803.0
+      },
+      {
+        "label": "6.5",
+        "microns": 842
+      },
+      {
+        "label": "8.0",
+        "microns": 960
+      },
+      {
+        "label": "9.0",
+        "microns": 1063.0
+      }
+    ]
+  },
+  "Timemore Chestnut X": {
+    "description": "Excelデータからインポート (Timemoreシリーズ)",
+    "table": [
+      {
+        "label": "8.0 (超微細)",
+        "microns": 80.0
+      },
+      {
+        "label": "G3 (超微細)",
+        "microns": 102.0
+      },
+      {
+        "label": "G0 (超微細)",
+        "microns": 116.0
+      },
+      {
+        "label": "G4 (超微細)",
+        "microns": 145.0
+      },
+      {
+        "label": "G2 (超微細)",
+        "microns": 182.0
+      },
+      {
+        "label": "G4 (細い)",
+        "microns": 203.0
+      },
+      {
+        "label": "G4 (細い)",
+        "microns": 218.0
+      },
+      {
+        "label": "G3 (細い)",
+        "microns": 247.0
+      },
+      {
+        "label": "G0 (細い)",
+        "microns": 298.0
+      },
+      {
+        "label": "G1 (細い)",
+        "microns": 334.0
+      },
+      {
+        "label": "G3 (中細)",
+        "microns": 399.0
+      },
+      {
+        "label": "中細",
+        "microns": 421.0
+      },
+      {
+        "label": "G2 (中細)",
+        "microns": 489.0
+      },
+      {
+        "label": "G3 (中細)",
+        "microns": 537.0
+      },
+      {
+        "label": "G0 (中細)",
+        "microns": 588.0
+      },
+      {
+        "label": "G2 (中程度)",
+        "microns": 603.0
+      },
+      {
+        "label": "G0 (中程度)",
+        "microns": 661.0
+      },
+      {
+        "label": "G3 (中程度)",
+        "microns": 682.0
+      },
+      {
+        "label": "G3 (中程度)",
+        "microns": 719.0
+      },
+      {
+        "label": "G1 (中程度)",
+        "microns": 740.0
+      },
+      {
+        "label": "G0 (中程度)",
+        "microns": 770.0
+      },
+      {
+        "label": "G0 (中太)",
+        "microns": 806.0
+      },
+      {
+        "label": "G4 (中太)",
+        "microns": 835.0
+      },
+      {
+        "label": "G2 (中太)",
+        "microns": 857.0
+      },
+      {
+        "label": "G4 (中太)",
+        "microns": 907.0
+      },
+      {
+        "label": "G1 (中太)",
+        "microns": 922.0
+      },
+      {
+        "label": "G4 (中太)",
+        "microns": 944.0
+      },
+      {
+        "label": "G4 (中太)",
+        "microns": 980.0
+      }
+    ]
+  },
+  "Comandante C40 MK4": {
+    "description": "Excelデータからインポート (Comandanteシリーズ)",
+    "table": [
+      {
+        "label": "10",
+        "microns": 273.0
+      },
+      {
+        "label": "15",
+        "microns": 409.0
+      },
+      {
+        "label": "20",
+        "microns": 545.0
+      },
+      {
+        "label": "30",
+        "microns": 818.0
+      },
+      {
+        "label": "40",
+        "microns": 1090.0
+      }
+    ]
+  },
+  "Comandante C40 MK4 (Red Clix)": {
+    "description": "Excelデータからインポート (Comandanteシリーズ)",
+    "table": [
+      {
+        "label": "20",
+        "microns": 273.0
+      },
+      {
+        "label": "40",
+        "microns": 545.0
+      },
+      {
+        "label": "60",
+        "microns": 818.0
+      },
+      {
+        "label": "80",
+        "microns": 1090.0
+      }
+    ]
+  },
+  "1Zpresso K-Ultra": {
+    "description": "Excelデータからインポート (その他高性能ミル)",
+    "table": [
+      {
+        "label": "0.3",
+        "microns": 23.0
+      },
+      {
+        "label": "0.5",
+        "microns": 38.0
+      },
+      {
+        "label": "0.8",
+        "microns": 60.0
+      },
+      {
+        "label": "1.0",
+        "microns": 76.0
+      },
+      {
+        "label": "1.2",
+        "microns": 91.0
+      },
+      {
+        "label": "1.5",
+        "microns": 114.0
+      },
+      {
+        "label": "1.8",
+        "microns": 137.0
+      },
+      {
+        "label": "2.0",
+        "microns": 152.0
+      },
+      {
+        "label": "2.6",
+        "microns": 198.0
+      },
+      {
+        "label": "2.9",
+        "microns": 220.0
+      },
+      {
+        "label": "3.2",
+        "microns": 243.0
+      },
+      {
+        "label": "3.5",
+        "microns": 266.0
+      },
+      {
+        "label": "3.8",
+        "microns": 289.0
+      },
+      {
+        "label": "4.1",
+        "microns": 312.0
+      },
+      {
+        "label": "4.5",
+        "microns": 342.0
+      },
+      {
+        "label": "5.1",
+        "microns": 388.0
+      },
+      {
+        "label": "5.5",
+        "microns": 418.0
+      },
+      {
+        "label": "5.7",
+        "microns": 433.0
+      },
+      {
+        "label": "6.5",
+        "microns": 494.0
+      },
+      {
+        "label": "6.9",
+        "microns": 524.0
+      },
+      {
+        "label": "7.4",
+        "microns": 562.0
+      },
+      {
+        "label": "7.8",
+        "microns": 593.0
+      },
+      {
+        "label": "8.1",
+        "microns": 616.0
+      },
+      {
+        "label": "8.4",
+        "microns": 638.0
+      },
+      {
+        "label": "8.7",
+        "microns": 661.0
+      },
+      {
+        "label": "9.0",
+        "microns": 684.0
+      },
+      {
+        "label": "9.2",
+        "microns": 699.0
+      },
+      {
+        "label": "9.4",
+        "microns": 714.0
+      },
+      {
+        "label": "9.6",
+        "microns": 730.0
+      },
+      {
+        "label": "9.9",
+        "microns": 752.0
+      },
+      {
+        "label": "1-0.0",
+        "microns": 760.0
+      }
+    ]
+  },
+  "KINGrinder K6": {
+    "description": "Excelデータからインポート (その他高性能ミル)",
+    "table": [
+      {
+        "label": "0-3",
+        "microns": 23.0
+      },
+      {
+        "label": "0-9",
+        "microns": 68.0
+      },
+      {
+        "label": "0-14",
+        "microns": 106.0
+      },
+      {
+        "label": "0-19",
+        "microns": 144.0
+      },
+      {
+        "label": "0-24",
+        "microns": 181.0
+      },
+      {
+        "label": "0-28",
+        "microns": 211.0
+      },
+      {
+        "label": "0-31",
+        "microns": 234.0
+      },
+      {
+        "label": "0-34",
+        "microns": 256.0
+      },
+      {
+        "label": "0-38",
+        "microns": 287.0
+      },
+      {
+        "label": "0-42",
+        "microns": 317.0
+      },
+      {
+        "label": "0-46",
+        "microns": 347.0
+      },
+      {
+        "label": "0-53",
+        "microns": 400.0
+      },
+      {
+        "label": "0-59",
+        "microns": 445.0
+      },
+      {
+        "label": "1-6",
+        "microns": 498.0
+      },
+      {
+        "label": "1-15",
+        "microns": 566.0
+      },
+      {
+        "label": "1-23",
+        "microns": 626.0
+      },
+      {
+        "label": "1-31",
+        "microns": 686.0
+      },
+      {
+        "label": "1-36",
+        "microns": 724.0
+      },
+      {
+        "label": "1-41",
+        "microns": 762.0
+      },
+      {
+        "label": "1-48",
+        "microns": 814.0
+      },
+      {
+        "label": "1-52",
+        "microns": 845.0
+      },
+      {
+        "label": "1-56",
+        "microns": 875.0
+      },
+      {
+        "label": "1-59",
+        "microns": 897.0
+      },
+      {
+        "label": "2-3",
+        "microns": 928.0
+      },
+      {
+        "label": "2-6",
+        "microns": 950.0
+      },
+      {
+        "label": "2-10",
+        "microns": 980.0
+      },
+      {
+        "label": "2-13",
+        "microns": 1003.0
+      },
+      {
+        "label": "2-16",
+        "microns": 1026.0
+      },
+      {
+        "label": "2-22",
+        "microns": 1071.0
+      },
+      {
+        "label": "2-28",
+        "microns": 1116.0
+      },
+      {
+        "label": "2-31",
+        "microns": 1139.0
+      },
+      {
+        "label": "2-36",
+        "microns": 1177.0
+      },
+      {
+        "label": "2-41",
+        "microns": 1214.0
+      },
+      {
+        "label": "2-46",
+        "microns": 1252.0
+      },
+      {
+        "label": "2-49",
+        "microns": 1275.0
+      },
+      {
+        "label": "2-53",
+        "microns": 1305.0
+      },
+      {
+        "label": "2-57",
+        "microns": 1335.0
+      },
+      {
+        "label": "2-59",
+        "microns": 1350.0
+      }
+    ]
+  },
+  "Epeios Essense Go": {
+    "description": "Excelデータからインポート (その他高性能ミル)",
+    "table": [
+      {
+        "label": "0",
+        "microns": 250.0
+      },
+      {
+        "label": "6",
+        "microns": 340.0
+      },
+      {
+        "label": "9",
+        "microns": 384.0
+      },
+      {
+        "label": "10",
+        "microns": 399.0
+      },
+      {
+        "label": "12",
+        "microns": 429.0
+      },
+      {
+        "label": "14",
+        "microns": 459.0
+      },
+      {
+        "label": "16",
+        "microns": 489.0
+      },
+      {
+        "label": "18",
+        "microns": 519.0
+      },
+      {
+        "label": "19",
+        "microns": 534.0
+      },
+      {
+        "label": "22",
+        "microns": 579.0
+      },
+      {
+        "label": "25",
+        "microns": 623.0
+      },
+      {
+        "label": "28",
+        "microns": 668.0
+      },
+      {
+        "label": "33",
+        "microns": 743.0
+      },
+      {
+        "label": "35",
+        "microns": 773.0
+      },
+      {
+        "label": "37",
+        "microns": 803.0
+      },
+      {
+        "label": "39",
+        "microns": 832.0
+      },
+      {
+        "label": "42",
+        "microns": 877.0
+      },
+      {
+        "label": "43",
+        "microns": 892.0
+      },
+      {
+        "label": "46",
+        "microns": 937.0
+      },
+      {
+        "label": "48",
+        "microns": 967.0
+      },
+      {
+        "label": "49",
+        "microns": 982.0
+      },
+      {
+        "label": "52",
+        "microns": 1027.0
+      },
+      {
+        "label": "53",
+        "microns": 1042.0
+      },
+      {
+        "label": "55",
+        "microns": 1071.0
+      },
+      {
+        "label": "57",
+        "microns": 1101.0
+      },
+      {
+        "label": "59",
+        "microns": 1131.0
+      },
+      {
+        "label": "61",
+        "microns": 1161.0
+      },
+      {
+        "label": "62",
+        "microns": 1176.0
+      },
+      {
+        "label": "64",
+        "microns": 1206.0
+      },
+      {
+        "label": "65",
+        "microns": 1221.0
+      },
+      {
+        "label": "67",
+        "microns": 1251.0
+      },
+      {
+        "label": "69",
+        "microns": 1281.0
+      },
+      {
+        "label": "71",
+        "microns": 1310.0
+      },
+      {
+        "label": "76",
+        "microns": 1385.0
+      },
+      {
+        "label": "77",
+        "microns": 1400.0
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import unifiedData from './unified_grinders.json';
+import handMillsData from './hand_grinders.json';
 
 export type GrinderType = 'hand' | 'electric';
 
@@ -18,16 +19,16 @@ export interface GrinderInfo {
 }
 
 export const GRINDERS: Record<string, GrinderInfo> = {
-    // Hand Mills (from existing system)
-    "C40_MK4": { id: "C40_MK4", name: "Comandante C40 MK4", type: "hand", micronsPerClick: 30, finesRatio: { medium: 25, coarse: 18 } },
-    "C40_MK4_REDCLIX": { id: "C40_MK4_REDCLIX", name: "Comandante C40 MK4 (Red Clix)", type: "hand", micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } },
-    "K_ULTRA": { id: "K_ULTRA", name: "1Zpresso K-Ultra", type: "hand", micronsPerClick: 20, finesRatio: { medium: 24, coarse: 20 } },
-    "K6": { id: "K6", name: "KINGrinder K6", type: "hand", micronsPerClick: 16, finesRatio: { medium: 22, coarse: 22 } },
-    "TIMEMORE_C2": { id: "TIMEMORE_C2", name: "Timemore C2", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
-    "TIMEMORE_C3": { id: "TIMEMORE_C3", name: "Timemore C3", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
-    "X_LITE": { id: "X_LITE", name: "Timemore Xlite", type: "hand", micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } }, 
-    "S3": { id: "S3", name: "Timemore S3", type: "hand", micronsPerClick: 12, finesRatio: { medium: 27, coarse: 24 }, settingMultiplier: 10 },
-    "EPEIOS_GO": { id: "EPEIOS_GO", name: "Epeios Go", type: "hand", micronsPerClick: 20, finesRatio: { medium: 28, coarse: 26 } },
+    // Hand Mills
+    "C40_MK4": { id: "C40_MK4", name: "Comandante C40 MK4", type: "hand", data: handMillsData["Comandante C40 MK4"]?.table, finesRatio: { medium: 25, coarse: 18 } },
+    "C40_MK4_REDCLIX": { id: "C40_MK4_REDCLIX", name: "Comandante C40 MK4 (Red Clix)", type: "hand", data: handMillsData["Comandante C40 MK4 (Red Clix)"]?.table, finesRatio: { medium: 25, coarse: 18 } },
+    "K_ULTRA": { id: "K_ULTRA", name: "1Zpresso K-Ultra", type: "hand", data: handMillsData["1Zpresso K-Ultra"]?.table, finesRatio: { medium: 24, coarse: 20 } },
+    "K6": { id: "K6", name: "KINGrinder K6", type: "hand", data: handMillsData["KINGrinder K6"]?.table, finesRatio: { medium: 22, coarse: 22 } },
+    "TIMEMORE_C2": { id: "TIMEMORE_C2", name: "Timemore C2", type: "hand", data: handMillsData["Timemore C2"]?.table, finesRatio: { medium: 26, coarse: 25 } }, 
+    "TIMEMORE_C3": { id: "TIMEMORE_C3", name: "Timemore C3", type: "hand", data: handMillsData["Timemore C3"]?.table, finesRatio: { medium: 26, coarse: 25 } }, 
+    "X_LITE": { id: "X_LITE", name: "Timemore Xlite", type: "hand", data: handMillsData["Timemore Chestnut X"]?.table, finesRatio: { medium: 25, coarse: 18 } }, 
+    "S3": { id: "S3", name: "Timemore S3", type: "hand", data: handMillsData["Timemore S3"]?.table, finesRatio: { medium: 27, coarse: 24 } },
+    "EPEIOS_GO": { id: "EPEIOS_GO", name: "Epeios Go", type: "hand", data: handMillsData["Epeios Essense Go"]?.table, finesRatio: { medium: 28, coarse: 26 } },
 
     // Electric Mills / Added from Excel
     "LAGOM_CASA": { id: "LAGOM_CASA", name: "Option-O Lagom casa", type: "electric", data: unifiedData["Lagom casa"].table, finesRatio: { medium: 20, coarse: 15 } },
@@ -67,30 +68,27 @@ export function parseSettingToMicrons(modelId: string, settingStr: string): numb
         const val = parseNumber(settingStr);
         if (val === null) return null;
 
-        // Try to match the numerical part with the numerical part of the label
-        // This is a naive heuristic but works for most basic entries
-        for (const entry of grinder.data) {
-            const entryVal = parseNumber(entry.label);
-            if (entryVal !== null && Math.abs(entryVal - val) < 0.01) {
-                return entry.microns;
+        const numericEntries = grinder.data
+            .map(d => ({ val: parseNumber(d.label), microns: d.microns }))
+            .filter(d => d.val !== null) as Array<{ val: number; microns: number }>;
+            
+        if (numericEntries.length === 0) return null;
+        if (numericEntries.length === 1) return numericEntries[0].microns;
+        
+        numericEntries.sort((a, b) => a.val - b.val);
+        
+        if (val <= numericEntries[0].val) return numericEntries[0].microns;
+        if (val >= numericEntries[numericEntries.length - 1].val) return numericEntries[numericEntries.length - 1].microns;
+        
+        for (let i = 0; i < numericEntries.length - 1; i++) {
+            const p1 = numericEntries[i];
+            const p2 = numericEntries[i + 1];
+            if (val >= p1.val && val <= p2.val) {
+                const ratio = (val - p1.val) / (p2.val - p1.val);
+                return p1.microns + ratio * (p2.microns - p1.microns);
             }
         }
-
-        // Interpolate if it's numerical and falls between values
-        // For simplicity, we just find the closest numerical label
-        let closest = grinder.data[0];
-        let minDiff = Infinity;
-        for (const entry of grinder.data) {
-            const entryVal = parseNumber(entry.label);
-            if (entryVal !== null) {
-                const diff = Math.abs(entryVal - val);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    closest = entry;
-                }
-            }
-        }
-        return closest.microns;
+        return numericEntries[0].microns; // fallback
     }
 
     return null;
@@ -110,6 +108,30 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): st
     }
 
     if (grinder.data && grinder.data.length > 0) {
+        const numericEntries = grinder.data
+            .map(d => ({ val: parseNumber(d.label), microns: d.microns }))
+            .filter(d => d.val !== null) as Array<{ val: number; microns: number }>;
+            
+        if (numericEntries.length === 0) return null;
+        if (numericEntries.length === 1) return String(numericEntries[0].val);
+        
+        numericEntries.sort((a, b) => a.microns - b.microns);
+        
+        if (microns <= numericEntries[0].microns) return String(numericEntries[0].val);
+        if (microns >= numericEntries[numericEntries.length - 1].microns) return String(numericEntries[numericEntries.length - 1].val);
+        
+        for (let i = 0; i < numericEntries.length - 1; i++) {
+            const p1 = numericEntries[i];
+            const p2 = numericEntries[i + 1];
+            if (microns >= p1.microns && microns <= p2.microns) {
+                if (p2.microns === p1.microns) return String(p1.val);
+                const ratio = (microns - p1.microns) / (p2.microns - p1.microns);
+                const interpolatedVal = p1.val + ratio * (p2.val - p1.val);
+                return String(Number(interpolatedVal.toFixed(1)));
+            }
+        }
+        
+        // Exact label match fallback
         let closest = grinder.data[0];
         let minDiff = Infinity;
         for (const entry of grinder.data) {
