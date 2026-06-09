@@ -262,7 +262,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-2 md:mb-6 scale-[0.85] sm:scale-95 md:scale-100 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-2 md:mb-6 scale-[0.85] sm:scale-95 md:scale-100 [@media(max-height:800px)]:scale-90 [@media(max-height:700px)]:scale-75 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer

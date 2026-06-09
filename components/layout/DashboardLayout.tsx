@@ -70,7 +70,7 @@ export default function DashboardLayout({ left, center, right, activeTab, onTabC
             </aside>
 
             {/* Center Column: Main Timer & Action */}
-            <main className="hidden md:flex flex-1 flex-col items-center justify-center relative">
+            <main className="hidden md:flex flex-1 flex-col items-stretch justify-stretch relative">
                 {center}
             </main>
 
