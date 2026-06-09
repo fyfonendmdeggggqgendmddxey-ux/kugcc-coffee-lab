@@ -377,11 +377,11 @@ export default function Timer({
       <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
         <div className="flex flex-col items-center">
           <span className="text-[10px] text-gray-600 mb-1">Ratio</span>
-          <span className="font-mono text-white">1:{recipe.ratio}</span>
+          <span className="font-mono text-white">1:{Math.round(recipe.ratio * 10) / 10}</span>
         </div>
         <div className="flex flex-col items-center">
           <span className="text-[10px] text-gray-600 mb-1">Total Water</span>
-          <span className="font-mono text-white">{totalWater}ml</span>
+          <span className="font-mono text-white">{Math.round(totalWater)}ml</span>
         </div>
         <div className="flex flex-col items-center">
           <span className="text-[10px] text-gray-600 mb-1">Temp</span>
