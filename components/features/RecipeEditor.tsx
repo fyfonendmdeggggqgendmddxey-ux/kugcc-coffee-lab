@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Recipe, RecipeStep } from '@/utils/types';
-import { GRINDER_TABLE } from '@/utils/grinder-table';
+import { GRINDER_LIST, GRINDERS } from '@/utils/grinder-logic';
 import { analyzeRecipeImage } from '@/utils/gemini';
 import { toast } from '@/components/ui/Toast';
 
@@ -302,8 +302,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                         onChange={(e) => setRecipe({ ...recipe, grinderModel: e.target.value })}
                         className="bg-black border-b border-gray-800 text-white font-mono focus:outline-none focus:border-white transition-colors w-full text-xs py-2 appearance-none"
                     >
-                        {Object.keys(GRINDER_TABLE.models).map(model => (
-                            <option key={model} value={model}>{model}</option>
+                        {GRINDER_LIST.map(grinder => (
+                            <option key={grinder.id} value={grinder.id}>{grinder.name}</option>
                         ))}
                     </select>
                 </div>
@@ -313,6 +313,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                         type="text"
                         value={recipe.grindSize || ''}
                         onChange={(e) => setRecipe({ ...recipe, grindSize: e.target.value })}
+                        placeholder={recipe.grinderModel && GRINDERS[recipe.grinderModel]?.type === 'electric' ? "e.g. 1.2 or 15.0" : "e.g. 22"}
                         className="bg-transparent border-b border-gray-800 text-white font-mono focus:outline-none focus:border-white transition-colors w-full text-xs py-2"
                     />
                 </div>

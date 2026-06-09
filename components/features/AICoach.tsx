@@ -1,6 +1,6 @@
 import { Bean, Recipe } from '@/utils/types';
 import { getAgingAdjustments, analyzeExtractionDynamics } from '@/utils/coffee-math';
-import { GRINDER_TABLE } from '@/utils/grinder-table';
+import { GRINDER_LIST, GRINDERS, parseSettingToMicrons, convertMicronsToSettingStr } from '@/utils/grinder-logic';
 
 interface AICoachProps {
     bean?: Bean;
@@ -178,38 +178,27 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
 
                     <div className="bg-gray-900/10 p-4 border-l border-gray-800">
                         {(() => {
-                            const currentClicks = Number(recipe.grindSize);
-                            if (isNaN(currentClicks)) return <div className="text-gray-600 text-xs">Invalid Clicks</div>;
-
-                            const currentModelData = GRINDER_TABLE.models[recipe.grinderModel as keyof typeof GRINDER_TABLE.models];
-                            if (!currentModelData) return <div className="text-gray-600 text-xs">Unknown Model Data</div>;
-
-                            // Find closest index
-                            let closestIndex = -1;
-                            let minDiff = Infinity;
-                            currentModelData.forEach((val, idx) => {
-                                if (val === null) return;
-                                const diff = Math.abs(val - currentClicks);
-                                if (diff < minDiff) {
-                                    minDiff = diff;
-                                    closestIndex = idx;
-                                }
-                            });
-
-                            if (closestIndex === -1) return <div className="text-gray-600 text-xs">Out of Range</div>;
+                            const sourceMicrons = parseSettingToMicrons(recipe.grinderModel!, recipe.grindSize!);
+                            if (sourceMicrons === null) return <div className="text-gray-600 text-xs">Invalid or Unknown Setting</div>;
 
                             return (
-                                <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                                    {Object.entries(GRINDER_TABLE.models).map(([model, clicks]) => {
-                                        if (model === recipe.grinderModel) return null;
-                                        const val = clicks[closestIndex];
-                                        return (
-                                            <div key={model} className="flex justify-between items-center border-b border-gray-900/30 pb-1">
-                                                <span className="text-[9px] text-gray-500 uppercase tracking-wider truncate mr-2">{model.replace(/_/g, ' ')}</span>
-                                                <span className="text-xs text-white font-mono">{val !== null ? val : '-'}</span>
-                                            </div>
-                                        );
-                                    })}
+                                <div>
+                                    <div className="mb-4 text-center">
+                                        <span className="text-[#3b82f6] text-[10px] font-bold tracking-widest block uppercase mb-1">Absolute Size</span>
+                                        <span className="text-xl font-mono text-white">{Math.round(sourceMicrons)}<span className="text-[10px] ml-1 text-gray-500">µm</span></span>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        {GRINDER_LIST.map((grinder) => {
+                                            if (grinder.id === recipe.grinderModel) return null;
+                                            const translated = convertMicronsToSettingStr(grinder.id, sourceMicrons);
+                                            return (
+                                                <div key={grinder.id} className="flex justify-between items-center border-b border-gray-900/30 pb-1">
+                                                    <span className="text-[9px] text-gray-500 uppercase tracking-wider truncate mr-2" title={grinder.name}>{grinder.name}</span>
+                                                    <span className="text-xs text-emerald-400 font-mono font-bold">{translated !== null ? translated : '-'}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             );
                         })()}

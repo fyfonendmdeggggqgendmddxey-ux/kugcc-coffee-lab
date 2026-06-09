@@ -1,5 +1,5 @@
 import { Bean, Recipe } from './types';
-import { GRINDER_PROFILES, getGrinderClicks } from './grinder-table';
+import { GRINDERS, parseSettingToMicrons } from './grinder-logic';
 
 export type BrewingAdjustments = {
   bloomTimeAdjustment: number; // seconds
@@ -232,17 +232,20 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
   let absoluteMicrons = 600; // Default
 
   const grinderModel = recipe.grinderModel || "C40_MK4";
-  const profile = GRINDER_PROFILES[grinderModel];
+  const profile = GRINDERS[grinderModel];
 
   if (profile) {
-      let clicks = getGrinderClicks(grinderModel, recipe.grindSize);
-      if (typeof clicks === 'number') {
-          if (grinderModel === 'S3') {
-              clicks = clicks * 10;
-          }
-          absoluteMicrons = clicks * profile.micronsPerClick * 0.55;
+      // Get absolute burr gap movement in microns
+      const microns = parseSettingToMicrons(grinderModel, recipe.grindSize);
+      if (microns !== null) {
+          absoluteMicrons = microns * 0.55; // convert burr gap to approximate median particle size for the math engine
+      } else {
+          // Fallback if parsing fails
+          absoluteMicrons = 600 * 0.55;
       }
-      const isCoarse = recipe.grindSize === 'Coarse' || recipe.grindSize === 'Medium-Coarse';
+      
+      // Determine if coarse based on absolute size (>700µm burr gap)
+      const isCoarse = microns !== null && microns > 700;
       finesRatio = isCoarse ? profile.finesRatio.coarse : profile.finesRatio.medium;
   }
 
@@ -286,31 +289,25 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
       score += agingScore * roastMultiplier;
   }
 
-  // Helper to format click adjustments
-  const formatClicks = (clicks: number) => {
-      if (grinderModel === 'S3') {
-          return `ダイヤル ${Number((clicks / 10).toFixed(1))} 分`;
-      }
-      return `${clicks} クリック`;
-  };
+  // Removed formatClicks helper as we now use absolute microns
 
   // Evaluate the final score (-100 to +100 range conceptually)
   let advice = "";
   if (score > 18) {
       // 極度の過抽出リスク
       const tempDrop = Math.min(3, Math.ceil((score - 18) / 5)); // Max 3 degrees
-      const clicksCoarser = profile ? Math.max(1, Math.ceil(((score - 18) * 10) / profile.micronsPerClick)) : 1;
+      const micronsCoarser = Math.max(10, Math.ceil((score - 18) * 10));
       
-      advice = `少し濃く出すぎる（渋みや苦味が強くなる）組み合わせです。\n【改善アクション】\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を ${formatClicks(clicksCoarser)} 粗くする\n・注ぎの回数を 1回 減らす\n\n上記のいずれかを試すと、よりスッキリと甘くなります。`;
+      advice = `少し濃く出すぎる（渋みや苦味が強くなる）組み合わせです。\n【改善アクション】\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を少し（約 ${micronsCoarser}µm 相当）粗くする\n・注ぎの回数を 1回 減らす\n\n上記のいずれかを試すと、よりスッキリと甘くなります。`;
       if (finesRatio >= 26) {
           advice += `\n※グラインダー（${grinderModel}）は微粉が出やすいため、後半は優しく注いで目詰まりを防いでください。`;
       }
   } else if (score < -18) {
       // 極度の未抽出リスク
       const tempRise = Math.min(3, Math.ceil((Math.abs(score) - 18) / 5)); // Max 3 degrees
-      const clicksFiner = profile ? Math.max(1, Math.ceil(((Math.abs(score) - 18) * 10) / profile.micronsPerClick)) : 1;
+      const micronsFiner = Math.max(10, Math.ceil((Math.abs(score) - 18) * 10));
       
-      advice = `少しサッパリしすぎて、酸味が際立つ（薄く感じる）かもしれません。\n【改善アクション】\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を ${formatClicks(clicksFiner)} 細かくする\n・注ぎの回数を 1回 増やす\n\n上記のいずれかで、甘みとコクがしっかり引き出せます。`;
+      advice = `少しサッパリしすぎて、酸味が際立つ（薄く感じる）かもしれません。\n【改善アクション】\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を少し（約 ${micronsFiner}µm 相当）細かくする\n・注ぎの回数を 1回 増やす\n\n上記のいずれかで、甘みとコクがしっかり引き出せます。`;
   } else {
       // スイートスポット
       advice = `抽出バランス（甘み・酸味・コク）が非常に整いやすい、理想的なスイートスポット設定です！`;
@@ -321,12 +318,12 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
       // 理想値（スコア0）への微調整アドバイス
       if (score > 5) {
           const tempDrop = Math.max(1, Math.round(score / 5)); // More conservative
-          const clicksCoarser = profile ? Math.max(1, Math.round((score * 10) / profile.micronsPerClick)) : 1;
-          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を ${formatClicks(clicksCoarser)} 粗くする`;
+          const micronsCoarser = Math.max(10, Math.round(score * 10));
+          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を少し（約 ${micronsCoarser}µm 相当）粗くする`;
       } else if (score < -5) {
           const tempRise = Math.max(1, Math.round(Math.abs(score) / 5)); // More conservative
-          const clicksFiner = profile ? Math.max(1, Math.round((Math.abs(score) * 10) / profile.micronsPerClick)) : 1;
-          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を ${formatClicks(clicksFiner)} 細かくする`;
+          const micronsFiner = Math.max(10, Math.round(Math.abs(score) * 10));
+          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を少し（約 ${micronsFiner}µm 相当）細かくする`;
       } else {
           advice += `\n\n【パーフェクト】\n現在の設定は数学的モデルにおいて完全に理想値（スコア0付近）です！文句なしの最高のセッティングです。`;
       }
