@@ -13,6 +13,8 @@ export interface GrinderInfo {
     data?: Array<{ label: string; microns: number }>;
     // Default fines profile
     finesRatio: { medium: number; coarse: number };
+    // Multiplier for settings that use dial numbers instead of raw clicks
+    settingMultiplier?: number;
 }
 
 export const GRINDERS: Record<string, GrinderInfo> = {
@@ -24,7 +26,7 @@ export const GRINDERS: Record<string, GrinderInfo> = {
     "TIMEMORE_C2": { id: "TIMEMORE_C2", name: "Timemore C2", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
     "TIMEMORE_C3": { id: "TIMEMORE_C3", name: "Timemore C3", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
     "X_LITE": { id: "X_LITE", name: "Timemore Xlite", type: "hand", micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } }, 
-    "S3": { id: "S3", name: "Timemore S3", type: "hand", micronsPerClick: 15, finesRatio: { medium: 27, coarse: 24 } },
+    "S3": { id: "S3", name: "Timemore S3", type: "hand", micronsPerClick: 15, finesRatio: { medium: 27, coarse: 24 }, settingMultiplier: 10 },
     "EPEIOS_GO": { id: "EPEIOS_GO", name: "Epeios Go", type: "hand", micronsPerClick: 20, finesRatio: { medium: 28, coarse: 26 } },
 
     // Electric Mills / Added from Excel
@@ -50,8 +52,9 @@ export function parseSettingToMicrons(modelId: string, settingStr: string): numb
     if (!grinder) return null;
 
     if (grinder.micronsPerClick) {
-        const val = parseNumber(settingStr);
+        let val = parseNumber(settingStr);
         if (val === null) return null;
+        if (grinder.settingMultiplier) val = val * grinder.settingMultiplier;
         return val * grinder.micronsPerClick;
     }
 
@@ -99,7 +102,10 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): st
     if (!grinder) return null;
 
     if (grinder.micronsPerClick) {
-        const clicks = Math.round(microns / grinder.micronsPerClick);
+        let clicks = Math.round(microns / grinder.micronsPerClick);
+        if (grinder.settingMultiplier) {
+            return String(Number((clicks / grinder.settingMultiplier).toFixed(1)));
+        }
         return String(clicks);
     }
 
