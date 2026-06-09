@@ -204,6 +204,7 @@ export default function Home() {
                         setSelectedBeanId(id);
                         setCustomRecipe(null);
                     }}
+                    isActive={activeTab === 'library'}
                 />
             }
             center={

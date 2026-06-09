@@ -13,9 +13,10 @@ import Tooltip from '../common/Tooltip';
 interface BeanLibraryProps {
     onSelect?: (id: string) => void;
     selectedId?: string | null;
+    isActive?: boolean;
 }
 
-export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) {
+export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibraryProps) {
     const [beans, setBeans] = useState<Bean[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -138,6 +139,19 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
 
         setIsLoaded(true);
     }, []);
+
+    // Scroll into view when tab becomes active
+    useEffect(() => {
+        if (isActive && selectedId) {
+            // Slight delay to ensure the layout is rendered (if it was display: none)
+            setTimeout(() => {
+                const el = document.getElementById(`bean-card-${selectedId}`);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 50);
+        }
+    }, [isActive, selectedId]);
 
     // Save to LocalStorage
     useEffect(() => {
@@ -384,6 +398,7 @@ export default function BeanLibrary({ onSelect, selectedId }: BeanLibraryProps) 
                 {filteredBeans.map((bean) => (
                     <div
                         key={bean.id}
+                        id={`bean-card-${bean.id}`}
                         className={`group cursor-pointer relative py-2.5 px-3 border-l transition-all duration-300 ${selectedId === bean.id
                             ? 'border-white bg-gray-900'
                             : 'border-transparent hover:border-gray-500 hover:bg-gray-900/30'
