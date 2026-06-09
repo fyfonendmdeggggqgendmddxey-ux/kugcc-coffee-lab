@@ -168,7 +168,7 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
+    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none origin-center [@media(max-height:800px)_and_(min-width:768px)]:scale-[0.85] [@media(max-height:700px)_and_(min-width:768px)]:scale-[0.75] ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
       <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
