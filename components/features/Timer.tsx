@@ -168,9 +168,9 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex-1 flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-center'}`}>
+    <div className={`flex-1 flex flex-col items-center justify-between w-full relative h-full px-4 md:px-8 select-none py-6 md:py-8 ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden !justify-start pb-12' : 'overflow-hidden'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
-      <div className="absolute top-0 left-0 w-full px-4 md:px-8 z-20 flex justify-between items-start pointer-events-none pt-6 md:pt-8">
+      <div className="w-full z-20 flex justify-between items-start pointer-events-none shrink-0">
         
         {/* Left Info */}
         <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
@@ -242,7 +242,7 @@ export default function Timer({
       </div>
 
       {/* Middle Section (Timer & Timeline) */}
-      <div className="flex flex-col items-center justify-center w-full min-h-0 z-10">
+      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-0 z-10">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -262,7 +262,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-2 md:mb-6 scale-[0.85] sm:scale-95 md:scale-100 [@media(max-height:800px)]:scale-90 [@media(max-height:700px)]:scale-75 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer scale-[0.75] [@media(min-height:700px)]:scale-90 [@media(min-height:800px)]:scale-100"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -377,7 +377,7 @@ export default function Timer({
       )}
 
       {/* Bottom Section */}
-      <div className="absolute bottom-0 left-0 w-full flex flex-col items-center pb-6 md:pb-10 z-20 pointer-events-none">
+      <div className="w-full flex flex-col items-center z-20 pointer-events-none shrink-0">
       <div className="pointer-events-auto flex flex-col items-center w-full">
       {/* Bottom Panel */}
       <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
