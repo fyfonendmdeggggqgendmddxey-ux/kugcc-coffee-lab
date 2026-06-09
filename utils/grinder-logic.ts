@@ -21,12 +21,12 @@ export const GRINDERS: Record<string, GrinderInfo> = {
     // Hand Mills (from existing system)
     "C40_MK4": { id: "C40_MK4", name: "Comandante C40 MK4", type: "hand", micronsPerClick: 30, finesRatio: { medium: 25, coarse: 18 } },
     "C40_MK4_REDCLIX": { id: "C40_MK4_REDCLIX", name: "Comandante C40 MK4 (Red Clix)", type: "hand", micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } },
-    "K_ULTRA": { id: "K_ULTRA", name: "1Zpresso K-Ultra", type: "hand", micronsPerClick: 22, finesRatio: { medium: 24, coarse: 20 } },
+    "K_ULTRA": { id: "K_ULTRA", name: "1Zpresso K-Ultra", type: "hand", micronsPerClick: 20, finesRatio: { medium: 24, coarse: 20 } },
     "K6": { id: "K6", name: "KINGrinder K6", type: "hand", micronsPerClick: 16, finesRatio: { medium: 22, coarse: 22 } },
     "TIMEMORE_C2": { id: "TIMEMORE_C2", name: "Timemore C2", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
     "TIMEMORE_C3": { id: "TIMEMORE_C3", name: "Timemore C3", type: "hand", micronsPerClick: 29, finesRatio: { medium: 26, coarse: 25 } }, 
     "X_LITE": { id: "X_LITE", name: "Timemore Xlite", type: "hand", micronsPerClick: 15, finesRatio: { medium: 25, coarse: 18 } }, 
-    "S3": { id: "S3", name: "Timemore S3", type: "hand", micronsPerClick: 15, finesRatio: { medium: 27, coarse: 24 }, settingMultiplier: 10 },
+    "S3": { id: "S3", name: "Timemore S3", type: "hand", micronsPerClick: 12, finesRatio: { medium: 27, coarse: 24 }, settingMultiplier: 10 },
     "EPEIOS_GO": { id: "EPEIOS_GO", name: "Epeios Go", type: "hand", micronsPerClick: 20, finesRatio: { medium: 28, coarse: 26 } },
 
     // Electric Mills / Added from Excel
