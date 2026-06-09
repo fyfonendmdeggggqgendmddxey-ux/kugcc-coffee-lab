@@ -834,6 +834,11 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                     log1={history.find(h => h.id === selectedForCompare[0])}
                     log2={history.find(h => h.id === selectedForCompare[1])}
                     onClose={() => setShowCompareModal(false)}
+                    onUpdateLog={(id, newNotes) => {
+                        const updatedHistory = history.map(h => h.id === id ? { ...h, notes: newNotes } : h);
+                        setHistory(updatedHistory);
+                        localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
+                    }}
                 />
             )}
         </div>

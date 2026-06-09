@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RadarChart from './RadarChart';
 
 interface ComparisonModalProps {
     log1: any;
     log2: any;
     onClose: () => void;
+    onUpdateLog?: (logId: string, newNotes: string) => void;
 }
 
-export default function ComparisonModal({ log1, log2, onClose }: ComparisonModalProps) {
+export default function ComparisonModal({ log1, log2, onClose, onUpdateLog }: ComparisonModalProps) {
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editNotes, setEditNotes] = useState<string>('');
+
     if (!log1 || !log2) return null;
 
     const isDifferent = (val1: any, val2: any) => val1 !== val2;
@@ -104,18 +108,74 @@ export default function ComparisonModal({ log1, log2, onClose }: ComparisonModal
                             <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Tasting Notes</div>
                             
                             <div className="flex flex-col gap-6">
-                                <div className="border border-orange-900/50 bg-orange-950/10 p-5 relative rounded-sm">
+                                <div className="border border-orange-900/50 bg-orange-950/10 p-5 relative rounded-sm group">
                                     <span className="absolute -top-2.5 left-4 bg-black px-2 text-[10px] font-bold tracking-widest uppercase text-orange-500">Recipe A</span>
-                                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
-                                        {log1.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
-                                    </p>
+                                    {onUpdateLog && editingId !== log1.id && (
+                                        <button 
+                                            onClick={() => { setEditingId(log1.id); setEditNotes(log1.notes || ''); }}
+                                            className="absolute top-2 right-2 text-[9px] uppercase tracking-widest bg-black border border-orange-900/50 text-orange-400 px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-900/30 rounded-sm"
+                                        >
+                                            ✏️ Edit
+                                        </button>
+                                    )}
+                                    {editingId === log1.id ? (
+                                        <div className="flex flex-col gap-2 mt-2">
+                                            <textarea 
+                                                value={editNotes}
+                                                onChange={e => setEditNotes(e.target.value)}
+                                                className="w-full h-32 bg-black border border-orange-900/50 text-gray-300 text-xs sm:text-sm p-3 font-sans focus:outline-none focus:border-orange-500 resize-y rounded-sm"
+                                                placeholder="Enter notes..."
+                                            />
+                                            <div className="flex justify-end gap-2">
+                                                <button onClick={() => setEditingId(null)} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-white px-3 py-1">Cancel</button>
+                                                <button 
+                                                    onClick={() => { onUpdateLog?.(log1.id, editNotes); setEditingId(null); }}
+                                                    className="text-[10px] uppercase tracking-widest bg-orange-900/50 border border-orange-500/50 text-orange-100 hover:bg-orange-800 px-4 py-1 rounded-sm"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
+                                            {log1.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
+                                        </p>
+                                    )}
                                 </div>
                                 
-                                <div className="border border-blue-900/50 bg-blue-950/10 p-5 relative rounded-sm">
+                                <div className="border border-blue-900/50 bg-blue-950/10 p-5 relative rounded-sm group">
                                     <span className="absolute -top-2.5 left-4 bg-black px-2 text-[10px] font-bold tracking-widest uppercase text-blue-500">Recipe B</span>
-                                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
-                                        {log2.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
-                                    </p>
+                                    {onUpdateLog && editingId !== log2.id && (
+                                        <button 
+                                            onClick={() => { setEditingId(log2.id); setEditNotes(log2.notes || ''); }}
+                                            className="absolute top-2 right-2 text-[9px] uppercase tracking-widest bg-black border border-blue-900/50 text-blue-400 px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-blue-900/30 rounded-sm"
+                                        >
+                                            ✏️ Edit
+                                        </button>
+                                    )}
+                                    {editingId === log2.id ? (
+                                        <div className="flex flex-col gap-2 mt-2">
+                                            <textarea 
+                                                value={editNotes}
+                                                onChange={e => setEditNotes(e.target.value)}
+                                                className="w-full h-32 bg-black border border-blue-900/50 text-gray-300 text-xs sm:text-sm p-3 font-sans focus:outline-none focus:border-blue-500 resize-y rounded-sm"
+                                                placeholder="Enter notes..."
+                                            />
+                                            <div className="flex justify-end gap-2">
+                                                <button onClick={() => setEditingId(null)} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-white px-3 py-1">Cancel</button>
+                                                <button 
+                                                    onClick={() => { onUpdateLog?.(log2.id, editNotes); setEditingId(null); }}
+                                                    className="text-[10px] uppercase tracking-widest bg-blue-900/50 border border-blue-500/50 text-blue-100 hover:bg-blue-800 px-4 py-1 rounded-sm"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
+                                            {log2.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
