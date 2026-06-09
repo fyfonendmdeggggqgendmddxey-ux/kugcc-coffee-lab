@@ -1,5 +1,5 @@
 import unifiedData from './unified_grinders.json';
-import handMillsData from './hand_grinders.json';
+import handMillsData from './hand_mills_sync.json';
 
 export type GrinderType = 'hand' | 'electric';
 

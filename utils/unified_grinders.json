@@ -1205,111 +1205,111 @@
     ]
   },
   "Mahlkönig EK43": {
-    "description": "Mahlkönig EK43 (0-16) 粒径対応表 [修正版]",
+    "description": "Custom Dial Linear Formula: Setting * 60 + 120",
     "table": [
       {
         "label": "0ギア 0グリッド",
-        "microns": 180.0
+        "microns": 120.0
       },
       {
         "label": "0ギア 1グリッド",
-        "microns": 184.0
+        "microns": 126.0
       },
       {
         "label": "0ギア 2グリッド",
-        "microns": 188.0
+        "microns": 132.0
       },
       {
         "label": "0ギア 3グリッド",
-        "microns": 191.0
+        "microns": 138.0
       },
       {
         "label": "0ギア 4グリッド",
-        "microns": 195.0
+        "microns": 144.0
       },
       {
         "label": "0ギア 5グリッド",
-        "microns": 198.0
+        "microns": 150.0
       },
       {
         "label": "0ギア 6グリッド",
-        "microns": 202.0
+        "microns": 156.0
       },
       {
         "label": "0ギア 7グリッド",
-        "microns": 206.0
+        "microns": 162.0
       },
       {
         "label": "0ギア 8グリッド",
-        "microns": 209.0
+        "microns": 168.0
       },
       {
         "label": "0ギア 9グリッド",
-        "microns": 213.0
+        "microns": 174.0
       },
       {
         "label": "1ギア 0グリッド",
-        "microns": 218.0
+        "microns": 180.0
       },
       {
         "label": "1ギア 1グリッド",
-        "microns": 224.0
+        "microns": 186.0
       },
       {
         "label": "1ギア 2グリッド",
-        "microns": 228.0
+        "microns": 192.0
       },
       {
         "label": "1ギア 3グリッド",
-        "microns": 232.0
+        "microns": 198.0
       },
       {
         "label": "1ギア 4グリッド",
-        "microns": 234.0
+        "microns": 204.0
       },
       {
         "label": "1ギア 5グリッド",
-        "microns": 237.0
+        "microns": 210.0
       },
       {
         "label": "1ギア 6グリッド",
-        "microns": 239.0
+        "microns": 216.0
       },
       {
         "label": "1ギア 7グリッド",
-        "microns": 243.0
+        "microns": 222.0
       },
       {
         "label": "1ギア 8グリッド",
-        "microns": 246.0
+        "microns": 228.0
       },
       {
         "label": "1ギア 9グリッド",
-        "microns": 250.0
+        "microns": 234.0
       },
       {
         "label": "2ギア 0グリッド",
-        "microns": 254.0
+        "microns": 240.0
       },
       {
         "label": "2ギア 1グリッド",
-        "microns": 258.0
+        "microns": 246.0
       },
       {
         "label": "2ギア 2グリッド",
-        "microns": 261.0
+        "microns": 252.0
       },
       {
         "label": "2ギア 3グリッド",
-        "microns": 264.0
+        "microns": 258.0
       },
       {
         "label": "2ギア 4グリッド",
-        "microns": 268.0
+        "microns": 264.0
       },
       {
         "label": "2ギア 5グリッド",
-        "microns": 272.0
+        "microns": 270.0
       },
       {
         "label": "2ギア 6グリッド",
@@ -1317,575 +1317,539 @@
       },
       {
         "label": "2ギア 7グリッド",
-        "microns": 280.0
+        "microns": 282.0
       },
       {
         "label": "2ギア 8グリッド",
-        "microns": 283.0
+        "microns": 288.0
       },
       {
         "label": "2ギア 9グリッド",
-        "microns": 287.0
+        "microns": 294.0
       },
       {
         "label": "3ギア 0グリッド",
-        "microns": 291.0
+        "microns": 300.0
       },
       {
         "label": "3ギア 1グリッド",
-        "microns": 295.0
-      },
-      {
-        "label": "3ギア 2グリッド",
-        "microns": 298.0
-      },
-      {
-        "label": "3ギア 3グリッド",
-        "microns": 302.0
-      },
-      {
-        "label": "3ギア 4グリッド",
         "microns": 306.0
       },
       {
-        "label": "3ギア 5グリッド",
-        "microns": 309.0
-      },
-      {
-        "label": "3ギア 6グリッド",
+        "label": "3ギア 2グリッド",
         "microns": 312.0
       },
       {
-        "label": "3ギア 7グリッド",
-        "microns": 316.0
+        "label": "3ギア 3グリッド",
+        "microns": 318.0
       },
       {
-        "label": "3ギア 8グリッド",
-        "microns": 320.0
-      },
-      {
-        "label": "3ギア 9グリッド",
+        "label": "3ギア 4グリッド",
         "microns": 324.0
       },
       {
-        "label": "4ギア 0グリッド",
-        "microns": 328.0
+        "label": "3ギア 5グリッド",
+        "microns": 330.0
       },
       {
-        "label": "4ギア 1グリッド",
-        "microns": 331.0
+        "label": "3ギア 6グリッド",
+        "microns": 336.0
       },
       {
-        "label": "4ギア 2グリッド",
-        "microns": 335.0
-      },
-      {
-        "label": "4ギア 3グリッド",
-        "microns": 339.0
-      },
-      {
-        "label": "4ギア 4グリッド",
+        "label": "3ギア 7グリッド",
         "microns": 342.0
       },
       {
-        "label": "4ギア 5グリッド",
-        "microns": 346.0
+        "label": "3ギア 8グリッド",
+        "microns": 348.0
       },
       {
-        "label": "4ギア 6グリッド",
-        "microns": 350.0
+        "label": "3ギア 9グリッド",
+        "microns": 354.0
       },
       {
-        "label": "4ギア 7グリッド",
-        "microns": 353.0
+        "label": "4ギア 0グリッド",
+        "microns": 360.0
       },
       {
-        "label": "4ギア 8グリッド",
-        "microns": 357.0
+        "label": "4ギア 1グリッド",
+        "microns": 366.0
       },
       {
-        "label": "4ギア 9グリッド",
-        "microns": 361.0
-      },
-      {
-        "label": "5ギア 0グリッド",
-        "microns": 365.0
-      },
-      {
-        "label": "5ギア 1グリッド",
-        "microns": 368.0
-      },
-      {
-        "label": "5ギア 2グリッド",
+        "label": "4ギア 2グリッド",
         "microns": 372.0
       },
       {
-        "label": "5ギア 3グリッド",
-        "microns": 376.0
+        "label": "4ギア 3グリッド",
+        "microns": 378.0
       },
       {
-        "label": "5ギア 4グリッド",
-        "microns": 379.0
+        "label": "4ギア 4グリッド",
+        "microns": 384.0
       },
       {
-        "label": "5ギア 5グリッド",
-        "microns": 383.0
-      },
-      {
-        "label": "5ギア 6グリッド",
-        "microns": 386.0
-      },
-      {
-        "label": "5ギア 7グリッド",
+        "label": "4ギア 5グリッド",
         "microns": 390.0
       },
       {
-        "label": "5ギア 8グリッド",
-        "microns": 393.0
+        "label": "4ギア 6グリッド",
+        "microns": 396.0
       },
       {
-        "label": "5ギア 9グリッド",
-        "microns": 397.0
+        "label": "4ギア 7グリッド",
+        "microns": 402.0
       },
       {
-        "label": "6ギア 0グリッド",
-        "microns": 401.0
+        "label": "4ギア 8グリッド",
+        "microns": 408.0
       },
       {
-        "label": "6ギア 1グリッド",
-        "microns": 405.0
+        "label": "4ギア 9グリッド",
+        "microns": 414.0
       },
       {
-        "label": "6ギア 2グリッド",
-        "microns": 409.0
-      },
-      {
-        "label": "6ギア 3グリッド",
-        "microns": 412.0
-      },
-      {
-        "label": "6ギア 4グリッド",
-        "microns": 416.0
-      },
-      {
-        "label": "6ギア 5グリッド",
+        "label": "5ギア 0グリッド",
         "microns": 420.0
       },
       {
-        "label": "6ギア 6グリッド",
-        "microns": 424.0
+        "label": "5ギア 1グリッド",
+        "microns": 426.0
       },
       {
-        "label": "6ギア 7グリッド",
-        "microns": 427.0
+        "label": "5ギア 2グリッド",
+        "microns": 432.0
       },
       {
-        "label": "6ギア 8グリッド",
-        "microns": 430.0
-      },
-      {
-        "label": "6ギア 9グリッド",
-        "microns": 434.0
-      },
-      {
-        "label": "7ギア 0グリッド",
+        "label": "5ギア 3グリッド",
         "microns": 438.0
       },
       {
-        "label": "7ギア 1グリッド",
-        "microns": 441.0
+        "label": "5ギア 4グリッド",
+        "microns": 444.0
       },
       {
-        "label": "7ギア 2グリッド",
-        "microns": 445.0
+        "label": "5ギア 5グリッド",
+        "microns": 450.0
       },
       {
-        "label": "7ギア 3グリッド",
-        "microns": 449.0
-      },
-      {
-        "label": "7ギア 4グリッド",
-        "microns": 452.0
-      },
-      {
-        "label": "7ギア 5グリッド",
+        "label": "5ギア 6グリッド",
         "microns": 456.0
       },
       {
-        "label": "7ギア 6グリッド",
-        "microns": 460.0
+        "label": "5ギア 7グリッド",
+        "microns": 462.0
       },
       {
-        "label": "7ギア 7グリッド",
-        "microns": 464.0
+        "label": "5ギア 8グリッド",
+        "microns": 468.0
       },
       {
-        "label": "7ギア 8グリッド",
-        "microns": 467.0
+        "label": "5ギア 9グリッド",
+        "microns": 474.0
       },
       {
-        "label": "7ギア 9グリッド",
-        "microns": 471.0
+        "label": "6ギア 0グリッド",
+        "microns": 480.0
       },
       {
-        "label": "8ギア 0グリッド",
-        "microns": 475.0
-      },
-      {
-        "label": "8ギア 1グリッド",
-        "microns": 479.0
-      },
-      {
-        "label": "8ギア 2グリッド",
-        "microns": 483.0
-      },
-      {
-        "label": "8ギア 3グリッド",
+        "label": "6ギア 1グリッド",
         "microns": 486.0
       },
       {
-        "label": "8ギア 4グリッド",
-        "microns": 490.0
+        "label": "6ギア 2グリッド",
+        "microns": 492.0
       },
       {
-        "label": "8ギア 5グリッド",
-        "microns": 493.0
+        "label": "6ギア 3グリッド",
+        "microns": 498.0
       },
       {
-        "label": "8ギア 6グリッド",
-        "microns": 497.0
-      },
-      {
-        "label": "8ギア 7グリッド",
-        "microns": 500.0
-      },
-      {
-        "label": "8ギア 8グリッド",
+        "label": "6ギア 4グリッド",
         "microns": 504.0
       },
       {
-        "label": "8ギア 9グリッド",
-        "microns": 508.0
+        "label": "6ギア 5グリッド",
+        "microns": 510.0
       },
       {
-        "label": "9ギア 0グリッド",
-        "microns": 512.0
+        "label": "6ギア 6グリッド",
+        "microns": 516.0
       },
       {
-        "label": "9ギア 1グリッド",
-        "microns": 515.0
+        "label": "6ギア 7グリッド",
+        "microns": 522.0
       },
       {
-        "label": "9ギア 2グリッド",
-        "microns": 519.0
+        "label": "6ギア 8グリッド",
+        "microns": 528.0
       },
       {
-        "label": "9ギア 3グリッド",
-        "microns": 523.0
-      },
-      {
-        "label": "9ギア 4グリッド",
-        "microns": 527.0
-      },
-      {
-        "label": "9ギア 5グリッド",
-        "microns": 530.0
-      },
-      {
-        "label": "9ギア 6グリッド",
+        "label": "6ギア 9グリッド",
         "microns": 534.0
       },
       {
-        "label": "9ギア 7グリッド",
-        "microns": 538.0
+        "label": "7ギア 0グリッド",
+        "microns": 540.0
       },
       {
-        "label": "9ギア 8グリッド",
-        "microns": 542.0
+        "label": "7ギア 1グリッド",
+        "microns": 546.0
       },
       {
-        "label": "9ギア 9グリッド",
-        "microns": 545.0
-      },
-      {
-        "label": "10ギア 0グリッド",
-        "microns": 549.0
-      },
-      {
-        "label": "10ギア 1グリッド",
+        "label": "7ギア 2グリッド",
         "microns": 552.0
       },
       {
-        "label": "10ギア 2グリッド",
-        "microns": 556.0
+        "label": "7ギア 3グリッド",
+        "microns": 558.0
       },
       {
-        "label": "10ギア 3グリッド",
-        "microns": 560.0
-      },
-      {
-        "label": "10ギア 4グリッド",
+        "label": "7ギア 4グリッド",
         "microns": 564.0
       },
       {
-        "label": "10ギア 5グリッド",
-        "microns": 567.0
+        "label": "7ギア 5グリッド",
+        "microns": 570.0
       },
       {
-        "label": "10ギア 6グリッド",
-        "microns": 571.0
+        "label": "7ギア 6グリッド",
+        "microns": 576.0
       },
       {
-        "label": "10ギア 7グリッド",
-        "microns": 575.0
-      },
-      {
-        "label": "10ギア 8グリッド",
-        "microns": 578.0
-      },
-      {
-        "label": "10ギア 9グリッド",
+        "label": "7ギア 7グリッド",
         "microns": 582.0
       },
       {
-        "label": "11ギア 0グリッド",
-        "microns": 586.0
+        "label": "7ギア 8グリッド",
+        "microns": 588.0
       },
       {
-        "label": "11ギア 1グリッド",
-        "microns": 589.0
+        "label": "7ギア 9グリッド",
+        "microns": 594.0
       },
       {
-        "label": "11ギア 2グリッド",
-        "microns": 593.0
-      },
-      {
-        "label": "11ギア 3グリッド",
-        "microns": 597.0
-      },
-      {
-        "label": "11ギア 4グリッド",
+        "label": "8ギア 0グリッド",
         "microns": 600.0
       },
       {
-        "label": "11ギア 5グリッド",
-        "microns": 604.0
+        "label": "8ギア 1グリッド",
+        "microns": 606.0
       },
       {
-        "label": "11ギア 6グリッド",
-        "microns": 608.0
+        "label": "8ギア 2グリッド",
+        "microns": 612.0
       },
       {
-        "label": "11ギア 7グリッド",
-        "microns": 611.0
+        "label": "8ギア 3グリッド",
+        "microns": 618.0
       },
       {
-        "label": "11ギア 8グリッド",
-        "microns": 615.0
+        "label": "8ギア 4グリッド",
+        "microns": 624.0
       },
       {
-        "label": "11ギア 9グリッド",
-        "microns": 619.0
-      },
-      {
-        "label": "12ギア 0グリッド",
-        "microns": 623.0
-      },
-      {
-        "label": "12ギア 1グリッド",
-        "microns": 626.0
-      },
-      {
-        "label": "12ギア 2グリッド",
+        "label": "8ギア 5グリッド",
         "microns": 630.0
       },
       {
-        "label": "12ギア 3グリッド",
-        "microns": 634.0
+        "label": "8ギア 6グリッド",
+        "microns": 636.0
       },
       {
-        "label": "12ギア 4グリッド",
-        "microns": 637.0
+        "label": "8ギア 7グリッド",
+        "microns": 642.0
       },
       {
-        "label": "12ギア 5グリッド",
-        "microns": 640.0
-      },
-      {
-        "label": "12ギア 6グリッド",
-        "microns": 644.0
-      },
-      {
-        "label": "12ギア 7グリッド",
+        "label": "8ギア 8グリッド",
         "microns": 648.0
       },
       {
-        "label": "12ギア 8グリッド",
-        "microns": 652.0
+        "label": "8ギア 9グリッド",
+        "microns": 654.0
       },
       {
-        "label": "12ギア 9グリッド",
-        "microns": 655.0
+        "label": "9ギア 0グリッド",
+        "microns": 660.0
       },
       {
-        "label": "13ギア 0グリッド",
-        "microns": 659.0
-      },
-      {
-        "label": "13ギア 1グリッド",
-        "microns": 663.0
-      },
-      {
-        "label": "13ギア 2グリッド",
+        "label": "9ギア 1グリッド",
         "microns": 666.0
       },
       {
-        "label": "13ギア 3グリッド",
-        "microns": 670.0
+        "label": "9ギア 2グリッド",
+        "microns": 672.0
       },
       {
-        "label": "13ギア 4グリッド",
-        "microns": 674.0
-      },
-      {
-        "label": "13ギア 5グリッド",
+        "label": "9ギア 3グリッド",
         "microns": 678.0
       },
       {
-        "label": "13ギア 6グリッド",
-        "microns": 682.0
+        "label": "9ギア 4グリッド",
+        "microns": 684.0
       },
       {
-        "label": "13ギア 7グリッド",
-        "microns": 686.0
+        "label": "9ギア 5グリッド",
+        "microns": 690.0
       },
       {
-        "label": "13ギア 8グリッド",
-        "microns": 689.0
+        "label": "9ギア 6グリッド",
+        "microns": 696.0
       },
       {
-        "label": "13ギア 9グリッド",
-        "microns": 693.0
-      },
-      {
-        "label": "14ギア 0グリッド",
-        "microns": 700.0
-      },
-      {
-        "label": "14ギア 1グリッド",
+        "label": "9ギア 7グリッド",
         "microns": 702.0
       },
       {
-        "label": "14ギア 2グリッド",
-        "microns": 705.0
+        "label": "9ギア 8グリッド",
+        "microns": 708.0
       },
       {
-        "label": "14ギア 3グリッド",
-        "microns": 707.0
-      },
-      {
-        "label": "14ギア 4グリッド",
-        "microns": 711.0
-      },
-      {
-        "label": "14ギア 5グリッド",
+        "label": "9ギア 9グリッド",
         "microns": 714.0
       },
       {
-        "label": "14ギア 6グリッド",
-        "microns": 718.0
+        "label": "10ギア 0グリッド",
+        "microns": 720.0
       },
       {
-        "label": "14ギア 7グリッド",
-        "microns": 722.0
-      },
-      {
-        "label": "14ギア 8グリッド",
+        "label": "10ギア 1グリッド",
         "microns": 726.0
       },
       {
-        "label": "14ギア 9グリッド",
-        "microns": 729.0
+        "label": "10ギア 2グリッド",
+        "microns": 732.0
       },
       {
-        "label": "15ギア 0グリッド",
-        "microns": 733.0
+        "label": "10ギア 3グリッド",
+        "microns": 738.0
       },
       {
-        "label": "15ギア 1グリッド",
-        "microns": 737.0
-      },
-      {
-        "label": "15ギア 2グリッド",
-        "microns": 740.0
-      },
-      {
-        "label": "15ギア 3グリッド",
+        "label": "10ギア 4グリッド",
         "microns": 744.0
       },
       {
-        "label": "15ギア 4グリッド",
-        "microns": 748.0
+        "label": "10ギア 5グリッド",
+        "microns": 750.0
       },
       {
-        "label": "15ギア 5グリッド",
-        "microns": 752.0
+        "label": "10ギア 6グリッド",
+        "microns": 756.0
       },
       {
-        "label": "15ギア 6グリッド",
-        "microns": 755.0
+        "label": "10ギア 7グリッド",
+        "microns": 762.0
       },
       {
-        "label": "15ギア 7グリッド",
-        "microns": 759.0
+        "label": "10ギア 8グリッド",
+        "microns": 768.0
       },
       {
-        "label": "15ギア 8グリッド",
-        "microns": 763.0
-      },
-      {
-        "label": "15ギア 9グリッド",
-        "microns": 766.0
-      },
-      {
-        "label": "16ギア 0グリッド",
-        "microns": 770.0
-      },
-      {
-        "label": "16ギア 1グリッド",
+        "label": "10ギア 9グリッド",
         "microns": 774.0
       },
       {
-        "label": "16ギア 2グリッド",
-        "microns": 777.0
+        "label": "11ギア 0グリッド",
+        "microns": 780.0
       },
       {
-        "label": "16ギア 3グリッド",
-        "microns": 781.0
+        "label": "11ギア 1グリッド",
+        "microns": 786.0
       },
       {
-        "label": "16ギア 4グリッド",
-        "microns": 784.0
-      },
-      {
-        "label": "16ギア 5グリッド",
-        "microns": 788.0
-      },
-      {
-        "label": "16ギア 6グリッド",
+        "label": "11ギア 2グリッド",
         "microns": 792.0
       },
       {
-        "label": "16ギア 7グリッド",
-        "microns": 796.0
+        "label": "11ギア 3グリッド",
+        "microns": 798.0
       },
       {
-        "label": "16ギア 8グリッド",
-        "microns": 800.0
+        "label": "11ギア 4グリッド",
+        "microns": 804.0
       },
       {
-        "label": "16ギア 9グリッド",
-        "microns": 803.0
+        "label": "11ギア 5グリッド",
+        "microns": 810.0
+      },
+      {
+        "label": "11ギア 6グリッド",
+        "microns": 816.0
+      },
+      {
+        "label": "11ギア 7グリッド",
+        "microns": 822.0
+      },
+      {
+        "label": "11ギア 8グリッド",
+        "microns": 828.0
+      },
+      {
+        "label": "11ギア 9グリッド",
+        "microns": 834.0
+      },
+      {
+        "label": "12ギア 0グリッド",
+        "microns": 840.0
+      },
+      {
+        "label": "12ギア 1グリッド",
+        "microns": 846.0
+      },
+      {
+        "label": "12ギア 2グリッド",
+        "microns": 852.0
+      },
+      {
+        "label": "12ギア 3グリッド",
+        "microns": 858.0
+      },
+      {
+        "label": "12ギア 4グリッド",
+        "microns": 864.0
+      },
+      {
+        "label": "12ギア 5グリッド",
+        "microns": 870.0
+      },
+      {
+        "label": "12ギア 6グリッド",
+        "microns": 876.0
+      },
+      {
+        "label": "12ギア 7グリッド",
+        "microns": 882.0
+      },
+      {
+        "label": "12ギア 8グリッド",
+        "microns": 888.0
+      },
+      {
+        "label": "12ギア 9グリッド",
+        "microns": 894.0
+      },
+      {
+        "label": "13ギア 0グリッド",
+        "microns": 900.0
+      },
+      {
+        "label": "13ギア 1グリッド",
+        "microns": 906.0
+      },
+      {
+        "label": "13ギア 2グリッド",
+        "microns": 912.0
+      },
+      {
+        "label": "13ギア 3グリッド",
+        "microns": 918.0
+      },
+      {
+        "label": "13ギア 4グリッド",
+        "microns": 924.0
+      },
+      {
+        "label": "13ギア 5グリッド",
+        "microns": 930.0
+      },
+      {
+        "label": "13ギア 6グリッド",
+        "microns": 936.0
+      },
+      {
+        "label": "13ギア 7グリッド",
+        "microns": 942.0
+      },
+      {
+        "label": "13ギア 8グリッド",
+        "microns": 948.0
+      },
+      {
+        "label": "13ギア 9グリッド",
+        "microns": 954.0
+      },
+      {
+        "label": "14ギア 0グリッド",
+        "microns": 960.0
+      },
+      {
+        "label": "14ギア 1グリッド",
+        "microns": 966.0
+      },
+      {
+        "label": "14ギア 2グリッド",
+        "microns": 972.0
+      },
+      {
+        "label": "14ギア 3グリッド",
+        "microns": 978.0
+      },
+      {
+        "label": "14ギア 4グリッド",
+        "microns": 984.0
+      },
+      {
+        "label": "14ギア 5グリッド",
+        "microns": 990.0
+      },
+      {
+        "label": "14ギア 6グリッド",
+        "microns": 996.0
+      },
+      {
+        "label": "14ギア 7グリッド",
+        "microns": 1002.0
+      },
+      {
+        "label": "14ギア 8グリッド",
+        "microns": 1008.0
+      },
+      {
+        "label": "14ギア 9グリッド",
+        "microns": 1014.0
+      },
+      {
+        "label": "15ギア 0グリッド",
+        "microns": 1020.0
+      },
+      {
+        "label": "15ギア 1グリッド",
+        "microns": 1026.0
+      },
+      {
+        "label": "15ギア 2グリッド",
+        "microns": 1032.0
+      },
+      {
+        "label": "15ギア 3グリッド",
+        "microns": 1038.0
+      },
+      {
+        "label": "15ギア 4グリッド",
+        "microns": 1044.0
+      },
+      {
+        "label": "15ギア 5グリッド",
+        "microns": 1050.0
+      },
+      {
+        "label": "15ギア 6グリッド",
+        "microns": 1056.0
+      },
+      {
+        "label": "15ギア 7グリッド",
+        "microns": 1062.0
+      },
+      {
+        "label": "15ギア 8グリッド",
+        "microns": 1068.0
+      },
+      {
+        "label": "15ギア 9グリッド",
+        "microns": 1074.0
+      },
+      {
+        "label": "16ギア 0グリッド",
+        "microns": 1080.0
       }
     ]
   },

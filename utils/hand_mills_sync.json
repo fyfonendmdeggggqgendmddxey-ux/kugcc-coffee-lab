@@ -1,0 +1,847 @@
+{
+  "Comandante C40 MK4": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "17",
+        "microns": 517.5
+      },
+      {
+        "label": "18",
+        "microns": 547.5
+      },
+      {
+        "label": "19",
+        "microns": 577.5
+      },
+      {
+        "label": "20",
+        "microns": 607.5
+      },
+      {
+        "label": "21",
+        "microns": 637.5
+      },
+      {
+        "label": "22",
+        "microns": 667.5
+      },
+      {
+        "label": "23",
+        "microns": 697.5
+      },
+      {
+        "label": "24",
+        "microns": 727.5
+      },
+      {
+        "label": "25",
+        "microns": 757.5
+      },
+      {
+        "label": "26",
+        "microns": 787.5
+      },
+      {
+        "label": "27",
+        "microns": 817.5
+      },
+      {
+        "label": "28",
+        "microns": 847.5
+      },
+      {
+        "label": "29",
+        "microns": 877.5
+      },
+      {
+        "label": "30",
+        "microns": 900.0
+      }
+    ]
+  },
+  "Comandante C40 MK4 (Red Clix)": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "34",
+        "microns": 510.0
+      },
+      {
+        "label": "35",
+        "microns": 525.0
+      },
+      {
+        "label": "36",
+        "microns": 540.0
+      },
+      {
+        "label": "37",
+        "microns": 555.0
+      },
+      {
+        "label": "38",
+        "microns": 570.0
+      },
+      {
+        "label": "39",
+        "microns": 585.0
+      },
+      {
+        "label": "40",
+        "microns": 600.0
+      },
+      {
+        "label": "41",
+        "microns": 615.0
+      },
+      {
+        "label": "42",
+        "microns": 630.0
+      },
+      {
+        "label": "43",
+        "microns": 645.0
+      },
+      {
+        "label": "44",
+        "microns": 660.0
+      },
+      {
+        "label": "45",
+        "microns": 675.0
+      },
+      {
+        "label": "46",
+        "microns": 690.0
+      },
+      {
+        "label": "47",
+        "microns": 705.0
+      },
+      {
+        "label": "48",
+        "microns": 720.0
+      },
+      {
+        "label": "49",
+        "microns": 735.0
+      },
+      {
+        "label": "50",
+        "microns": 750.0
+      },
+      {
+        "label": "51",
+        "microns": 765.0
+      },
+      {
+        "label": "52",
+        "microns": 780.0
+      },
+      {
+        "label": "53",
+        "microns": 795.0
+      },
+      {
+        "label": "54",
+        "microns": 810.0
+      },
+      {
+        "label": "55",
+        "microns": 825.0
+      },
+      {
+        "label": "56",
+        "microns": 840.0
+      },
+      {
+        "label": "57",
+        "microns": 855.0
+      },
+      {
+        "label": "58",
+        "microns": 870.0
+      },
+      {
+        "label": "59",
+        "microns": 885.0
+      },
+      {
+        "label": "60",
+        "microns": 900.0
+      }
+    ]
+  },
+  "1Zpresso K-Ultra": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "54",
+        "microns": 510.0
+      },
+      {
+        "label": "55",
+        "microns": 525.0
+      },
+      {
+        "label": "57",
+        "microns": 540.0
+      },
+      {
+        "label": "59",
+        "microns": 555.0
+      },
+      {
+        "label": "61",
+        "microns": 570.0
+      },
+      {
+        "label": "63",
+        "microns": 585.0
+      },
+      {
+        "label": "64",
+        "microns": 600.0
+      },
+      {
+        "label": "66",
+        "microns": 615.0
+      },
+      {
+        "label": "68",
+        "microns": 630.0
+      },
+      {
+        "label": "70",
+        "microns": 645.0
+      },
+      {
+        "label": "72",
+        "microns": 660.0
+      },
+      {
+        "label": "73",
+        "microns": 675.0
+      },
+      {
+        "label": "75",
+        "microns": 690.0
+      },
+      {
+        "label": "77",
+        "microns": 705.0
+      },
+      {
+        "label": "79",
+        "microns": 720.0
+      },
+      {
+        "label": "81",
+        "microns": 735.0
+      },
+      {
+        "label": "82",
+        "microns": 750.0
+      },
+      {
+        "label": "84",
+        "microns": 765.0
+      },
+      {
+        "label": "86",
+        "microns": 780.0
+      },
+      {
+        "label": "88",
+        "microns": 795.0
+      },
+      {
+        "label": "90",
+        "microns": 810.0
+      },
+      {
+        "label": "91",
+        "microns": 825.0
+      },
+      {
+        "label": "93",
+        "microns": 840.0
+      },
+      {
+        "label": "95",
+        "microns": 855.0
+      },
+      {
+        "label": "97",
+        "microns": 870.0
+      },
+      {
+        "label": "99",
+        "microns": 885.0
+      },
+      {
+        "label": "100",
+        "microns": 900.0
+      }
+    ]
+  },
+  "KINGrinder K6": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "60",
+        "microns": 510.0
+      },
+      {
+        "label": "62",
+        "microns": 525.0
+      },
+      {
+        "label": "64",
+        "microns": 540.0
+      },
+      {
+        "label": "67",
+        "microns": 555.0
+      },
+      {
+        "label": "69",
+        "microns": 570.0
+      },
+      {
+        "label": "71",
+        "microns": 585.0
+      },
+      {
+        "label": "73",
+        "microns": 600.0
+      },
+      {
+        "label": "75",
+        "microns": 615.0
+      },
+      {
+        "label": "78",
+        "microns": 630.0
+      },
+      {
+        "label": "80",
+        "microns": 645.0
+      },
+      {
+        "label": "82",
+        "microns": 660.0
+      },
+      {
+        "label": "84",
+        "microns": 675.0
+      },
+      {
+        "label": "86",
+        "microns": 690.0
+      },
+      {
+        "label": "89",
+        "microns": 705.0
+      },
+      {
+        "label": "91",
+        "microns": 720.0
+      },
+      {
+        "label": "93",
+        "microns": 735.0
+      },
+      {
+        "label": "95",
+        "microns": 750.0
+      },
+      {
+        "label": "97",
+        "microns": 765.0
+      },
+      {
+        "label": "100",
+        "microns": 780.0
+      },
+      {
+        "label": "102",
+        "microns": 795.0
+      },
+      {
+        "label": "104",
+        "microns": 810.0
+      },
+      {
+        "label": "106",
+        "microns": 825.0
+      },
+      {
+        "label": "108",
+        "microns": 840.0
+      },
+      {
+        "label": "111",
+        "microns": 855.0
+      },
+      {
+        "label": "113",
+        "microns": 870.0
+      },
+      {
+        "label": "115",
+        "microns": 885.0
+      },
+      {
+        "label": "117",
+        "microns": 900.0
+      }
+    ]
+  },
+  "Timemore C2": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "15",
+        "microns": 510.0
+      },
+      {
+        "label": "16",
+        "microns": 540.0
+      },
+      {
+        "label": "17",
+        "microns": 585.0
+      },
+      {
+        "label": "18",
+        "microns": 630.0
+      },
+      {
+        "label": "19",
+        "microns": 667.5
+      },
+      {
+        "label": "20",
+        "microns": 697.5
+      },
+      {
+        "label": "21",
+        "microns": 727.5
+      },
+      {
+        "label": "22",
+        "microns": 750.0
+      },
+      {
+        "label": "23",
+        "microns": 765.0
+      },
+      {
+        "label": "24",
+        "microns": 780.0
+      },
+      {
+        "label": "25",
+        "microns": 795.0
+      },
+      {
+        "label": "26",
+        "microns": 810.0
+      },
+      {
+        "label": "27",
+        "microns": 825.0
+      },
+      {
+        "label": "28",
+        "microns": 840.0
+      },
+      {
+        "label": "29",
+        "microns": 855.0
+      },
+      {
+        "label": "30",
+        "microns": 870.0
+      },
+      {
+        "label": "31",
+        "microns": 892.5
+      }
+    ]
+  },
+  "Timemore C3": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "11",
+        "microns": 525.0
+      },
+      {
+        "label": "12",
+        "microns": 562.5
+      },
+      {
+        "label": "13",
+        "microns": 600.0
+      },
+      {
+        "label": "14",
+        "microns": 637.5
+      },
+      {
+        "label": "15",
+        "microns": 667.5
+      },
+      {
+        "label": "16",
+        "microns": 697.5
+      },
+      {
+        "label": "17",
+        "microns": 727.5
+      },
+      {
+        "label": "18",
+        "microns": 757.5
+      },
+      {
+        "label": "19",
+        "microns": 795.0
+      },
+      {
+        "label": "20",
+        "microns": 832.5
+      },
+      {
+        "label": "21",
+        "microns": 862.5
+      },
+      {
+        "label": "22",
+        "microns": 892.5
+      }
+    ]
+  },
+  "Timemore Chestnut X": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "7",
+        "microns": 510.0
+      },
+      {
+        "label": "7.5",
+        "microns": 525.0
+      },
+      {
+        "label": "8",
+        "microns": 540.0
+      },
+      {
+        "label": "8.5",
+        "microns": 562.5
+      },
+      {
+        "label": "9",
+        "microns": 585.0
+      },
+      {
+        "label": "9.5",
+        "microns": 600.0
+      },
+      {
+        "label": "10",
+        "microns": 615.0
+      },
+      {
+        "label": "10.5",
+        "microns": 630.0
+      },
+      {
+        "label": "11",
+        "microns": 645.0
+      },
+      {
+        "label": "11.5",
+        "microns": 667.5
+      },
+      {
+        "label": "12",
+        "microns": 690.0
+      },
+      {
+        "label": "12.5",
+        "microns": 705.0
+      },
+      {
+        "label": "13",
+        "microns": 720.0
+      },
+      {
+        "label": "13.5",
+        "microns": 735.0
+      },
+      {
+        "label": "14",
+        "microns": 750.0
+      },
+      {
+        "label": "14.5",
+        "microns": 772.5
+      },
+      {
+        "label": "15",
+        "microns": 795.0
+      },
+      {
+        "label": "15.5",
+        "microns": 810.0
+      },
+      {
+        "label": "16",
+        "microns": 825.0
+      },
+      {
+        "label": "16.5",
+        "microns": 840.0
+      },
+      {
+        "label": "17",
+        "microns": 855.0
+      },
+      {
+        "label": "17.5",
+        "microns": 877.5
+      },
+      {
+        "label": "18",
+        "microns": 900.0
+      }
+    ]
+  },
+  "Timemore S3": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "2.6",
+        "microns": 510.0
+      },
+      {
+        "label": "2.8",
+        "microns": 525.0
+      },
+      {
+        "label": "3.1",
+        "microns": 540.0
+      },
+      {
+        "label": "3.3",
+        "microns": 555.0
+      },
+      {
+        "label": "3.6",
+        "microns": 570.0
+      },
+      {
+        "label": "3.8",
+        "microns": 585.0
+      },
+      {
+        "label": "4.1",
+        "microns": 600.0
+      },
+      {
+        "label": "4.3",
+        "microns": 615.0
+      },
+      {
+        "label": "4.6",
+        "microns": 630.0
+      },
+      {
+        "label": "4.8",
+        "microns": 645.0
+      },
+      {
+        "label": "5.1",
+        "microns": 660.0
+      },
+      {
+        "label": "5.3",
+        "microns": 675.0
+      },
+      {
+        "label": "5.6",
+        "microns": 690.0
+      },
+      {
+        "label": "5.8",
+        "microns": 705.0
+      },
+      {
+        "label": "6.1",
+        "microns": 720.0
+      },
+      {
+        "label": "6.3",
+        "microns": 735.0
+      },
+      {
+        "label": "6.6",
+        "microns": 750.0
+      },
+      {
+        "label": "6.8",
+        "microns": 765.0
+      },
+      {
+        "label": "7.1",
+        "microns": 780.0
+      },
+      {
+        "label": "7.3",
+        "microns": 795.0
+      },
+      {
+        "label": "7.6",
+        "microns": 810.0
+      },
+      {
+        "label": "7.8",
+        "microns": 825.0
+      },
+      {
+        "label": "8.1",
+        "microns": 840.0
+      },
+      {
+        "label": "8.3",
+        "microns": 855.0
+      },
+      {
+        "label": "8.6",
+        "microns": 870.0
+      },
+      {
+        "label": "8.8",
+        "microns": 885.0
+      }
+    ]
+  },
+  "Epeios Essense Go": {
+    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
+    "table": [
+      {
+        "label": "34",
+        "microns": 510.0
+      },
+      {
+        "label": "35",
+        "microns": 525.0
+      },
+      {
+        "label": "37",
+        "microns": 540.0
+      },
+      {
+        "label": "38",
+        "microns": 555.0
+      },
+      {
+        "label": "39",
+        "microns": 570.0
+      },
+      {
+        "label": "41",
+        "microns": 585.0
+      },
+      {
+        "label": "42",
+        "microns": 600.0
+      },
+      {
+        "label": "44",
+        "microns": 615.0
+      },
+      {
+        "label": "45",
+        "microns": 630.0
+      },
+      {
+        "label": "46",
+        "microns": 645.0
+      },
+      {
+        "label": "48",
+        "microns": 660.0
+      },
+      {
+        "label": "49",
+        "microns": 675.0
+      },
+      {
+        "label": "51",
+        "microns": 690.0
+      },
+      {
+        "label": "52",
+        "microns": 705.0
+      },
+      {
+        "label": "53",
+        "microns": 720.0
+      },
+      {
+        "label": "55",
+        "microns": 735.0
+      },
+      {
+        "label": "56",
+        "microns": 750.0
+      },
+      {
+        "label": "58",
+        "microns": 765.0
+      },
+      {
+        "label": "59",
+        "microns": 780.0
+      },
+      {
+        "label": "60",
+        "microns": 795.0
+      },
+      {
+        "label": "62",
+        "microns": 810.0
+      },
+      {
+        "label": "63",
+        "microns": 825.0
+      },
+      {
+        "label": "65",
+        "microns": 840.0
+      },
+      {
+        "label": "66",
+        "microns": 855.0
+      },
+      {
+        "label": "67",
+        "microns": 870.0
+      },
+      {
+        "label": "69",
+        "microns": 885.0
+      },
+      {
+        "label": "70",
+        "microns": 900.0
+      }
+    ]
+  }
+}
