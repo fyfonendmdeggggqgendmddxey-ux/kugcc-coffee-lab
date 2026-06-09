@@ -94,7 +94,13 @@ export function parseSettingToMicrons(modelId: string, settingStr: string): numb
     return null;
 }
 
-export function convertMicronsToSettingStr(modelId: string, microns: number): string | null {
+export interface GrinderTranslation {
+    value: string;
+    isMin: boolean;
+    isMax: boolean;
+}
+
+export function convertMicronsToSettingStr(modelId: string, microns: number): GrinderTranslation | null {
     if (microns <= 0) return null;
     const grinder = GRINDERS[modelId];
     if (!grinder) return null;
@@ -102,9 +108,9 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): st
     if (grinder.micronsPerClick) {
         let clicks = Math.round(microns / grinder.micronsPerClick);
         if (grinder.settingMultiplier) {
-            return String(Number((clicks / grinder.settingMultiplier).toFixed(1)));
+            return { value: String(Number((clicks / grinder.settingMultiplier).toFixed(1))), isMin: false, isMax: false };
         }
-        return String(clicks);
+        return { value: String(clicks), isMin: false, isMax: false };
     }
 
     if (grinder.data && grinder.data.length > 0) {
@@ -113,21 +119,21 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): st
             .filter(d => d.val !== null) as Array<{ val: number; microns: number }>;
             
         if (numericEntries.length === 0) return null;
-        if (numericEntries.length === 1) return String(numericEntries[0].val);
+        if (numericEntries.length === 1) return { value: String(numericEntries[0].val), isMin: false, isMax: false };
         
         numericEntries.sort((a, b) => a.microns - b.microns);
         
-        if (microns <= numericEntries[0].microns) return String(numericEntries[0].val);
-        if (microns >= numericEntries[numericEntries.length - 1].microns) return String(numericEntries[numericEntries.length - 1].val);
+        if (microns <= numericEntries[0].microns) return { value: String(numericEntries[0].val), isMin: true, isMax: false };
+        if (microns >= numericEntries[numericEntries.length - 1].microns) return { value: String(numericEntries[numericEntries.length - 1].val), isMin: false, isMax: true };
         
         for (let i = 0; i < numericEntries.length - 1; i++) {
             const p1 = numericEntries[i];
             const p2 = numericEntries[i + 1];
             if (microns >= p1.microns && microns <= p2.microns) {
-                if (p2.microns === p1.microns) return String(p1.val);
+                if (p2.microns === p1.microns) return { value: String(p1.val), isMin: false, isMax: false };
                 const ratio = (microns - p1.microns) / (p2.microns - p1.microns);
                 const interpolatedVal = p1.val + ratio * (p2.val - p1.val);
-                return String(Number(interpolatedVal.toFixed(1)));
+                return { value: String(Number(interpolatedVal.toFixed(1))), isMin: false, isMax: false };
             }
         }
         
@@ -141,7 +147,9 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): st
                 closest = entry;
             }
         }
-        return closest.label;
+        const isMin = closest === grinder.data[0];
+        const isMax = closest === grinder.data[grinder.data.length - 1];
+        return { value: closest.label, isMin, isMax };
     }
 
     return null;

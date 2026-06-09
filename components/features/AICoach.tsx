@@ -191,10 +191,19 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                                         {GRINDER_LIST.map((grinder) => {
                                             if (grinder.id === recipe.grinderModel) return null;
                                             const translated = convertMicronsToSettingStr(grinder.id, sourceMicrons);
+                                            if (!translated) return null;
+                                            
+                                            const isWarning = translated.isMin || translated.isMax;
+                                            const warningText = translated.isMax ? '(MAX)' : (translated.isMin ? '(MIN)' : '');
+                                            
                                             return (
                                                 <div key={grinder.id} className="flex justify-between items-center border-b border-gray-900/30 pb-1">
                                                     <span className="text-[9px] text-gray-500 uppercase tracking-wider truncate mr-2" title={grinder.name}>{grinder.name}</span>
-                                                    <span className="text-xs text-emerald-400 font-mono font-bold">{translated !== null ? translated : '-'}</span>
+                                                    <span className={`text-xs font-mono font-bold ${isWarning ? 'text-amber-400' : 'text-emerald-400'}`}>
+                                                        {isWarning && <span className="mr-1">⚠️</span>}
+                                                        {translated.value}
+                                                        {isWarning && <span className="text-[8px] ml-1 opacity-80">{warningText}</span>}
+                                                    </span>
                                                 </div>
                                             );
                                         })}
