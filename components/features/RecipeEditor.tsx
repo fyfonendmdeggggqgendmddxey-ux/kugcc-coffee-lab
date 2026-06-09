@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Recipe, RecipeStep } from '@/utils/types';
 import { GRINDER_TABLE } from '@/utils/grinder-table';
+import { analyzeRecipeImage } from '@/utils/gemini';
+import { toast } from '@/components/ui/Toast';
 
 interface RecipeEditorProps {
     initialRecipe: Recipe;
@@ -21,6 +23,81 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
     // But since RecipeEditor doesn't know if it came from Add Global Recipe, we can just default to 'bean', 
     // and let the user select 'global' if they want. Actually, we should add saveScope state.
     const [saveScope, setSaveScope] = useState<'bean' | 'global'>('bean');
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const apiKey = localStorage.getItem('kugcc_gemini_api_key');
+        if (!apiKey) {
+            toast('Please configure your Gemini API Key in the Settings tab first!', 'error');
+            return;
+        }
+
+        setIsAnalyzing(true);
+        
+        try {
+            const { resizeImageToBase64 } = await import('@/utils/imageResizer');
+            const base64Data = await resizeImageToBase64(file);
+
+            const result = await analyzeRecipeImage(base64Data.data, base64Data.mime, apiKey);
+            
+            setRecipe(prev => {
+                const newData = { ...prev };
+                if (result.name) newData.name = result.name;
+                if (result.dripper) newData.dripper = result.dripper;
+                if (result.beanWeight) newData.beanWeight = result.beanWeight;
+                if (result.temperature) newData.temperature = result.temperature;
+                if (result.grindSize) newData.grindSize = result.grindSize;
+                
+                // Calculate ratio if totalWater is provided
+                let computedTotalWater = 0;
+                if (result.totalWater && result.beanWeight) {
+                    newData.ratio = Math.round((result.totalWater / result.beanWeight) * 10) / 10;
+                    computedTotalWater = result.totalWater;
+                } else if (result.ratio) {
+                    newData.ratio = result.ratio;
+                    computedTotalWater = (result.beanWeight || prev.beanWeight || 15) * result.ratio;
+                }
+
+                // Handle steps
+                if (result.steps && result.steps.length > 0) {
+                    // If no explicit totalWater was given, calculate it from the sum of steps
+                    if (computedTotalWater === 0) {
+                        computedTotalWater = result.steps.reduce((sum, s) => sum + (s.waterAdded || 0), 0);
+                        if (computedTotalWater > 0 && newData.beanWeight) {
+                            newData.ratio = Math.round((computedTotalWater / newData.beanWeight) * 10) / 10;
+                        }
+                    }
+
+                    if (computedTotalWater > 0) {
+                        newData.steps = result.steps.map((s, idx) => {
+                            const waterAdded = s.waterAdded || 0;
+                            const percentage = (waterAdded / computedTotalWater) * 100;
+                            return {
+                                id: Date.now().toString() + idx,
+                                name: s.name || `Step ${idx + 1}`,
+                                waterPercentage: percentage,
+                                duration: s.duration || 30
+                            };
+                        });
+                    }
+                }
+
+                return newData;
+            });
+            
+            toast('Recipe parsed successfully!');
+        } catch (error: any) {
+            console.error('Auto-fill error:', error);
+            const msg = error instanceof Error ? error.message : error.toString();
+            toast('Failed to parse recipe: ' + msg, 'error');
+        } finally {
+            setIsAnalyzing(false);
+            e.target.value = '';
+        }
+    };
 
     useEffect(() => {
         const savedDrippers = localStorage.getItem('kugcc_custom_drippers');
@@ -93,8 +170,21 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
 
     return (
         <div id="recipe-editor-export" className="flex flex-col items-center w-full h-full p-6 md:p-12 bg-black font-mono relative overflow-y-auto block-swipe">
-            <h2 className="text-white uppercase tracking-[0.3em] mb-8 md:mb-12 border-b border-gray-800 pb-4 w-full text-center text-sm md:text-base">
-                Recipe Configuration
+            <h2 className="text-white uppercase tracking-[0.3em] mb-8 md:mb-12 border-b border-gray-800 pb-4 w-full flex justify-between items-center text-sm md:text-base">
+                <span>Recipe Configuration</span>
+                <label className="relative cursor-pointer flex items-center justify-center bg-gray-900 hover:bg-gray-800 text-gray-300 transition-colors px-3 py-1.5 rounded-sm border border-gray-800">
+                    {isAnalyzing ? (
+                        <span className="text-[10px] uppercase tracking-widest flex items-center gap-2">
+                            <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            Analyzing...
+                        </span>
+                    ) : (
+                        <span className="text-[10px] uppercase tracking-widest flex items-center gap-1.5 text-blue-300">
+                            <span>📸</span> Auto-fill
+                        </span>
+                    )}
+                    <input type="file" accept="image/jpeg, image/png, image/webp" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleImageUpload} disabled={isAnalyzing} />
+                </label>
             </h2>
 
             {/* Recipe Name & Shop Recipe Toggle */}
