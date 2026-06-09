@@ -74,6 +74,8 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
     const [notes, setNotes] = useState('');
     const [saved, setSaved] = useState(false);
     const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
+    const [editingLogId, setEditingLogId] = useState<string | null>(null);
+    const [editNotesText, setEditNotesText] = useState('');
 
     // Tasting matrix state (default to 3)
     const [acidity, setAcidity] = useState(3);
@@ -718,11 +720,46 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                                             </div>
                                         )}
 
-                                        {log.notes && (
-                                            <p className="text-base text-white bg-gray-900/40 p-4 border border-gray-700 rounded-sm whitespace-pre-wrap leading-relaxed shadow-inner">
-                                                {log.notes}
-                                            </p>
-                                        )}
+                                        <div className="relative group">
+                                            {editingLogId !== log.id && (
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); setEditingLogId(log.id); setEditNotesText(log.notes || ''); }}
+                                                    className="absolute -top-3 -right-2 text-[9px] uppercase tracking-widest bg-gray-900 border border-gray-700 text-gray-400 hover:text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-800 rounded-sm z-10"
+                                                >
+                                                    ✏️ Edit Notes
+                                                </button>
+                                            )}
+                                            {editingLogId === log.id ? (
+                                                <div className="flex flex-col gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
+                                                    <textarea 
+                                                        value={editNotesText}
+                                                        onChange={e => setEditNotesText(e.target.value)}
+                                                        className="w-full h-32 bg-black border border-gray-600 text-white text-sm p-4 font-sans focus:outline-none focus:border-white resize-y rounded-sm"
+                                                        placeholder="Enter notes..."
+                                                    />
+                                                    <div className="flex justify-end gap-2">
+                                                        <button onClick={() => setEditingLogId(null)} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-white px-3 py-1">Cancel</button>
+                                                        <button 
+                                                            onClick={() => {
+                                                                const updatedHistory = history.map(h => h.id === log.id ? { ...h, notes: editNotesText } : h);
+                                                                setHistory(updatedHistory);
+                                                                localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
+                                                                setEditingLogId(null);
+                                                            }}
+                                                            className="text-[10px] uppercase tracking-widest bg-gray-800 border border-gray-600 text-white hover:bg-gray-700 px-4 py-1 rounded-sm"
+                                                        >
+                                                            Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : log.notes ? (
+                                                <p className="text-base text-white bg-gray-900/40 p-4 border border-gray-700 rounded-sm whitespace-pre-wrap leading-relaxed shadow-inner">
+                                                    {log.notes}
+                                                </p>
+                                            ) : (
+                                                <p className="text-sm text-gray-600 italic">No notes recorded.</p>
+                                            )}
+                                        </div>
 
                                         {log.recipe && (
                                             <div className="mt-2 border-t border-gray-800 pt-4">
