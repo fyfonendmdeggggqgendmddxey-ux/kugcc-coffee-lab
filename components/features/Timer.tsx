@@ -168,9 +168,9 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
+    <div className={`flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-between pb-6 md:pb-10'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
-      <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
+      <div className="w-full z-20 flex justify-between items-start pointer-events-none pt-6 md:pt-8 shrink-0">
         
         {/* Left Info */}
         <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
@@ -241,6 +241,8 @@ export default function Timer({
         </div>
       </div>
 
+      {/* Middle Section (Timer & Timeline) */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px] md:min-h-[450px]">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -314,6 +316,7 @@ export default function Timer({
           )
         })}
       </div>
+      </div>
 
       {/* Test Mode Summary */}
       {isFinished && isTestMode && (
@@ -373,6 +376,8 @@ export default function Timer({
           </div>
       )}
 
+      {/* Bottom Section */}
+      <div className="w-full flex flex-col items-center shrink-0">
       {/* Bottom Panel */}
       <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
         <div className="flex flex-col items-center">
@@ -471,6 +476,7 @@ export default function Timer({
 
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
         Space / Enter: Toggle • Esc: Reset
+      </div>
       </div>
     </div>
   );
