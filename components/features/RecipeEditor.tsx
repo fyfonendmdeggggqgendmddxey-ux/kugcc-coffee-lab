@@ -268,7 +268,8 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                         onChange={(e) => {
                             const targetWater = Number(e.target.value);
                             if (recipe.beanWeight > 0) {
-                                const newRatio = Math.round((targetWater / recipe.beanWeight) * 10) / 10;
+                                // Calculate ratio to 2 decimal places to prevent totalWater rounding jumps
+                                const newRatio = Math.round((targetWater / recipe.beanWeight) * 100) / 100;
                                 setRecipe(prev => ({ ...prev, ratio: newRatio }));
                             }
                         }}
