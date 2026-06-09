@@ -99,11 +99,25 @@ export default function ComparisonModal({ log1, log2, onClose }: ComparisonModal
                         {renderRow('Grind', log1.recipe?.grindSize, log2.recipe?.grindSize)}
                         {renderRow('Ratio', log1.recipe?.ratio, log2.recipe?.ratio)}
                         
-                        {/* Notes */}
-                        <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-4 items-start border-t border-gray-900 pt-6 mt-4">
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest pt-1">Notes</div>
-                            <div className={`text-[10px] leading-relaxed p-4 h-full min-h-[80px] border transition-colors ${log1.notes !== log2.notes ? 'text-orange-100 bg-orange-950/20 border-orange-900/50' : 'text-gray-500 bg-black border-gray-900'}`}>{log1.notes || '-'}</div>
-                            <div className={`text-[10px] leading-relaxed p-4 h-full min-h-[80px] border transition-colors ${log1.notes !== log2.notes ? 'text-blue-100 bg-blue-950/20 border-blue-900/50' : 'text-gray-500 bg-black border-gray-900'}`}>{log2.notes || '-'}</div>
+                        {/* Notes (Redesigned for better readability) */}
+                        <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-gray-900">
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Tasting Notes</div>
+                            
+                            <div className="flex flex-col gap-6">
+                                <div className="border border-orange-900/50 bg-orange-950/10 p-5 relative rounded-sm">
+                                    <span className="absolute -top-2.5 left-4 bg-black px-2 text-[10px] font-bold tracking-widest uppercase text-orange-500">Recipe A</span>
+                                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
+                                        {log1.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
+                                    </p>
+                                </div>
+                                
+                                <div className="border border-blue-900/50 bg-blue-950/10 p-5 relative rounded-sm">
+                                    <span className="absolute -top-2.5 left-4 bg-black px-2 text-[10px] font-bold tracking-widest uppercase text-blue-500">Recipe B</span>
+                                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap">
+                                        {log2.notes || <span className="text-gray-700 italic font-mono text-[10px]">No notes recorded</span>}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
