@@ -168,9 +168,9 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex flex-col items-center w-full h-full px-4 select-none ${isFinished && isTestMode ? 'justify-start pt-6 pb-12' : 'justify-start pt-6 md:pt-10 pb-6 md:pb-12'} overflow-y-auto overflow-x-hidden`}>
+    <div className={`flex flex-col items-center w-full relative h-full px-4 select-none origin-center [@media(max-height:800px)_and_(min-width:768px)]:scale-[0.85] [@media(max-height:700px)_and_(min-width:768px)]:scale-[0.75] ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-32 pb-12' : 'overflow-hidden justify-center py-6 md:py-12'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
-      <div className="w-full px-0 md:px-6 z-20 flex justify-between items-start pointer-events-none shrink-0 mb-4">
+      <div className="absolute top-6 left-0 w-full px-4 md:px-10 md:top-10 z-20 flex justify-between items-start pointer-events-none">
         
         {/* Left Info */}
         <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
@@ -241,8 +241,6 @@ export default function Timer({
         </div>
       </div>
 
-      {/* Main Content Group (Timer & Controls) */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-0 z-10 pb-4">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -262,7 +260,7 @@ export default function Timer({
               if (!isFinished) setIsRunning(prev => !prev);
           }
         }}
-        className="relative z-10 mb-6 scale-[0.9] sm:scale-95 md:scale-100 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
+        className="relative z-10 mb-6 scale-95 md:scale-110 focus:outline-none transition-transform active:scale-[0.93] duration-150 cursor-pointer"
         aria-label={isRunning ? "Pause Timer" : "Start Timer"}
       >
         <CircularTimer
@@ -473,7 +471,6 @@ export default function Timer({
 
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
         Space / Enter: Toggle • Esc: Reset
-        </div>
       </div>
     </div>
   );
