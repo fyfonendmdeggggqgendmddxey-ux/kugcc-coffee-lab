@@ -168,7 +168,7 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-between pb-6 md:pb-10'}`}>
+    <div className={`flex-1 flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-between pb-6 md:pb-10'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
       <div className="w-full z-20 flex justify-between items-start pointer-events-none pt-6 md:pt-8 shrink-0">
         
