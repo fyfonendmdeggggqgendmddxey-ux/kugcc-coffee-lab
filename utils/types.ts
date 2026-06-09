@@ -3,6 +3,8 @@ export type RecipeStep = {
     name: string;
     waterPercentage: number; // e.g. 20 for 20%
     duration: number; // seconds
+    temperature?: number; // Optional step-specific temperature (Celsius)
+    state?: string; // Optional step-specific state or instruction (e.g., "Switch Close", "Stir")
 };
 
 export type Recipe = {

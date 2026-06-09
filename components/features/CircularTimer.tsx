@@ -12,6 +12,8 @@ interface CircularTimerProps {
     isFinished?: boolean;
     grinderSetting?: string; // e.g. "(C40: 22)"
     isTestMode?: boolean;
+    stepTemperature?: number;
+    stepState?: string;
 }
 
 export default function CircularTimer({
@@ -23,7 +25,9 @@ export default function CircularTimer({
     stepIndex,
     isFinished,
     grinderSetting,
-    isTestMode
+    isTestMode,
+    stepTemperature,
+    stepState
 }: CircularTimerProps) {
     const radius = 160;
     const stroke = 4;
@@ -130,6 +134,16 @@ export default function CircularTimer({
                     {grinderSetting && !isFinished && (
                         <span className="text-[10px] uppercase tracking-widest text-gray-500 mt-1 transition-colors duration-300 group-hover:text-gray-400">
                             {grinderSetting}
+                        </span>
+                    )}
+                    {stepTemperature && !isFinished && (
+                        <span className="text-[10px] uppercase tracking-widest text-red-400 font-bold mt-1 bg-red-950/30 px-2 py-0.5 rounded-sm border border-red-900/50">
+                            🌡️ {stepTemperature}℃
+                        </span>
+                    )}
+                    {stepState && !isFinished && (
+                        <span className="text-[10px] uppercase tracking-widest text-[#3b82f6] font-bold mt-1 bg-blue-950/30 px-2 py-0.5 rounded-sm border border-blue-900/50">
+                            ⚡ {stepState}
                         </span>
                     )}
                 </div>

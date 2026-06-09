@@ -24,6 +24,11 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
     // and let the user select 'global' if they want. Actually, we should add saveScope state.
     const [saveScope, setSaveScope] = useState<'bean' | 'global'>('bean');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
+
+    const toggleStepAdvanced = (id: string) => {
+        setExpandedSteps(prev => ({ ...prev, [id]: !prev[id] }));
+    };
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -79,7 +84,9 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
                                 id: Date.now().toString() + idx,
                                 name: s.name || `Step ${idx + 1}`,
                                 waterPercentage: percentage,
-                                duration: s.duration || 30
+                                duration: s.duration || 30,
+                                temperature: s.temperature,
+                                state: s.state
                             };
                         });
                     }
@@ -144,7 +151,7 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [recipe, onSave, onCancel]);
 
-    const updateStep = (id: string, field: keyof RecipeStep, value: string | number) => {
+    const updateStep = (id: string, field: keyof RecipeStep, value: string | number | undefined) => {
         setRecipe(prev => ({
             ...prev,
             steps: prev.steps.map(s => s.id === id ? { ...s, [field]: value } : s)
@@ -344,49 +351,85 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
 
                 <div className="w-full border-t border-gray-800">
                     {recipe.steps.map((step, idx) => (
-                        <div key={step.id} className="flex items-center gap-2 md:gap-4 py-2 md:py-3 border-b border-gray-900 group">
-                            <span className="text-gray-600 w-4 md:w-6 text-xs">{idx + 1}</span>
-                            <input
-                                value={step.name}
-                                onChange={(e) => updateStep(step.id, 'name', e.target.value)}
-                                className="bg-transparent text-white text-sm focus:outline-none flex-1 min-w-[60px]"
-                                placeholder="Step Name"
-                            />
-                            <div className="flex items-center gap-1 md:gap-2 shrink-0">
+                        <div key={step.id} className="flex flex-col border-b border-gray-900 group">
+                            <div className="flex items-center gap-2 md:gap-4 py-2 md:py-3">
+                                <span className="text-gray-600 w-4 md:w-6 text-xs">{idx + 1}</span>
                                 <input
-                                    type="number"
-                                    value={step.waterPercentage === 0 ? '' : Math.round(totalWater * (step.waterPercentage / 100))}
-                                    onChange={(e) => {
-                                        const ml = e.target.value === '' ? 0 : Number(e.target.value);
-                                        const pct = totalWater > 0 ? (ml / totalWater) * 100 : 0;
-                                        updateStep(step.id, 'waterPercentage', pct);
-                                    }}
-                                    className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
-                                    placeholder="0"
+                                    value={step.name}
+                                    onChange={(e) => updateStep(step.id, 'name', e.target.value)}
+                                    className="bg-transparent text-white text-sm focus:outline-none flex-1 min-w-[60px]"
+                                    placeholder="Step Name"
                                 />
-                                <span className="text-gray-600 text-xs">ml</span>
+                                <div className="flex items-center gap-1 md:gap-2 shrink-0">
+                                    <input
+                                        type="number"
+                                        value={step.waterPercentage === 0 ? '' : Math.round(totalWater * (step.waterPercentage / 100))}
+                                        onChange={(e) => {
+                                            const ml = e.target.value === '' ? 0 : Number(e.target.value);
+                                            const pct = totalWater > 0 ? (ml / totalWater) * 100 : 0;
+                                            updateStep(step.id, 'waterPercentage', pct);
+                                        }}
+                                        className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                        placeholder="0"
+                                    />
+                                    <span className="text-gray-600 text-xs">ml</span>
+                                </div>
+                                <div className="hidden md:flex items-center gap-2 shrink-0">
+                                    <span className="text-gray-500 text-sm tabular-nums w-12 text-right">
+                                        {step.waterPercentage.toFixed(1)}%
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-1 md:gap-2 shrink-0">
+                                    <input
+                                        type="number"
+                                        value={step.duration === 0 ? '' : step.duration}
+                                        onChange={(e) => updateStep(step.id, 'duration', e.target.value === '' ? 0 : Number(e.target.value))}
+                                        className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
+                                        placeholder="0"
+                                    />
+                                    <span className="text-gray-600 text-xs">s</span>
+                                </div>
+                                <button
+                                    onClick={() => toggleStepAdvanced(step.id)}
+                                    className={`text-xs px-1 md:px-2 shrink-0 transition-colors ${expandedSteps[step.id] || step.temperature || step.state ? 'text-[#3b82f6]' : 'text-gray-600 hover:text-gray-300'}`}
+                                    title="Advanced Options"
+                                >
+                                    ⚙️
+                                </button>
+                                <button
+                                    onClick={() => removeStep(step.id)}
+                                    className="text-gray-600 hover:text-red-500 transition-all text-xs px-1 md:px-2 md:opacity-0 md:group-hover:opacity-100 shrink-0"
+                                >
+                                    [x]
+                                </button>
                             </div>
-                            <div className="hidden md:flex items-center gap-2 shrink-0">
-                                <span className="text-gray-500 text-sm tabular-nums w-12 text-right">
-                                    {step.waterPercentage.toFixed(1)}%
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-1 md:gap-2 shrink-0">
-                                <input
-                                    type="number"
-                                    value={step.duration === 0 ? '' : step.duration}
-                                    onChange={(e) => updateStep(step.id, 'duration', e.target.value === '' ? 0 : Number(e.target.value))}
-                                    className="bg-transparent text-white text-sm text-right w-10 md:w-12 focus:outline-none border-b border-transparent focus:border-gray-700"
-                                    placeholder="0"
-                                />
-                                <span className="text-gray-600 text-xs">s</span>
-                            </div>
-                            <button
-                                onClick={() => removeStep(step.id)}
-                                className="text-gray-600 hover:text-red-500 transition-all text-xs px-1 md:px-2 md:opacity-0 md:group-hover:opacity-100 shrink-0"
-                            >
-                                [x]
-                            </button>
+                            
+                            {/* Advanced Options Row */}
+                            {expandedSteps[step.id] && (
+                                <div className="pl-6 md:pl-10 pr-2 pb-3 flex flex-col md:flex-row gap-4 items-start md:items-center bg-gray-900/20">
+                                    <div className="flex items-center gap-2 w-full md:w-auto">
+                                        <label className="text-[10px] text-gray-500 uppercase tracking-widest w-12 md:w-auto">Temp</label>
+                                        <input
+                                            type="number"
+                                            value={step.temperature || ''}
+                                            onChange={(e) => updateStep(step.id, 'temperature', e.target.value === '' ? undefined : Number(e.target.value))}
+                                            placeholder={recipe.temperature ? `${recipe.temperature}` : 'Global'}
+                                            className="bg-transparent text-white text-sm text-right w-16 focus:outline-none border-b border-gray-800 focus:border-gray-500"
+                                        />
+                                        <span className="text-gray-600 text-xs">℃</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 w-full md:flex-1">
+                                        <label className="text-[10px] text-gray-500 uppercase tracking-widest w-12 md:w-auto">State</label>
+                                        <input
+                                            type="text"
+                                            value={step.state || ''}
+                                            onChange={(e) => updateStep(step.id, 'state', e.target.value)}
+                                            placeholder="e.g. Switch Close, Stir"
+                                            className="bg-transparent text-white text-sm focus:outline-none flex-1 border-b border-gray-800 focus:border-gray-500"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

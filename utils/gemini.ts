@@ -118,6 +118,8 @@ export interface ExtractedRecipeStep {
     name?: string;
     waterAdded?: number;
     duration?: number;
+    temperature?: number;
+    state?: string;
 }
 
 export interface ExtractedRecipeInfo {
@@ -168,7 +170,9 @@ export async function analyzeRecipeImage(base64Image: string, mimeType: string, 
     {
       "name": "string (e.g. Bloom, 1st Pour, 2nd Pour)",
       "waterAdded": "number (absolute grams of water poured IN THIS STEP. DO NOT use cumulative total. If step says 'pour to 150g' and previous was 50g, waterAdded is 100)",
-      "duration": "number (seconds this step takes. E.g. if it says 0:00 to 0:45, duration is 45)"
+      "duration": "number (seconds this step takes. E.g. if it says 0:00 to 0:45, duration is 45)",
+      "temperature": "number (Celsius, ONLY if a specific temperature is mentioned for this step, e.g. 'Drop to 70C')",
+      "state": "string (Specific actions or states for this step, e.g. 'Switch Close', 'Stir', 'Center Pour')"
     }
   ]
 }

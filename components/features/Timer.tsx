@@ -273,6 +273,8 @@ export default function Timer({
           isFinished={isFinished}
           grinderSetting={recipe.grinderModel ? `(${recipe.grinderModel}: ${recipe.grindSize})` : undefined}
           isTestMode={isTestMode}
+          stepTemperature={currentStep.temperature}
+          stepState={currentStep.state}
         />
       </button>
 
