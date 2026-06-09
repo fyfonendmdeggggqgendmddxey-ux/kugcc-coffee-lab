@@ -168,9 +168,9 @@ export default function Timer({
   }, [handleKeyDown]);
 
   return (
-    <div className={`flex-1 flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-between pb-6 md:pb-10'}`}>
+    <div className={`flex-1 flex flex-col items-center w-full relative h-full px-4 md:px-8 select-none ${isFinished && isTestMode ? 'overflow-y-auto overflow-x-hidden justify-start pt-6 pb-12' : 'overflow-hidden justify-center'}`}>
       {/* Top Header Row (Bean/Equipment & Actions) */}
-      <div className="w-full z-20 flex justify-between items-start pointer-events-none pt-6 md:pt-8 shrink-0">
+      <div className="absolute top-0 left-0 w-full px-4 md:px-8 z-20 flex justify-between items-start pointer-events-none pt-6 md:pt-8">
         
         {/* Left Info */}
         <div className="flex flex-col gap-4 pointer-events-auto max-w-[50%] md:max-w-[60%]">
@@ -242,7 +242,7 @@ export default function Timer({
       </div>
 
       {/* Middle Section (Timer & Timeline) */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full min-h-0">
+      <div className="flex flex-col items-center justify-center w-full min-h-0 z-10">
       {/* Circular UI (Clickable Button) */}
       <button
         onClick={() => {
@@ -377,7 +377,8 @@ export default function Timer({
       )}
 
       {/* Bottom Section */}
-      <div className="w-full flex flex-col items-center shrink-0">
+      <div className="absolute bottom-0 left-0 w-full flex flex-col items-center pb-6 md:pb-10 z-20 pointer-events-none">
+      <div className="pointer-events-auto flex flex-col items-center w-full">
       {/* Bottom Panel */}
       <div className="flex justify-between w-full max-w-sm text-sm uppercase tracking-widest text-gray-500 border-t border-gray-900 pt-4 md:pt-6 px-2">
         <div className="flex flex-col items-center">
@@ -472,6 +473,7 @@ export default function Timer({
         >
           {isTestMode ? (isRunning ? 'Lap' : 'Start') : (isRunning ? 'Pause' : 'Start')}
         </button>
+      </div>
       </div>
 
       <div className="mt-4 md:mt-6 text-[9px] text-gray-800 uppercase tracking-widest opacity-50">
