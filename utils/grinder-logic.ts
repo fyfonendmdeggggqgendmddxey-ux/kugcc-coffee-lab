@@ -126,18 +126,31 @@ export function convertMicronsToSettingStr(modelId: string, microns: number): Gr
         if (microns <= numericEntries[0].microns) return { value: String(numericEntries[0].val), isMin: true, isMax: false };
         if (microns >= numericEntries[numericEntries.length - 1].microns) return { value: String(numericEntries[numericEntries.length - 1].val), isMin: false, isMax: true };
         
-        for (let i = 0; i < numericEntries.length - 1; i++) {
-            const p1 = numericEntries[i];
-            const p2 = numericEntries[i + 1];
-            if (microns >= p1.microns && microns <= p2.microns) {
-                if (p2.microns === p1.microns) return { value: String(p1.val), isMin: false, isMax: false };
-                const ratio = (microns - p1.microns) / (p2.microns - p1.microns);
-                const interpolatedVal = p1.val + ratio * (p2.val - p1.val);
-                return { value: String(Number(interpolatedVal.toFixed(1))), isMin: false, isMax: false };
+        const isComplexLabel = grinder.data.some(d => {
+            const num = parseNumber(d.label);
+            return num === null || String(num) !== d.label;
+        });
+
+        if (!isComplexLabel) {
+            const allIntegers = numericEntries.every(d => d.val % 1 === 0);
+            
+            for (let i = 0; i < numericEntries.length - 1; i++) {
+                const p1 = numericEntries[i];
+                const p2 = numericEntries[i + 1];
+                if (microns >= p1.microns && microns <= p2.microns) {
+                    if (p2.microns === p1.microns) return { value: String(p1.val), isMin: false, isMax: false };
+                    const ratio = (microns - p1.microns) / (p2.microns - p1.microns);
+                    const interpolatedVal = p1.val + ratio * (p2.val - p1.val);
+                    if (allIntegers) {
+                        return { value: String(Math.round(interpolatedVal)), isMin: false, isMax: false };
+                    } else {
+                        return { value: String(Number(interpolatedVal.toFixed(1))), isMin: false, isMax: false };
+                    }
+                }
             }
         }
         
-        // Exact label match fallback
+        // Exact label match fallback (used for complex labels like '1ギア 2グリッド' or if interpolation fails)
         let closest = grinder.data[0];
         let minDiff = Infinity;
         for (const entry of grinder.data) {
