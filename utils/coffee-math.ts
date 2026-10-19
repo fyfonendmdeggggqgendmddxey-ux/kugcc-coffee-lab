@@ -190,11 +190,88 @@ export function getAgingAdjustments(bean: Bean): BrewingAdjustments {
 }
 
 export type DynamicsAdvice = {
-  score: number;
+  score: number | null;
   advice: string;
+  metrics?: {
+    totalWater: number;
+    actualRatio: number;
+    totalDuration: number;
+    weightedContactTime: number;
+    weightedTemperature: number;
+    particleMicrons: number;
+  };
 };
 
 export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsAdvice {
+  const unavailable = (reason: string): DynamicsAdvice => ({
+      score: null,
+      advice: `${reason}\n入力を確認すると抽出傾向の目安を表示します。`,
+  });
+  const positive = (value: number) => Number.isFinite(value) && value > 0;
+  const validTemperature = (value: number) => positive(value) && value <= 100;
+  if (!positive(recipe.beanWeight) || !positive(recipe.ratio)) {
+      return unavailable('豆量と湯量比を正の数で設定してください。');
+  }
+  if (!validTemperature(recipe.temperature)) {
+      return unavailable('湯温を0°Cより大きく100°C以下で設定してください。');
+  }
+  if (!Array.isArray(recipe.steps) || recipe.steps.length === 0 || recipe.steps.some(step =>
+      !step || !Number.isFinite(step.duration) || step.duration < 0 ||
+      !Number.isFinite(step.waterPercentage) || step.waterPercentage < 0 ||
+      (step.temperature !== undefined && !validTemperature(step.temperature))
+  )) {
+      return unavailable('各工程の時間・注湯量・湯温を確認してください。');
+  }
+
+  const plannedWater = recipe.beanWeight * recipe.ratio;
+  const totalDuration = recipe.steps.reduce((sum, step) => sum + step.duration, 0);
+  const totalWater = recipe.steps.reduce((sum, step) => sum + plannedWater * step.waterPercentage / 100, 0);
+  if (!positive(totalDuration) || !positive(totalWater)) {
+      return unavailable('工程の合計時間と注湯量を正の数で設定してください。');
+  }
+  // Proxy only: assume each step's water is added uniformly during that step.
+  // Weight the remaining brew time by water added; waiting after a pour counts,
+  // while splitting an identical pour into equivalent rows changes nothing.
+  let elapsed = 0;
+  let weightedContactTime = 0;
+  let weightedTemperature = 0;
+  for (const step of recipe.steps) {
+      const weight = (plannedWater * step.waterPercentage / 100) / totalWater;
+      weightedContactTime += weight * (totalDuration - elapsed - step.duration / 2);
+      weightedTemperature += weight * (step.temperature ?? recipe.temperature);
+      elapsed += step.duration;
+  }
+  const actualRatio = totalWater / recipe.beanWeight;
+  if (![actualRatio, weightedContactTime, weightedTemperature].every(positive)) {
+      return unavailable('工程から有効な湯量比・時間・湯温を計算できません。');
+  }
+  const grinderModel = recipe.grinderModel || '';
+  const profile = GRINDERS[grinderModel];
+  if (!profile || typeof recipe.grindSize !== 'string') {
+      return unavailable('グラインダーと数値の挽き目を設定してください。');
+  }
+  const setting = recipe.grindSize.trim();
+  const exact = profile.data?.find(point => point.label === setting);
+  // Avoid silently guessing a size for descriptive or malformed settings.
+  const numericSetting = /^\d+(?:\.\d+)?$/.test(setting) ? Number(setting) : null;
+  if (!exact && numericSetting === null) {
+      return unavailable('挽き目は数値、または登録されている目盛り表記で入力してください。');
+  }
+  if (!exact && profile.data) {
+      if (profile.data.some(point => !/^\d+(?:\.\d+)?$/.test(point.label))) {
+          return unavailable('この機種は「ギア・グリッド」など、登録されている目盛り表記で入力してください。');
+      }
+      const settings = profile.data.map(point => Number(point.label));
+      if (numericSetting! < Math.min(...settings) || numericSetting! > Math.max(...settings)) {
+          return unavailable('挽き目が換算データの範囲外です。範囲内の設定で確認してください。');
+      }
+  }
+  const microns = parseSettingToMicrons(grinderModel, setting);
+  if (microns === null || !positive(microns)) {
+      return unavailable('挽き目から有効な粒径の目安を計算できません。');
+  }
+  const particleMicrons = profile.micronMetric === 'particle-median' ? microns : microns * 0.55;
+  const metrics = { totalWater, actualRatio, totalDuration, weightedContactTime, weightedTemperature, particleMicrons };
   let score = 0;
 
   // 1. Process & Roast Matrix (Structural Integrity & Porosity)
@@ -223,35 +300,17 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
 
   // 2. Temperature Kinetics (Non-linear Arrhenius approximation)
   // アレニウスの式ベース：高温になるほど抽出効率が非線形（指数関数的）に増大し、さらに焙煎度（豆の脆さ）を掛け合わせる
-  const tempDiff = recipe.temperature - 90;
+  const tempDiff = weightedTemperature - 90;
   const tempKinetics = Math.sign(tempDiff) * Math.pow(Math.abs(tempDiff), 1.2) * 0.8;
   score += tempKinetics * roastMultiplier;
 
   // 3. Fines & Microns (Inverse Square Law for Surface Area)
-  let finesRatio = 22; // Default
-  let absoluteMicrons = 600; // Default
-
-  const grinderModel = recipe.grinderModel || "C40_MK4";
-  const profile = GRINDERS[grinderModel];
-
-  if (profile) {
-      // Get absolute burr gap movement in microns
-      const microns = parseSettingToMicrons(grinderModel, recipe.grindSize);
-      if (microns !== null) {
-          absoluteMicrons = microns * 0.55; // convert burr gap to approximate median particle size for the math engine
-      } else {
-          // Fallback if parsing fails
-          absoluteMicrons = 600 * 0.55;
-      }
-      
-      // Determine if coarse based on absolute size (>700µm burr gap)
-      const isCoarse = microns !== null && microns > 700;
-      finesRatio = isCoarse ? profile.finesRatio.coarse : profile.finesRatio.medium;
-  }
+  // Retain legacy fines estimates; these are not measurements for this brew.
+  const finesRatio = microns > 700 ? profile.finesRatio.coarse : profile.finesRatio.medium;
 
   // 表面積の反比例の法則：同じ質量の豆なら、粒径が半分になれば総表面積は2倍になる
   // 500μmを基準(1.0)とした表面積比率を算出
-  const surfaceAreaRatio = 500 / Math.max(100, absoluteMicrons);
+  const surfaceAreaRatio = 500 / Math.max(100, particleMicrons);
   // スコアへの影響を *60 に調整して現実の溶出スピードの体感に合わせる
   score += (surfaceAreaRatio - 1) * 60;
 
@@ -265,10 +324,12 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
       score += Math.pow((finesRatio - 20), 1.5) * 2.0;
   }
 
-  // 4. Pour Structure (Fick's Law of Diffusion & Concentration Gradient)
-  // 注ぎ回数が多い＝フレッシュな溶媒が追加され濃度勾配が維持される＝抽出効率が上がる
-  const stepsCount = recipe.steps?.length || 3;
-  score += (stepsCount - 3) * 4.2;
+  // 4. Recipe sensitivity, not fitted extraction physics. Baselines: 1:16
+  // and 90 s water-weighted remaining time (180 s uniform pour).
+  // Bounded log terms prevent long timers / large ratios dominating the score.
+  const bounded = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value));
+  score += bounded(12 * Math.log2(actualRatio / 16), 20);
+  score += bounded(10 * Math.log2(weightedContactTime / 90), 20);
 
   // 5. Aging Kinetics (CO2 Off-gassing and Cell degradation)
   // 実質経過日数（effectiveDays）によるガスの抜け具合と抽出効率の変化
@@ -289,45 +350,23 @@ export function analyzeExtractionDynamics(bean: Bean, recipe: Recipe): DynamicsA
       score += agingScore * roastMultiplier;
   }
 
-  // Removed formatClicks helper as we now use absolute microns
-
-  // Evaluate the final score (-100 to +100 range conceptually)
-  let advice = "";
-  if (score > 18) {
-      // 極度の過抽出リスク
-      const tempDrop = Math.min(3, Math.ceil((score - 18) / 5)); // Max 3 degrees
-      const micronsCoarser = Math.max(10, Math.ceil((score - 18) * 10));
-      
-      advice = `少し濃く出すぎる（渋みや苦味が強くなる）組み合わせです。\n【改善アクション】\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を少し（約 ${micronsCoarser}µm 相当）粗くする\n・注ぎの回数を 1回 減らす\n\n上記のいずれかを試すと、よりスッキリと甘くなります。`;
-      if (finesRatio >= 26) {
-          advice += `\n※グラインダー（${grinderModel}）は微粉が出やすいため、後半は優しく注いで目詰まりを防いでください。`;
-      }
-  } else if (score < -18) {
-      // 極度の未抽出リスク
-      const tempRise = Math.min(3, Math.ceil((Math.abs(score) - 18) / 5)); // Max 3 degrees
-      const micronsFiner = Math.max(10, Math.ceil((Math.abs(score) - 18) * 10));
-      
-      advice = `少しサッパリしすぎて、酸味が際立つ（薄く感じる）かもしれません。\n【改善アクション】\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を少し（約 ${micronsFiner}µm 相当）細かくする\n・注ぎの回数を 1回 増やす\n\n上記のいずれかで、甘みとコクがしっかり引き出せます。`;
-  } else {
-      // スイートスポット
-      advice = `抽出バランス（甘み・酸味・コク）が非常に整いやすい、理想的なスイートスポット設定です！`;
-      if (finesRatio <= 18) {
-          advice += `\n※お使いのグラインダー（${grinderModel}）のこの設定は微粉が非常に少なくクリーンなため、フレーバーがとても綺麗に出ます。`;
-      }
-
-      // 理想値（スコア0）への微調整アドバイス
-      if (score > 5) {
-          const tempDrop = Math.max(1, Math.round(score / 5)); // More conservative
-          const micronsCoarser = Math.max(10, Math.round(score * 10));
-          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempDrop}°C 下げる\n・挽き目を少し（約 ${micronsCoarser}µm 相当）粗くする`;
-      } else if (score < -5) {
-          const tempRise = Math.max(1, Math.round(Math.abs(score) / 5)); // More conservative
-          const micronsFiner = Math.max(10, Math.round(Math.abs(score) * 10));
-          advice += `\n\n【さらなる極みへ】\nより完璧な理論値（スコア0）を目指す場合、以下の微調整がおすすめです：\n・お湯の温度を ${tempRise}°C 上げる\n・挽き目を少し（約 ${micronsFiner}µm 相当）細かくする`;
-      } else {
-          advice += `\n\n【パーフェクト】\n現在の設定は数学的モデルにおいて完全に理想値（スコア0付近）です！文句なしの最高のセッティングです。`;
-      }
+  if (!Number.isFinite(score)) {
+      return unavailable('入力値から抽出傾向を計算できません。日付や数値を確認してください。');
   }
 
-  return { score, advice };
+  // This heuristic is a relative guide, not a measured extraction yield or TDS.
+  let advice = 'レシピ条件からの推定です。実際の抽出率・濃度・味を保証するものではありません。';
+  if (score > 18) {
+      advice += '\n抽出が進みやすい傾向です。渋みや苦味が気になる場合は、湯温を1°C下げる、挽き目を1段階粗くする、抽出時間を短くする、のいずれかを少しずつ試してください。';
+  } else if (score < -18) {
+      advice += '\n抽出が進みにくい傾向です。酸味が強く甘みが不足する場合は、湯温を1°C上げる、挽き目を1段階細かくする、抽出時間を長くする、のいずれかを少しずつ試してください。';
+  } else {
+      advice += '\nモデル上は中間の範囲です。味を確かめながら、一度に1つの条件を調整してください。';
+  }
+  advice += '\n湯量比を増やすと抽出は進みやすくても、飲み物の濃度は下がる場合があります。濃さと抽出の進み方は分けて評価してください。';
+  if (Math.abs(totalWater / plannedWater - 1) > 0.005) {
+      advice += `\n工程の注湯合計が設定総湯量と異なるため、実際の工程合計 ${Math.round(totalWater)}ml（1:${actualRatio.toFixed(1)}）で計算しています。`;
+  }
+
+  return { score, advice, metrics };
 }

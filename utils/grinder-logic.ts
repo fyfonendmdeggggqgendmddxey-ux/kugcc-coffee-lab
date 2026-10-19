@@ -16,6 +16,8 @@ export interface GrinderInfo {
     finesRatio: { medium: number; coarse: number };
     // Multiplier for settings that use dial numbers instead of raw clicks
     settingMultiplier?: number;
+    // Measured medians must not receive the legacy burr-gap conversion again.
+    micronMetric?: 'particle-median' | 'virtual-gap';
 }
 
 export const GRINDERS: Record<string, GrinderInfo> = {
@@ -27,7 +29,7 @@ export const GRINDERS: Record<string, GrinderInfo> = {
     "TIMEMORE_C2": { id: "TIMEMORE_C2", name: "Timemore C2", type: "hand", data: handMillsData["Timemore C2"]?.table, finesRatio: { medium: 26, coarse: 25 } }, 
     "TIMEMORE_C3": { id: "TIMEMORE_C3", name: "Timemore C3", type: "hand", data: handMillsData["Timemore C3"]?.table, finesRatio: { medium: 26, coarse: 25 } }, 
     "X_LITE": { id: "X_LITE", name: "Timemore Xlite", type: "hand", data: handMillsData["Timemore Chestnut X"]?.table, finesRatio: { medium: 25, coarse: 18 } }, 
-    "S3": { id: "S3", name: "Timemore S3", type: "hand", data: handMillsData["Timemore S3"]?.table, finesRatio: { medium: 27, coarse: 24 } },
+    "S3": { id: "S3", name: "Timemore S3", type: "hand", data: handMillsData["Timemore S3"]?.table, micronMetric: 'particle-median', finesRatio: { medium: 27, coarse: 24 } },
     "EPEIOS_GO": { id: "EPEIOS_GO", name: "Epeios Go", type: "hand", data: handMillsData["Epeios Essense Go"]?.table, finesRatio: { medium: 28, coarse: 26 } },
 
     // Electric Mills / Added from Excel

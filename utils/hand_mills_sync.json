@@ -622,115 +622,6 @@
       }
     ]
   },
-  "Timemore S3": {
-    "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
-    "table": [
-      {
-        "label": "2.6",
-        "microns": 510.0
-      },
-      {
-        "label": "2.8",
-        "microns": 525.0
-      },
-      {
-        "label": "3.1",
-        "microns": 540.0
-      },
-      {
-        "label": "3.3",
-        "microns": 555.0
-      },
-      {
-        "label": "3.6",
-        "microns": 570.0
-      },
-      {
-        "label": "3.8",
-        "microns": 585.0
-      },
-      {
-        "label": "4.1",
-        "microns": 600.0
-      },
-      {
-        "label": "4.3",
-        "microns": 615.0
-      },
-      {
-        "label": "4.6",
-        "microns": 630.0
-      },
-      {
-        "label": "4.8",
-        "microns": 645.0
-      },
-      {
-        "label": "5.1",
-        "microns": 660.0
-      },
-      {
-        "label": "5.3",
-        "microns": 675.0
-      },
-      {
-        "label": "5.6",
-        "microns": 690.0
-      },
-      {
-        "label": "5.8",
-        "microns": 705.0
-      },
-      {
-        "label": "6.1",
-        "microns": 720.0
-      },
-      {
-        "label": "6.3",
-        "microns": 735.0
-      },
-      {
-        "label": "6.6",
-        "microns": 750.0
-      },
-      {
-        "label": "6.8",
-        "microns": 765.0
-      },
-      {
-        "label": "7.1",
-        "microns": 780.0
-      },
-      {
-        "label": "7.3",
-        "microns": 795.0
-      },
-      {
-        "label": "7.6",
-        "microns": 810.0
-      },
-      {
-        "label": "7.8",
-        "microns": 825.0
-      },
-      {
-        "label": "8.1",
-        "microns": 840.0
-      },
-      {
-        "label": "8.3",
-        "microns": 855.0
-      },
-      {
-        "label": "8.6",
-        "microns": 870.0
-      },
-      {
-        "label": "8.8",
-        "microns": 885.0
-      }
-    ]
-  },
   "Epeios Essense Go": {
     "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
     "table": [
@@ -841,6 +732,62 @@
       {
         "label": "70",
         "microns": 900.0
+      }
+    ]
+  },
+  "Timemore S3": {
+    "description": "Measured particle-size median (µm), transcribed from Kenken Coffee TIMEMORE S3 review; intermediate settings are interpolated",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=GOwbJa29DVE",
+      "screenshot": "2026-10-19 14.00.02",
+      "metric": "particle-size median",
+      "unit": "µm",
+      "measurementConditions": "Not verified from the supplied screenshot"
+    },
+    "table": [
+      {
+        "label": "2.8",
+        "microns": 483
+      },
+      {
+        "label": "3",
+        "microns": 492
+      },
+      {
+        "label": "4",
+        "microns": 552
+      },
+      {
+        "label": "4.5",
+        "microns": 568
+      },
+      {
+        "label": "4.8",
+        "microns": 632
+      },
+      {
+        "label": "5",
+        "microns": 634
+      },
+      {
+        "label": "6",
+        "microns": 710
+      },
+      {
+        "label": "6.8",
+        "microns": 734
+      },
+      {
+        "label": "7",
+        "microns": 771
+      },
+      {
+        "label": "8",
+        "microns": 845
+      },
+      {
+        "label": "9",
+        "microns": 980
       }
     ]
   }

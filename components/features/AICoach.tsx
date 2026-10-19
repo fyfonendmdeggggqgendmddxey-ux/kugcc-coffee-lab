@@ -146,12 +146,19 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                     {dynamics && (
                         <div className="border-l border-[#3b82f6] pl-4 py-1 relative">
                             <div className="absolute -left-[1px] top-0 w-[1px] h-4 bg-[#3b82f6]"></div>
-                            <p className="text-[10px] text-[#3b82f6] uppercase tracking-widest mb-2">Extraction Dynamics (4D Model)</p>
+                            <p className="text-[10px] text-[#3b82f6] uppercase tracking-widest mb-2">Extraction Estimate / 抽出傾向の目安</p>
                             <p className="text-[10px] text-gray-500 mt-1">
-                                SCORE: {dynamics.score > 0 ? '+' : ''}{dynamics.score.toFixed(1)} 
-                                {dynamics.score > 18 ? ' [OVER-EXTRACTED]' : dynamics.score < -18 ? ' [UNDER-EXTRACTED]' : ' [SWEET SPOT]'}
+                                {dynamics.score === null ? '入力を確認してください' : (
+                                    <>推定スコア: {dynamics.score > 0 ? '+' : ''}{dynamics.score.toFixed(1)}
+                                        {dynamics.score > 18 ? ' [抽出が進みやすい傾向]' : dynamics.score < -18 ? ' [抽出が進みにくい傾向]' : ' [中間]'}</>
+                                )}
                             </p>
-                            <div className="mt-3 p-3 border border-[#3b82f6]/30 bg-[#3b82f6]/5 text-xs text-gray-300 leading-relaxed font-sans">
+                            {dynamics.metrics && (
+                                <p className="text-[10px] text-gray-400 mt-2">
+                                    工程合計 {Math.round(dynamics.metrics.totalWater)}ml / 比率 1:{dynamics.metrics.actualRatio.toFixed(1)} / {Math.round(dynamics.metrics.totalDuration)}秒 / 注湯量で重み付けした湯温 {dynamics.metrics.weightedTemperature.toFixed(1)}°C
+                                </p>
+                            )}
+                            <div className="mt-3 p-3 border border-[#3b82f6]/30 bg-[#3b82f6]/5 text-xs text-gray-300 leading-relaxed font-sans whitespace-pre-line">
                                 <span className="text-[#3b82f6] block mb-1 uppercase tracking-wider text-[10px] font-mono">[BARISTA ADVICE]</span>
                                 {dynamics.advice}
                             </div>

@@ -11,7 +11,6 @@ raw_data = {
     "Timemore C2": [15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 20, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 31],
     "Timemore C3": [11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 19, 20, 20, 21, 21, 22, 22],
     "Timemore Chestnut X": [7, 7.5, 8, 8.5, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 17.5, 18],
-    "Timemore S3": [2.6, 2.8, 3.1, 3.3, 3.6, 3.8, 4.1, 4.3, 4.6, 4.8, 5.1, 5.3, 5.6, 5.8, 6.1, 6.3, 6.6, 6.8, 7.1, 7.3, 7.6, 7.8, 8.1, 8.3, 8.6, 8.8, None],
     "Epeios Essense Go": [34, 35, 37, 38, 39, 41, 42, 44, 45, 46, 48, 49, 51, 52, 53, 55, 56, 58, 59, 60, 62, 63, 65, 66, 67, 69, 70]
 }
 
@@ -37,6 +36,37 @@ for grinder_name, values in raw_data.items():
         "description": "Ver 4.0 Sync Table (REDCLIX 15µm Base)",
         "table": table
     }
+
+# S3 uses the measured particle-size medians shown in the supplied video
+# screenshot, not the REDCLIX-based virtual micron scale above. Intermediate
+# settings are interpolated by grinder-logic.ts; only observed points go here.
+# Source: Kenken Coffee, TIMEMORE S3 review (particle-size comparison chart).
+# https://www.youtube.com/watch?v=GOwbJa29DVE
+# Screenshot: 2026-10-19 14.00.02. Measurement conditions are not verified here.
+s3_median_points = [
+    ("2.8", 483),
+    ("3", 492),
+    ("4", 552),
+    ("4.5", 568),
+    ("4.8", 632),
+    ("5", 634),
+    ("6", 710),
+    ("6.8", 734),
+    ("7", 771),
+    ("8", 845),
+    ("9", 980),
+]
+hand_mills_sync["Timemore S3"] = {
+    "description": "Measured particle-size median (µm), transcribed from Kenken Coffee TIMEMORE S3 review; intermediate settings are interpolated",
+    "source": {
+        "url": "https://www.youtube.com/watch?v=GOwbJa29DVE",
+        "screenshot": "2026-10-19 14.00.02",
+        "metric": "particle-size median",
+        "unit": "µm",
+        "measurementConditions": "Not verified from the supplied screenshot",
+    },
+    "table": [{"label": label, "microns": microns} for label, microns in s3_median_points],
+}
 
 out_path = os.path.join(os.path.dirname(__file__), "utils", "hand_mills_sync.json")
 with open(out_path, "w", encoding="utf-8") as f:
