@@ -1,0 +1,4168 @@
+{
+  "schema_version": "1.2.0",
+  "language": "ja",
+  "collected_on": "2026-10-28",
+  "status": "source-backed coach reference corpus; not yet installed in Kugcc runtime",
+  "purpose": "初回レシピ候補・手順の理由・店舗レシピとの比較に使う参照知識",
+  "rights_note": "手順の数値と短い独自要約を収録。原文・動画字幕の全文転載は含めない。出典表示を維持。再配布条件は各原典で確認。",
+  "classification_legend": {
+    "author_stated_intent": "本人が説明した狙い。科学的因果検証済みという意味ではない。",
+    "author_stated_guidance": "本人が説明した手順上の重視点。",
+    "author_stated_preference": "本人の好み。抽出結果の実測ではない。",
+    "author_reported_bean_character": "特定の使用豆の記述。レシピが生む一般的効果ではない。",
+    "source_stated_use_case": "掲載者が説明した用途。",
+    "source_stated_context": "出典に明記された使用条件。",
+    "author_stated_adjustment": "原典の調整案。",
+    "editorial_inference": "収集者による解釈。作者の意図として引用禁止。",
+    "publisher_reported_method": "メーカー・販売店による方法の説明。選手本人の発言とは区別。",
+    "publisher_reported_intent": "掲載者が報告する狙い。選手本人の直接発言とはしない。",
+    "publisher_reported_bean_character": "掲載者が説明する特定豆・大会条件の官能記述。",
+    "author_reported_observation": "本人の経験的観察。独立した比較試験の実測ラベルではない。",
+    "source_stated_target": "原典の目標値。実測結果やユーザーへの数値予測ではない。"
+  },
+  "statistics": {
+    "recipe_count": 24,
+    "named_person_count": 20,
+    "roaster_team_count": 2,
+    "competition_recipe_count": 7,
+    "competition_related_recipe_count": 1,
+    "immersion_pressure_recipe_count": 6,
+    "processing_context_reported_count": 11
+  },
+  "sources": {
+    "tetsu": {
+      "id": "tetsu",
+      "title": "Tetsu Kasuya — HARIO Europe interview",
+      "url": "https://www.hario-europe.com/blogs/hario-community/v60-ambassadors-tetsu-kasuya",
+      "source_type": "manufacturer_direct_interview",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "TETSU KASUYA V60 RECIPE / 4:6 explanation",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "james": {
+      "id": "james",
+      "title": "James Hoffmann — 1 Cup V60 Technique",
+      "url": "https://www.hario-usa.com/blogs/recipes-and-more-from-friends/james-hoffmann-1-cup-v60-technique",
+      "source_type": "manufacturer_recipe_republication",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "The 1 Cup V60 Method / full schedule",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "james_original": {
+      "id": "james_original",
+      "title": "A Better 1 Cup V60 Technique — James Hoffmann",
+      "url": "https://www.youtube.com/watch?v=1oB1oDrDkHM",
+      "source_type": "author_video_description",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-11-22",
+      "locator": "動画概要欄のレシピ",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "scott": {
+      "id": "scott",
+      "title": "Scott Rao — HARIO interview",
+      "url": "https://www.hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-scott-rao",
+      "source_type": "manufacturer_direct_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-05-10",
+      "locator": "Scott Rao V60 Recipe",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "patrik": {
+      "id": "patrik",
+      "title": "Coffeewerk X April — Brew Guide",
+      "url": "https://coffeewerkandpress.com/pages/brew-guide",
+      "source_type": "official_collaboration_guide",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "Pour Over / All the recipes are developed by Patrik",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "emi": {
+      "id": "emi",
+      "title": "Emi Fukahori — Easy Hario Switch Recipe",
+      "url": "https://europeancoffeetrip.com/easy-hario-switch-recipe-emi-fukahor/",
+      "source_type": "direct_demonstration_companion_article",
+      "verified_on": "2026-10-28",
+      "published_on": "2024-03-30",
+      "locator": "HARIO SWITCH RECIPE by Emi Fukahori",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "martha": {
+      "id": "martha",
+      "title": "Martha Grill — HARIO interview",
+      "url": "https://www.hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-martha-grill",
+      "source_type": "manufacturer_direct_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-05-10",
+      "locator": "Why Do You Love the V60? / Martha Grill V60 Recipe",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "liza": {
+      "id": "liza",
+      "title": "Liza Fedorovskaya — HARIO interview",
+      "url": "https://www.hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-liza-fedorovskaya",
+      "source_type": "manufacturer_direct_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-05-10",
+      "locator": "Liza Fedorovskaya V60 Recipe",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "cary": {
+      "id": "cary",
+      "title": "Partners Coffee — Hario Switch",
+      "url": "https://help.partnerscoffee.com/en-US/hario-switch-413861",
+      "source_type": "roaster_guide_named_author",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "Our Director of Coffee, Cary / Details / Directions",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "kurasu": {
+      "id": "kurasu",
+      "title": "KurasuのハリオV60 抽出レシピ",
+      "url": "https://jp.kurasu.kyoto/blogs/kurasu-journal/hario-v60-brewing-guide",
+      "source_type": "roaster_official_guide",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "導入 / 12g版 / STEP 4–6",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "passenger": {
+      "id": "passenger",
+      "title": "Passenger — April Brewer",
+      "url": "https://drinkpassenger.com/guides/using-the-april-brewer",
+      "source_type": "roaster_official_guide",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "Our Standard Recipe / Brewing Method / Tips",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "pierre": {
+      "id": "pierre",
+      "title": "Pierre De Chanterac — HARIO interview",
+      "url": "https://www.hario.co.uk/blogs/hario-ambassadors/hario-v60-recipe-interview-with-hario-ambassador-pierre-de-chanterac",
+      "source_type": "manufacturer_direct_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-05-10",
+      "locator": "Chosen Brew Method / V60 Recipe（末尾に異なる330mL手順混入）",
+      "verification": "本文確認。動画はリンク先全編を視聴したという意味ではない。"
+    },
+    "martin_orea": {
+      "id": "martin_orea",
+      "title": "OREA V4 — The CHAMP / Martin Wölfl",
+      "url": "https://www.orea.uk/guides-v4",
+      "source_type": "manufacturer_competition_recipe",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "The CHAMP section",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "carlos_slowpour": {
+      "id": "carlos_slowpour",
+      "title": "Carlos Medina — World Brewers Cup Champion Recipe",
+      "url": "https://www.slowpoursupply.co/blogs/brew-recipes/recipe-recap-carlos-medina-s-representing-chile-world-brewers-cup-champion-recipe",
+      "source_type": "equipment_distributor_competition_recap",
+      "verified_on": "2026-10-28",
+      "published_on": "2023-06-26",
+      "locator": "Brew Recipe / Ingredients / Flavor notes summary",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "emi_wbrc2018": {
+      "id": "emi_wbrc2018",
+      "title": "Emi Fukahori — World Brewers Cup 2018 interview",
+      "url": "https://europeancoffeetrip.com/emi-fukahori-world-brewers-cup-champion/",
+      "source_type": "direct_competitor_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2018-12-06",
+      "locator": "Laurina / winning recipe / stage intentions",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "matt_interview": {
+      "id": "matt_interview",
+      "title": "Matt Winton — Playing the Game interview",
+      "url": "https://magazine.coffee/blog/1/6920/interview-playing-the-game-with-matt-winton-brewing-champion",
+      "source_type": "direct_competitor_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2025-04-04",
+      "locator": "current go-to recipe / Natural versus Washed",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "gagne_v60": {
+      "id": "gagne_v60",
+      "title": "Jonathan Gagné — How to Brew Better Coffee with a V60",
+      "url": "https://coffeeadastra.com/2018/11/30/brewing-better-coffee/",
+      "source_type": "author_original_article",
+      "verified_on": "2026-10-28",
+      "published_on": "2018-11-30",
+      "locator": "Sections 3, 4.8, 7.3 (2018 recipe; updated 2019)",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "ply_interview": {
+      "id": "ply_interview",
+      "title": "Ply Pasarj — Origami Air S interview and recipe",
+      "url": "https://www.slowpoursupply.co/blogs/brew-recipes/brewing-origami-air-s-with-ply-rogue-wave-coffee",
+      "source_type": "direct_competitor_interview",
+      "verified_on": "2026-10-28",
+      "published_on": "2022-05-26",
+      "locator": "different grind sizes / pour height / recipe overview",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "julia_recipe": {
+      "id": "julia_recipe",
+      "title": "Julia Peixoto — Washed Ecuadorean coffee",
+      "url": "https://www.slowpoursupply.co/blogs/brew-recipes/brewing-a-washed-ecuadorean-coffee-with-julia-peixoto",
+      "source_type": "named_author_collaboration_recipe",
+      "verified_on": "2026-10-28",
+      "published_on": "2021-06-10",
+      "locator": "BREW FORMULA / Directions / Tips",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "sum_recipe": {
+      "id": "sum_recipe",
+      "title": "Chi Sum Ngai — Washed anaerobic coffee",
+      "url": "https://www.slowpoursupply.co/blogs/brew-recipes/brewing-with-sum-co-founder-of-coffee-project-ny",
+      "source_type": "named_author_collaboration_recipe",
+      "verified_on": "2026-10-28",
+      "published_on": "2021-06-09",
+      "locator": "BREW FORMULA / Directions / Tips",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "tim_aeropress": {
+      "id": "tim_aeropress",
+      "title": "Tim Wendelboe — How to brew with an Aeropress",
+      "url": "https://timwendelboe.no/pages/how-to-brew-with-an-aeropress",
+      "source_type": "author_roastery_official_guide",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "basic recipe for a filter like coffee",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "wac_official": {
+      "id": "wac_official",
+      "title": "World AeroPress Championship — official recipe archive",
+      "url": "https://worldaeropresschampionship.com/pages/recipes",
+      "source_type": "competition_organizer_archive",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "2024 George / 2023 Tay / 2022 Jibbi sections",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "aeropress_winners": {
+      "id": "aeropress_winners",
+      "title": "AeroPress — WAC Winning Recipes",
+      "url": "https://aeropress.com/pages/wac-recipes",
+      "source_type": "manufacturer_competition_archive",
+      "verified_on": "2026-10-28",
+      "published_on": null,
+      "locator": "2019 Wendelien / 2022 Jibbi sections",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "wendelien_home": {
+      "id": "wendelien_home",
+      "title": "Wendelien van Bunnik — Favourite recipe",
+      "url": "https://www.amsterdamcoffeefestival.com/Journal/2020/May/Wendelien-van-Bunnik-s-favourite-recipe",
+      "source_type": "direct_guest_recipe",
+      "verified_on": "2026-10-28",
+      "published_on": "2020-05-04",
+      "locator": "RECIPE / washed Rwanda bourbon",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    },
+    "tay_adaptation": {
+      "id": "tay_adaptation",
+      "title": "Tay Wipvasutt — manufacturer non-inverted adaptation",
+      "url": "https://aeropress.com/blogs/w-a-c-aeropress-recipes/1st-tay-wipvasutt-thailand-2023",
+      "source_type": "manufacturer_explicit_adaptation",
+      "verified_on": "2026-10-28",
+      "published_on": "2025-06-02",
+      "locator": "Opening identifies non-inverted version",
+      "verification": "掲載本文確認。動画全編の視聴・実抽出試験は含まない。"
+    }
+  },
+  "recipes": [
+    {
+      "id": "tetsu-46-hario",
+      "name": "4:6 / HARIO掲載版",
+      "attribution": {
+        "name": "粕谷哲",
+        "type": "person"
+      },
+      "source_ids": [
+        "tetsu"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "Ceramic V60",
+      "dose_g": 20,
+      "water": {
+        "value": 300,
+        "unit": "mL",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 15.0,
+      "ratio_basis": "水の原単位がmLの場合のみ1mL≒1gと近似。仕上がり液量の比率ではない。",
+      "temperature": {
+        "value_c": 92,
+        "range_c": null,
+        "original": "92°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Coarse",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 210,
+        "max": 210,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 50,
+          "water_unit": "mL",
+          "source_id": "tetsu"
+        },
+        {
+          "start_s": 45,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 70,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 120,
+          "water_unit": "mL",
+          "source_id": "tetsu"
+        },
+        {
+          "start_s": 90,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 180,
+          "water_unit": "mL",
+          "source_id": "tetsu"
+        },
+        {
+          "start_s": 130,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 240,
+          "water_unit": "mL",
+          "source_id": "tetsu"
+        },
+        {
+          "start_s": 160,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 300,
+          "water_unit": "mL",
+          "source_id": "tetsu"
+        },
+        {
+          "start_s": 210,
+          "end_s": null,
+          "action": "remove_dripper",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "source_id": "tetsu"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "初回を50、次を70として甘さを狙う。前半40%で酸味と甘さ、後半の分割で濃さを調整するという本人の説明。",
+          "classification": "author_stated_intent",
+          "scope": "this_recipe",
+          "tags": [
+            "sweetness_target",
+            "balance",
+            "strength_adjustment"
+          ],
+          "source_id": "tetsu"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "甘さが何点増えるか、TDSがいくつになるかの実測はない。粕谷モデルと通常V60の流速を同一としない。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "james-onecup-2022",
+      "name": "A Better 1 Cup V60 / 2022版",
+      "attribution": {
+        "name": "James Hoffmann",
+        "type": "person"
+      },
+      "source_ids": [
+        "james",
+        "james_original"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "Plastic 1-cup V60（本人概要欄）",
+      "dose_g": 15,
+      "water": {
+        "value": 250,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.6667,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": null,
+        "range_c": null,
+        "original": "freshly boiled (for lighter roasts)",
+        "kind": "source_qualitative_not_fixed_100C"
+      },
+      "grind": {
+        "description_original": "Medium-fine",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": "lighter roasts（湯温条件の適用範囲）",
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 180,
+        "max": 180,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 50,
+          "water_unit": "g",
+          "source_id": "james"
+        },
+        {
+          "start_s": 10,
+          "end_s": 15,
+          "action": "gentle_swirl",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "source_id": "james"
+        },
+        {
+          "start_s": 45,
+          "end_s": 60,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 100,
+          "water_unit": "g",
+          "source_id": "james"
+        },
+        {
+          "start_s": 70,
+          "end_s": 80,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 150,
+          "water_unit": "g",
+          "source_id": "james"
+        },
+        {
+          "start_s": 90,
+          "end_s": 100,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 200,
+          "water_unit": "g",
+          "source_id": "james"
+        },
+        {
+          "start_s": 110,
+          "end_s": 120,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 250,
+          "water_unit": "g",
+          "source_id": "james"
+        },
+        {
+          "start_s": 120,
+          "end_s": 125,
+          "action": "gentle_swirl",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "source_id": "james"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "終了時間の揺れを許容し、味を最優先する。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "taste_first"
+          ],
+          "source_id": "james"
+        },
+        {
+          "text_ja": "同量の分割注湯と休止を基準として、1杯分の手順比較に使える。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "repeatability",
+            "pulse_pour"
+          ],
+          "source_id": "james"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "沸騰直後を一律96°Cや100°Cに置換しない。浅煎り向けの温度条件。甘さ・苦味の強度は資料にない。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "scott-hario-2022",
+      "name": "V60 / HARIO 2022掲載版",
+      "attribution": {
+        "name": "Scott Rao",
+        "type": "person"
+      },
+      "source_ids": [
+        "scott"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "Plastic V60",
+      "dose_g": 20,
+      "water": {
+        "value": 330,
+        "unit": "mL",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.5,
+      "ratio_basis": "水の原単位がmLの場合のみ1mL≒1gと近似。仕上がり液量の比率ではない。",
+      "temperature": {
+        "value_c": 97,
+        "range_c": null,
+        "original": "97°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 240,
+        "max": 270,
+        "status": "author_reported_typical_range_not_verified_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 60,
+          "water_unit": "mL",
+          "source_id": "scott"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "aggressive_spin",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "immediately after bloom pour",
+          "source_id": "scott"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 140,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after a 40-second wait; source does not define exact timer origin",
+          "water_cumulative": 200,
+          "water_unit": "mL",
+          "source_id": "scott"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "gentle_spin_less_than_1s",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after second pour",
+          "source_id": "scott"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 130,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "when slurry is 70% drained",
+          "water_cumulative": 330,
+          "water_unit": "mL",
+          "source_id": "scott"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "gentle_spin",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after last pour",
+          "source_id": "scott"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "プラスチックの保温性を重視。低い一定の高さから粉床全体へ均等に注ぐ。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "thermal_retention",
+            "even_water_distribution"
+          ],
+          "source_id": "scott"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "原文の97°C / 97°Fは単位併記の誤記。97°Cを採用し誤記を保持。イベント待ちを固定秒にしない。挽き目は未記載。"
+      ],
+      "author_reported_ey_percent_range": [
+        22,
+        24.5
+      ],
+      "author_reported_ey_note": "著者がグラインダー・品種・焙煎依存と説明した一般範囲。単一抽出の実測ラベルでも、ユーザーの予測値でもない。",
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null,
+        "temperature_interpretation": "原典の摂氏97を保持。華氏97は併記の不整合として残し、校正済み実測値とはしない。"
+      }
+    },
+    {
+      "id": "patrik-coffeewerk-april",
+      "name": "Coffeewerk X April / Pour Over",
+      "attribution": {
+        "name": "Patrik（April Coffee Roasters）",
+        "type": "person"
+      },
+      "source_ids": [
+        "patrik"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "Pour Over（本文では器具モデル未明記）",
+      "dose_g": 12,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.6667,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": 92,
+        "range_c": null,
+        "original": "92°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Medium",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 150,
+        "max": 150,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": 5,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": "circle",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 50,
+          "water_unit": "g",
+          "source_id": "patrik"
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": "center",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 100,
+          "water_unit": "g",
+          "source_id": "patrik"
+        },
+        {
+          "start_s": 45,
+          "end_s": 50,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": "circle",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 150,
+          "water_unit": "g",
+          "source_id": "patrik"
+        },
+        {
+          "start_s": 50,
+          "end_s": 55,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": "center",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 200,
+          "water_unit": "g",
+          "source_id": "patrik"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "各100gを円50g・中心50gに分け、二回に揃える構成。注ぎ方の比較基準として扱える。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "circle_center_split",
+            "repeatability"
+          ],
+          "source_id": "patrik"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "本人の特定の味の狙いは本文に未記載。Aprilの別版13gレシピと混ぜない。器具型式が未確定のため器具一致の自動推薦は保留。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "ドリッパー型式未確定。"
+      }
+    },
+    {
+      "id": "emi-switch-2024",
+      "name": "MAME / Easy Hario Switch",
+      "attribution": {
+        "name": "Emi Fukahori",
+        "type": "person"
+      },
+      "source_ids": [
+        "emi"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "HARIO Switch",
+      "dose_g": 14,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 14.2857,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": 93,
+        "range_c": null,
+        "original": "93°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "25 clicks on Comandante",
+        "grinder": {
+          "model": "Comandante（型式未記載）",
+          "setting": 25,
+          "unit": "clicks",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 140,
+        "max": 140,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": null,
+          "valve": "closed",
+          "trigger": null,
+          "water_cumulative": 50,
+          "water_unit": "g",
+          "source_id": "emi"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "open_valve",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "open",
+          "trigger": null,
+          "source_id": "emi"
+        },
+        {
+          "start_s": 30,
+          "end_s": 70,
+          "action": "pour",
+          "water_increment": 150,
+          "pour_pattern": "center",
+          "valve": "open",
+          "trigger": null,
+          "water_cumulative": 200,
+          "water_unit": "g",
+          "source_id": "emi"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "MAME各店舗向けに紹介された簡単な手順。",
+          "classification": "source_stated_use_case",
+          "scope": "this_recipe",
+          "tags": [
+            "simple_service_recipe"
+          ],
+          "source_id": "emi"
+        },
+        {
+          "text_ja": "閉じた蒸らしと、開いた状態の連続注湯を分けた構成。弁の順番を比較する参照に使える。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "immersion_bloom",
+            "continuous_pour"
+          ],
+          "source_id": "emi"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "Comandanteの機種・刃・Red Clix等の仕様は未確認。他ミルへ25クリックを直接移植しない。味の数値評価は未記載。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "hybrid_immersion_percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "martha-hario-2022",
+      "name": "Morning V60 / HARIO掲載版",
+      "attribution": {
+        "name": "Martha Grill",
+        "type": "person"
+      },
+      "source_ids": [
+        "martha"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "Plastic V60",
+      "dose_g": 30,
+      "water": {
+        "value": 500,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.6667,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": 92,
+        "range_c": null,
+        "original": "92°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": "Espírito Santo, Brazil",
+        "processing": null,
+        "roast_level": null,
+        "lot": "Elzio Satori / roasted by Coffee Lab（記事の使用例）"
+      },
+      "target_total_time_s": {
+        "min": 180,
+        "max": 180,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 60,
+          "water_unit": "g",
+          "source_id": "martha"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 190,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 250,
+          "water_unit": "g",
+          "source_id": "martha"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "stir_3_times",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after second pour",
+          "source_id": "martha"
+        },
+        {
+          "start_s": 90,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 250,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 500,
+          "water_unit": "g",
+          "source_id": "martha"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "stir_3_times",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after third pour",
+          "source_id": "martha"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "V60をバランスとクリーンさで評価している。これは器具への本人の評価。",
+          "classification": "author_stated_preference",
+          "scope": "brewer_general",
+          "tags": [
+            "balance",
+            "clarity"
+          ],
+          "source_id": "martha"
+        },
+        {
+          "text_ja": "使用例の豆は花の香りと明るい酸味と説明。レシピ固有の効果として一般化しない。",
+          "classification": "author_reported_bean_character",
+          "scope": "specified_bean_example",
+          "tags": [
+            "floral",
+            "bright_acidity"
+          ],
+          "source_id": "martha"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "用量概要は500mL、手順はg表記。手順の500gを採用し概要との単位差を保持。挽き目・精製は未記載。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "liza-switch-natural-2022",
+      "name": "Colombian natural / Switch",
+      "attribution": {
+        "name": "Liza Fedorovskaya",
+        "type": "person"
+      },
+      "source_ids": [
+        "liza"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "HARIO Switch",
+      "dose_g": 15,
+      "water": {
+        "value": 250,
+        "unit": "mL",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.6667,
+      "ratio_basis": "水の原単位がmLの場合のみ1mL≒1gと近似。仕上がり液量の比率ではない。",
+      "temperature": {
+        "value_c": null,
+        "range_c": null,
+        "original": null,
+        "kind": "not_reported"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": "Colombia",
+        "processing": "natural",
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 170,
+        "max": 170,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 40,
+          "pour_pattern": "intensive_fast",
+          "valve": "open",
+          "trigger": null,
+          "water_cumulative": 40,
+          "water_unit": "mL",
+          "source_id": "liza"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "close_valve",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "closed",
+          "trigger": null,
+          "source_id": "liza"
+        },
+        {
+          "start_s": 30,
+          "end_s": 50,
+          "action": "pour",
+          "water_increment": 210,
+          "pour_pattern": "14 circles",
+          "valve": "closed",
+          "trigger": null,
+          "water_cumulative": 250,
+          "water_unit": "mL",
+          "source_id": "liza"
+        },
+        {
+          "start_s": 110,
+          "end_s": null,
+          "action": "open_valve",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "open",
+          "trigger": null,
+          "source_id": "liza"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "浸漬を好み、Switchの厚いガラスによる温度安定性を評価している。",
+          "classification": "author_stated_preference",
+          "scope": "brewer_general",
+          "tags": [
+            "immersion",
+            "thermal_stability"
+          ],
+          "source_id": "liza"
+        },
+        {
+          "text_ja": "コロンビア・ナチュラルを使用した例。精製と手順の組合せ例として検索できる。",
+          "classification": "source_stated_context",
+          "scope": "specified_bean_example",
+          "tags": [
+            "natural_context"
+          ],
+          "source_id": "liza"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "ナチュラルなら常にこのレシピが最適という比較実験ではない。温度・挽き目が未記載。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "hybrid_immersion_percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "湯温・粒度が欠落。完全な初期設定として補完しない。"
+      }
+    },
+    {
+      "id": "cary-partners-switch",
+      "name": "Partners Coffee / Switch",
+      "attribution": {
+        "name": "Cary（Partners Coffee）",
+        "type": "person"
+      },
+      "source_ids": [
+        "cary"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "HARIO Switch",
+      "dose_g": 15,
+      "water": {
+        "value": 240,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.0,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": null,
+        "range_c": [
+          90.556,
+          96.111
+        ],
+        "original": "195–205°F",
+        "kind": "source_range_converted"
+      },
+      "grind": {
+        "description_original": "Medium-Fine",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 240,
+        "max": 240,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": 10,
+          "action": "pour",
+          "water_increment": 30,
+          "pour_pattern": "circle",
+          "valve": "open",
+          "trigger": null,
+          "water_cumulative": 30,
+          "water_unit": "g",
+          "source_id": "cary"
+        },
+        {
+          "start_s": 40,
+          "end_s": 55,
+          "action": "pour",
+          "water_increment": 110,
+          "pour_pattern": "small circles",
+          "valve": "open",
+          "trigger": null,
+          "water_cumulative": 140,
+          "water_unit": "g",
+          "source_id": "cary"
+        },
+        {
+          "start_s": 75,
+          "end_s": null,
+          "action": "close_valve",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "closed",
+          "trigger": null,
+          "source_id": "cary"
+        },
+        {
+          "start_s": 75,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 100,
+          "pour_pattern": "small circles",
+          "valve": "closed",
+          "trigger": null,
+          "water_cumulative": 240,
+          "water_unit": "g",
+          "source_id": "cary"
+        },
+        {
+          "start_s": 150,
+          "end_s": null,
+          "action": "open_valve",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "open",
+          "trigger": null,
+          "source_id": "cary"
+        },
+        {
+          "start_s": 240,
+          "end_s": null,
+          "action": "close_and_remove",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": "closed",
+          "trigger": null,
+          "source_id": "cary"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "汎用性と楽しさを重視し、好みに合わせた変更を勧める。",
+          "classification": "source_stated_use_case",
+          "scope": "this_recipe",
+          "tags": [
+            "adaptability"
+          ],
+          "source_id": "cary"
+        },
+        {
+          "text_ja": "先に透過、その後に浸漬を組み合わせる構成。Emi版とは弁を閉じる段階が違う。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "percolation_then_immersion"
+          ],
+          "source_id": "cary"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "40秒蒸らすという文章と次工程00:40が併記。時刻指定00:40を採用。氏名は本文のCaryまで。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "hybrid_immersion_percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "kurasu-v60-12g",
+      "name": "V60 / 12g公式掲載版",
+      "attribution": {
+        "name": "Kurasu",
+        "type": "roaster_team"
+      },
+      "source_ids": [
+        "kurasu"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "V60",
+      "dose_g": 12,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.6667,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": null,
+        "range_c": [
+          92,
+          96
+        ],
+        "original": "92–96°C",
+        "kind": "source_range"
+      },
+      "grind": {
+        "description_original": "約 EK43: 7 細～中挽き",
+        "grinder": {
+          "model": "EK43",
+          "setting": 7,
+          "unit": "dial",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 120,
+        "max": 120,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 25,
+          "pour_pattern": "gentle_into_well",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 25,
+          "water_unit": "g",
+          "source_id": "kurasu"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 85,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 110,
+          "water_unit": "g",
+          "source_id": "kurasu"
+        },
+        {
+          "start_s": 60,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 90,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 200,
+          "water_unit": "g",
+          "source_id": "kurasu"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "light_stir",
+          "water_increment": null,
+          "pour_pattern": null,
+          "valve": null,
+          "trigger": "after final pour",
+          "source_id": "kurasu"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "家庭でクリーンな一杯を目指す。豆・焙煎に応じて微調整し、最後に軽く混ぜて風味の角を取るという説明。",
+          "classification": "author_stated_intent",
+          "scope": "this_recipe",
+          "tags": [
+            "clarity",
+            "rounded_flavor"
+          ],
+          "source_id": "kurasu"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "EK43目盛7は個体校正が不明。別年のKurasu版と混ぜない。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "passenger-april-cafe",
+      "name": "King St. Café / April Brewer",
+      "attribution": {
+        "name": "Passenger",
+        "type": "roaster_team"
+      },
+      "source_ids": [
+        "passenger"
+      ],
+      "version_note": "上記資料の掲載版。別年・別媒体の同名レシピと合成しない。",
+      "brewer": "April Brewer",
+      "dose_g": 13,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 15.3846,
+      "ratio_basis": "投入水重量÷粉重量",
+      "temperature": {
+        "value_c": 98.889,
+        "range_c": null,
+        "original": "210°F",
+        "kind": "source_numeric_converted"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。形容詞やクリック値から粒径・他機種設定を確定しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "roast_level": null,
+        "lot": null
+      },
+      "target_total_time_s": {
+        "min": 120,
+        "max": 240,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 40,
+          "pour_pattern": "spiral",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 40,
+          "water_unit": "g",
+          "source_id": "passenger"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 40,
+          "pour_pattern": "outside_to_inside_spiral",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 80,
+          "water_unit": "g",
+          "source_id": "passenger"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 70,
+          "pour_pattern": "center",
+          "valve": null,
+          "trigger": "without pause after reaching 80g; combined second pour ~10s",
+          "water_cumulative": 150,
+          "water_unit": "g",
+          "source_id": "passenger"
+        },
+        {
+          "start_s": 70,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pour_pattern": "center",
+          "valve": null,
+          "trigger": null,
+          "water_cumulative": 200,
+          "water_unit": "g",
+          "source_id": "passenger"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "攪拌を注湯だけで行い、スワール・かき混ぜを避ける。安定した一杯への出発点と説明。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "pour_only_agitation",
+            "consistency"
+          ],
+          "source_id": "passenger"
+        },
+        {
+          "text_ja": "焙煎後1–10日の非常に新しい豆では199–201°Fへ下げる案を提示している。",
+          "classification": "author_stated_adjustment",
+          "scope": "very_fresh_coffee",
+          "tags": [
+            "freshness_temperature_adjustment"
+          ],
+          "source_id": "passenger"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": true
+      },
+      "quality_notes": [
+        "新鮮な豆への助言はロースターの経験則であり、全精製で検証された係数ではない。挽き目は時間を見て調整する指示。"
+      ],
+      "recipe_context": "everyday",
+      "competition": null,
+      "brew_family": "percolation",
+      "equipment_details": {},
+      "water_profile": null,
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "martin-wbrc-2024-orea",
+      "name": "WBrC 2024 / OREA The CHAMP",
+      "attribution": {
+        "name": "Martin Wölfl",
+        "type": "person"
+      },
+      "source_ids": [
+        "martin_orea"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "OREA V4 Narrow + Fast Bottom",
+      "brew_family": "percolation",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World Brewers Cup",
+        "year": 2024,
+        "represented_country": "Austria",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 17,
+      "water": {
+        "value": 270,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 15.8824,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 93,
+        "range_c": null,
+        "original": "93°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Medium-coarse; source says 630 microns",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "lot": null,
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "SIBARIST FAST FLAT",
+        "pour_assist": "Melodrip",
+        "source_pour_rate_g_s": 6
+      },
+      "water_profile": null,
+      "target_total_time_s": {
+        "min": 150,
+        "max": 180,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pattern": "spiral onto Melodrip",
+          "source_id": "martin_orea",
+          "water_cumulative": 60,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pattern": "spiral onto Melodrip",
+          "source_id": "martin_orea",
+          "water_cumulative": 120,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 80,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pattern": "spiral onto Melodrip",
+          "source_id": "martin_orea",
+          "water_cumulative": 170,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 120,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 100,
+          "pattern": "spiral onto Melodrip",
+          "source_id": "martin_orea",
+          "water_cumulative": 270,
+          "water_unit": "g"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "メーカーはFAST底・指定紙・Melodripを含めて大会版を再現する構成と説明。",
+          "classification": "publisher_reported_method",
+          "scope": "this_recipe",
+          "tags": [
+            "equipment_specific"
+          ],
+          "source_id": "martin_orea"
+        },
+        {
+          "text_ja": "湯の当て方を補助器具で揃える比較例。味の強度は未記載。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "controlled_pouring"
+          ],
+          "source_id": "martin_orea"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "概要270mL、手順はg。手順の270gを採用。630μmの粒径指標・測定法は不明。",
+        "同じ器具名でも底部・紙・注湯補助が違えば同条件ではない。"
+      ],
+      "author_reported_particle_size": {
+        "value_um": 630,
+        "metric": null,
+        "measurement_method": null,
+        "source_id": "martin_orea"
+      },
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "carlos-wbrc-2023",
+      "name": "WBrC 2023 / ORIGAMI Air S",
+      "attribution": {
+        "name": "Carlos Medina",
+        "type": "person"
+      },
+      "source_ids": [
+        "carlos_slowpour"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "ORIGAMI Air S",
+      "brew_family": "percolation",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World Brewers Cup",
+        "year": 2023,
+        "represented_country": "Chile",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 15.5,
+      "water": {
+        "value": 250,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.129,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 91,
+        "range_c": null,
+        "original": "91°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": "natural",
+        "lot": "Sida / Café Granja la Esperanza",
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "conical filter"
+      },
+      "water_profile": {
+        "reported_ppm": 65,
+        "composition_original": "equal parts calcium and magnesium",
+        "alkalinity": null
+      },
+      "target_total_time_s": {
+        "min": 160,
+        "max": 160,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "pattern": "outward_inward_spiral",
+          "source_id": "carlos_slowpour",
+          "water_cumulative": 50,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "30-second interval; see timing ambiguity",
+          "pattern": "outward_inward_spiral",
+          "source_id": "carlos_slowpour",
+          "water_cumulative": 100,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "30-second interval; see timing ambiguity",
+          "pattern": "outward_inward_spiral",
+          "source_id": "carlos_slowpour",
+          "water_cumulative": 150,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "30-second interval; see timing ambiguity",
+          "pattern": "outward_inward_spiral",
+          "source_id": "carlos_slowpour",
+          "water_cumulative": 200,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "30-second interval; see timing ambiguity",
+          "pattern": "outward_inward_spiral",
+          "source_id": "carlos_slowpour",
+          "water_cumulative": 250,
+          "water_unit": "g"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "酸味・甘さ・ボディの一体感を狙う水質設計と、等量注湯による再現性が掲載者から説明されている。",
+          "classification": "publisher_reported_intent",
+          "scope": "this_recipe",
+          "tags": [
+            "balance",
+            "repeatability"
+          ],
+          "source_id": "carlos_slowpour"
+        },
+        {
+          "text_ja": "使用したNatural Sidaについて、温度別の果実感や中程度の甘さ・口当たりが報告されている。",
+          "classification": "publisher_reported_bean_character",
+          "scope": "specified_competition_coffee",
+          "tags": [
+            "fruit",
+            "medium_sweetness",
+            "medium_mouthfeel"
+          ],
+          "source_id": "carlos_slowpour"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "15.5g/250gから計算した比は約1:16.13。掲載の1:16は丸め。",
+        "30秒を注湯開始間隔とする説明とsilent timeの表現が混在。0/30/60等へ自動確定しない。",
+        "選手の直接発言ではなく販売店の大会レポート。官能記述はその豆と大会条件に限定。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "注湯間隔の起点が未確定。"
+      }
+    },
+    {
+      "id": "emi-wbrc-2018-gina",
+      "name": "WBrC 2018 / GINA Laurina",
+      "attribution": {
+        "name": "Emi Fukahori",
+        "type": "person"
+      },
+      "source_ids": [
+        "emi_wbrc2018"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "GINA by Goat Story",
+      "brew_family": "hybrid_immersion_percolation",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World Brewers Cup",
+        "year": 2018,
+        "represented_country": "Switzerland",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 17,
+      "water": {
+        "value": 220,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 12.9412,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": null,
+        "range_c": null,
+        "original": "80°C → 95°C → 80°C (phase-specific)",
+        "kind": "source_qualitative"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Brazil",
+        "processing": "anaerobic maceration; whole cherries 48h, then drying",
+        "lot": "Daterra Masterpieces / Laurina",
+        "roast_level": null,
+        "variety": "Laurina"
+      },
+      "equipment_details": {},
+      "water_profile": {
+        "reported_ppm": 100,
+        "alkalinity": null
+      },
+      "target_total_time_s": {
+        "min": 175,
+        "max": 175,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "valve": "closed",
+          "temperature_c": 80,
+          "source_id": "emi_wbrc2018",
+          "water_cumulative": 50,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 45,
+          "end_s": null,
+          "action": "open_valve",
+          "water_increment": null,
+          "valve": "open",
+          "source_id": "emi_wbrc2018"
+        },
+        {
+          "start_s": 45,
+          "end_s": 105,
+          "action": "pour",
+          "water_increment": 100,
+          "valve": "open",
+          "pattern": "center",
+          "temperature_c": 95,
+          "source_id": "emi_wbrc2018",
+          "water_cumulative": 150,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 105,
+          "end_s": null,
+          "action": "close_valve",
+          "water_increment": null,
+          "valve": "closed",
+          "source_id": "emi_wbrc2018"
+        },
+        {
+          "start_s": 105,
+          "end_s": 150,
+          "action": "pour",
+          "water_increment": 70,
+          "valve": "closed",
+          "temperature_c": 80,
+          "source_id": "emi_wbrc2018",
+          "water_cumulative": 220,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 150,
+          "end_s": null,
+          "action": "open_valve",
+          "water_increment": null,
+          "valve": "open",
+          "source_id": "emi_wbrc2018"
+        },
+        {
+          "start_s": 175,
+          "end_s": null,
+          "action": "finish",
+          "water_increment": null,
+          "source_id": "emi_wbrc2018"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "段階ごとに甘さ、複雑な酸、ジューシーなボディ、クリーンな後味を狙うと説明。",
+          "classification": "author_stated_intent",
+          "scope": "specific_Laurina_and_recipe",
+          "tags": [
+            "sweetness_target",
+            "complex_acidity",
+            "juicy_body",
+            "clean_finish"
+          ],
+          "source_id": "emi_wbrc2018"
+        },
+        {
+          "text_ja": "このLaurinaでは粒度や外からの攪拌より接触時間・温度への反応が大きかったという本人の経験。",
+          "classification": "author_reported_observation",
+          "scope": "specific_Laurina_only",
+          "tags": [
+            "bean_specific_response"
+          ],
+          "source_id": "emi_wbrc2018"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "2018 GINA版。既収録の2024 Switch版と別レコード。精製だけの効果に分解できない。",
+        "45秒の閉弁、以降の工程境界は掲載時刻。注湯の継続時間が未記載の区間もある。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "matt-natural-fivepour-interview",
+      "name": "Natural / Five Pour（インタビュー掲載版）",
+      "attribution": {
+        "name": "Matt Winton",
+        "type": "person"
+      },
+      "source_ids": [
+        "matt_interview"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "Metal V60 + 01 paper",
+      "brew_family": "percolation",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 20,
+      "water": {
+        "value": 300,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 15.0,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": null,
+        "range_c": null,
+        "original": "cooler temperature; numeric value not reported",
+        "kind": "source_qualitative"
+      },
+      "grind": {
+        "description_original": "Coarse",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "lot": null,
+        "roast_level": null
+      },
+      "equipment_details": {},
+      "water_profile": null,
+      "target_total_time_s": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "pattern": "slow_circle",
+          "source_id": "matt_interview",
+          "water_cumulative": 60,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "trigger": "30-second interval; timing origin unspecified",
+          "pattern": "more_aggressive_concentric_circle",
+          "source_id": "matt_interview",
+          "water_cumulative": 120,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "trigger": "30-second interval; timing origin unspecified",
+          "pattern": "more_aggressive_concentric_circle",
+          "source_id": "matt_interview",
+          "water_cumulative": 180,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "trigger": "30-second interval; timing origin unspecified",
+          "pattern": "more_aggressive_concentric_circle",
+          "source_id": "matt_interview",
+          "water_cumulative": 240,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 60,
+          "trigger": "30-second interval; timing origin unspecified",
+          "pattern": "more_aggressive_concentric_circle",
+          "source_id": "matt_interview",
+          "water_cumulative": 300,
+          "water_unit": "g"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "ナチュラルでは粗め・低めの温度・金属V60で抽出をやや抑え、ウォッシュドでは低バイパス平底・高めの温度・細めを選ぶという本人の使い分け。",
+          "classification": "author_stated_adjustment",
+          "scope": "personal_practice_not_all_processing",
+          "tags": [
+            "processing_context",
+            "relative_extraction_adjustment"
+          ],
+          "source_id": "matt_interview"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "2021優勝者が後年説明した日常の方法。2021大会当日版とはしていない。",
+        "数値湯温なし。3:30の文章は最終注湯後の待ちか総時間か不明で、総時間はnull。",
+        "ナチュラル→一律何℃／何クリックという係数にはしない。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "湯温の数値と注湯・総時間の起点が未確定。"
+      },
+      "source_applicability": {
+        "processing": "natural",
+        "context": "author general guidance, not measured lot"
+      },
+      "bean_context_kind": "guidance_condition_not_observed_lot"
+    },
+    {
+      "id": "gagne-v60-2018",
+      "name": "V60 workflow / 2018–2019記事版",
+      "attribution": {
+        "name": "Jonathan Gagné",
+        "type": "person"
+      },
+      "source_ids": [
+        "gagne_v60"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "Plastic V60",
+      "brew_family": "percolation",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 22,
+      "water": {
+        "value": 352,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.0,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 100,
+        "range_c": null,
+        "original": "100°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "lot": null,
+        "roast_level": null
+      },
+      "equipment_details": {},
+      "water_profile": null,
+      "target_total_time_s": {
+        "min": 150,
+        "max": 210,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 66,
+          "source_id": "gagne_v60",
+          "water_cumulative": 66,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "rao_spin",
+          "water_increment": null,
+          "trigger": "immediately after bloom pour",
+          "source_id": "gagne_v60"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 134,
+          "pattern": "even_spiral",
+          "trigger": "stop near 200g or when water is high",
+          "source_id": "gagne_v60",
+          "water_cumulative": 200,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "rao_spin",
+          "water_increment": null,
+          "trigger": "when water is near 2/3 V60 height",
+          "source_id": "gagne_v60"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 152,
+          "trigger": "water approaches coffee bed, before bed exposed",
+          "source_id": "gagne_v60",
+          "water_cumulative": 352,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "rao_spin",
+          "water_increment": null,
+          "trigger": "when water level is low enough",
+          "source_id": "gagne_v60"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "抽出の均一性・再現性・保温を重視し、注湯高さなどの変動を減らす方針。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "uniformity",
+            "repeatability",
+            "thermal_retention"
+          ],
+          "source_id": "gagne_v60"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "研究・執筆者の原著記事。数値予測の検証済みモデルではない。",
+        "中間200gは目安で液面でも止めるため134/152gはその目安を採用した計算値。",
+        "旧版の手順。本人の最新の全手法を代表するとはしない。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "ply-air-s-2022",
+      "name": "WBrC finalist / Air S 掲載版",
+      "attribution": {
+        "name": "Ply Pasarj",
+        "type": "person"
+      },
+      "source_ids": [
+        "ply_interview"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "ORIGAMI Air S",
+      "brew_family": "percolation",
+      "recipe_context": "competition_related",
+      "competition": {
+        "name": "World Brewers Cup",
+        "year": 2021,
+        "represented_country": "Canada",
+        "placing": "finalist",
+        "relation": "finalist_interview_recipe_not_confirmed_exact_stage_version",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 12.5,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.0,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": null,
+        "range_c": [
+          92,
+          94
+        ],
+        "original": "92–94°C",
+        "kind": "source_range"
+      },
+      "grind": {
+        "description_original": null,
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Panama",
+        "processing": "blend: anaerobic natural + traditional washed",
+        "lot": "Hacienda Cañas Verdes + Finca Carmen",
+        "roast_level": null,
+        "variety": "Gesha"
+      },
+      "equipment_details": {
+        "filter": "大会では平底紙。掲載レシピ器具欄はOrigami Filterと記載、型式は未確定。"
+      },
+      "water_profile": null,
+      "target_total_time_s": {
+        "min": 128,
+        "max": 135,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 45,
+          "source_id": "ply_interview",
+          "water_cumulative": 45,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 45,
+          "end_s": 58,
+          "action": "pour",
+          "water_increment": 85,
+          "height_inches": [
+            4,
+            5
+          ],
+          "source_id": "ply_interview",
+          "water_cumulative": 130,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 90,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 70,
+          "pattern": "spout_as_low_as_possible",
+          "source_id": "ply_interview",
+          "water_cumulative": 200,
+          "water_unit": "g"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "中盤は高い注湯で攪拌し、終盤は低くして抽出を抑える。酸味の釣合いを取るため大会では平底紙を選んだと説明。",
+          "classification": "author_stated_intent",
+          "scope": "competition_method_and_published_recipe",
+          "tags": [
+            "stage_agitation",
+            "balance"
+          ],
+          "source_id": "ply_interview"
+        },
+        {
+          "text_ja": "大会のブレンドはウォッシュドを細め、ナチュラルを粗めに挽き、冷めても花の風味を残そうとした。",
+          "classification": "author_stated_intent",
+          "scope": "specified_competition_blend",
+          "tags": [
+            "separate_component_grinds",
+            "floral_retention"
+          ],
+          "source_id": "ply_interview"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "本文のBloom 45g of coffeeは粉量12.5gと矛盾。蒸らし湯45gと解釈した修正を明示。",
+        "2022掲載の12.5g版を、2021舞台上の全条件と同一とは断定しない。ブレンド比は未記載。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "julia-washed-ecuador-origami",
+      "name": "Rancho Carmen / Washed Ecuador",
+      "attribution": {
+        "name": "Julia Peixoto",
+        "type": "person"
+      },
+      "source_ids": [
+        "julia_recipe"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "ORIGAMI Medium",
+      "brew_family": "percolation",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 20,
+      "water": {
+        "value": 300,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 15.0,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 96.111,
+        "range_c": null,
+        "original": "205°F",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Medium-coarse; approximately 1100 microns",
+        "grinder": {
+          "model": "EK43",
+          "setting": 11.5,
+          "unit": "dial 1–16",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Zamora, Ecuador",
+        "processing": "washed",
+        "lot": "Rancho Carmen",
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "Kalita Wave 185"
+      },
+      "water_profile": null,
+      "target_total_time_s": {
+        "min": 225,
+        "max": 270,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": 7,
+          "action": "pour",
+          "water_increment": 50,
+          "pattern": "concentric_circles",
+          "source_id": "julia_recipe",
+          "water_cumulative": 50,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after previous pour completely drains",
+          "pattern": "concentric_circles",
+          "duration_s_approx": 7,
+          "source_id": "julia_recipe",
+          "water_cumulative": 100,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after previous pour completely drains",
+          "pattern": "concentric_circles",
+          "duration_s_approx": 7,
+          "source_id": "julia_recipe",
+          "water_cumulative": 150,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after previous pour completely drains",
+          "pattern": "concentric_circles",
+          "duration_s_approx": 7,
+          "source_id": "julia_recipe",
+          "water_cumulative": 200,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after previous pour completely drains",
+          "pattern": "concentric_circles",
+          "duration_s_approx": 7,
+          "source_id": "julia_recipe",
+          "water_cumulative": 250,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after previous pour completely drains",
+          "pattern": "concentric_circles",
+          "duration_s_approx": 7,
+          "source_id": "julia_recipe",
+          "water_cumulative": 300,
+          "water_unit": "g"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "この豆のおいしさと再現しやすさを重視。細かすぎると渋みが出たと報告。",
+          "classification": "author_reported_observation",
+          "scope": "Rancho_Carmen_only",
+          "tags": [
+            "repeatability",
+            "astringency_if_too_fine"
+          ],
+          "source_id": "julia_recipe"
+        },
+        {
+          "text_ja": "豆の説明は高い甘さと鮮やかな酸味。",
+          "classification": "author_reported_bean_character",
+          "scope": "Rancho_Carmen_only",
+          "tags": [
+            "sweetness",
+            "vibrant_acidity"
+          ],
+          "source_id": "julia_recipe"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "約1100μmの測定法・粒径指標は不明。完全排水待ちは固定時刻にしない。"
+      ],
+      "author_reported_particle_size": {
+        "value_um": 1100,
+        "metric": null,
+        "measurement_method": null,
+        "source_id": "julia_recipe"
+      },
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "sum-washed-anaerobic-origami",
+      "name": "El Paseo / Washed Anaerobic",
+      "attribution": {
+        "name": "Chi Sum Ngai",
+        "type": "person"
+      },
+      "source_ids": [
+        "sum_recipe"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "ORIGAMI Medium",
+      "brew_family": "percolation",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 20,
+      "water": {
+        "value": 330,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 16.5,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 92.222,
+        "range_c": null,
+        "original": "198°F",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Medium-fine; ODE setting 3.6",
+        "grinder": {
+          "model": "Fellow ODE（世代・刃未記載）",
+          "setting": 3.6,
+          "unit": "dial",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Buesaco, Nariño, Colombia",
+        "processing": "washed anaerobic",
+        "lot": "El Paseo",
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "conical filter"
+      },
+      "water_profile": null,
+      "target_total_time_s": {
+        "min": 165,
+        "max": 165,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 40,
+          "source_id": "sum_recipe",
+          "water_cumulative": 40,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "spoon_wet_dry_grounds",
+          "water_increment": null,
+          "trigger": "during bloom",
+          "source_id": "sum_recipe"
+        },
+        {
+          "start_s": 30,
+          "end_s": 60,
+          "action": "pour",
+          "water_increment": 100,
+          "source_id": "sum_recipe",
+          "water_cumulative": 140,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "spoon_stir",
+          "water_increment": null,
+          "trigger": "after second pour",
+          "source_id": "sum_recipe"
+        },
+        {
+          "start_s": 75,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 100,
+          "source_id": "sum_recipe",
+          "water_cumulative": 240,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 120,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 90,
+          "source_id": "sum_recipe",
+          "water_cumulative": 330,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "gentle_swirl_if_needed",
+          "water_increment": null,
+          "trigger": "after last pour",
+          "source_id": "sum_recipe"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "蒸らしで乾いた粉を濡らし、紙の側面へ直接注がず、水と粉が接触するようにする。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "wetting",
+            "water_coffee_contact"
+          ],
+          "source_id": "sum_recipe"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "本文の仕上がり約330gは投入水330gと同値で根拠不明。実測液量に取り込まない。味の方向性は未記載。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "tim-basic-aeropress",
+      "name": "Basic AeroPress / filter-like",
+      "attribution": {
+        "name": "Tim Wendelboe",
+        "type": "person"
+      },
+      "source_ids": [
+        "tim_aeropress"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress upright",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 14,
+      "water": {
+        "value": 200,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 14.2857,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": null,
+        "range_c": null,
+        "original": "boiling temperature",
+        "kind": "source_qualitative"
+      },
+      "grind": {
+        "description_original": "Fine filter grind",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "lot": null,
+        "roast_level": "light"
+      },
+      "equipment_details": {
+        "filter": "rinsed paper"
+      },
+      "water_profile": null,
+      "target_total_time_s": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 200,
+          "source_id": "tim_aeropress",
+          "water_cumulative": 200,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "stir_3_times",
+          "water_increment": null,
+          "trigger": "after pouring",
+          "source_id": "tim_aeropress"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "insert_plunger",
+          "water_increment": null,
+          "trigger": "after stirring",
+          "source_id": "tim_aeropress"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "remove_plunger_and_stir_3_times",
+          "water_increment": null,
+          "trigger": "after 60 seconds of steeping",
+          "source_id": "tim_aeropress"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "press",
+          "water_increment": null,
+          "trigger": "after second stir",
+          "source_id": "tim_aeropress"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "フィルターコーヒーに近い一杯として紹介する基本版。濃いmoka風の別版とは分ける。",
+          "classification": "source_stated_use_case",
+          "scope": "this_recipe",
+          "tags": [
+            "filter_like",
+            "simple_recipe"
+          ],
+          "source_id": "tim_aeropress"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "60秒は浸漬時間。注湯・攪拌・プレスを含む総時間は記載なし。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "george-wac-2024",
+      "name": "WAC 2024 / original inverted",
+      "attribution": {
+        "name": "George Stanica",
+        "type": "person"
+      },
+      "source_ids": [
+        "wac_official"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress inverted",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World AeroPress Championship",
+        "year": 2024,
+        "represented_country": "Romania",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 18,
+      "water": {
+        "value": 100,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 5.5556,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 96,
+        "range_c": null,
+        "original": "96°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "C40 Mk4 Red Clix 58 clicks; reported 870 microns",
+        "grinder": {
+          "model": "Comandante C40 Mk4 Red Clix",
+          "setting": 58,
+          "unit": "Red Clix clicks",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Guji, Ethiopia",
+        "processing": "washed",
+        "lot": "Arsosala / Olisipo",
+        "roast_level": null,
+        "variety": "Ethiopian heirloom varieties"
+      },
+      "equipment_details": {
+        "filter": "1 rinsed Aesir",
+        "pour_assist": "Melodrip"
+      },
+      "water_profile": {
+        "reported_ppm_range": [
+          85,
+          90
+        ],
+        "composition_original": "Aquacode diluted with 0ppm water",
+        "alkalinity": null
+      },
+      "target_total_time_s": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "duration_s_approx": [
+            5,
+            6
+          ],
+          "pour_assist": "Melodrip",
+          "source_id": "wac_official",
+          "water_cumulative": 50,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 50,
+          "trigger": "after ~30-second bloom",
+          "duration_s_approx": [
+            5,
+            6
+          ],
+          "source_id": "wac_official",
+          "water_cumulative": 100,
+          "water_unit": "g"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "gentle_NSEW_stir",
+          "water_increment": null,
+          "trigger": "after second pour",
+          "duration_s": 10,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 80,
+          "end_s": null,
+          "action": "cap_and_remove_air",
+          "water_increment": null,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 95,
+          "end_s": 135,
+          "action": "press",
+          "water_increment": null,
+          "duration_s_range": [
+            30,
+            40
+          ],
+          "source_id": "wac_official"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "特定の豆と焙煎に合わせた方法なので好みに応じて調整する、という本人の注記。",
+          "classification": "author_stated_guidance",
+          "scope": "specified_competition_coffee",
+          "tags": [
+            "bean_specific",
+            "adapt_to_taste"
+          ],
+          "source_id": "wac_official"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "プレス終了は開始95秒＋30–40秒。希釈を含む総終了時刻は不明。"
+      ],
+      "bypass": {
+        "steps": [
+          {
+            "action": "warm_water_to_beverage_mass",
+            "target_mass_g": [
+              130,
+              135
+            ]
+          },
+          {
+            "action": "add_room_temperature_water",
+            "increment_g": [
+              20,
+              30
+            ],
+            "reported_ppm": 0
+          }
+        ],
+        "resulting_beverage_mass_g_range_derived": [
+          150,
+          165
+        ],
+        "note": "150–165gは指示範囲の算術値。注湯総量でも実測液量でもない。"
+      },
+      "source_reported_concentrate_g_range": [
+        76,
+        79
+      ],
+      "author_reported_particle_size": {
+        "value_um": 870,
+        "metric": null,
+        "measurement_method": null,
+        "source_id": "wac_official"
+      },
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "tay-wac-2023-original",
+      "name": "WAC 2023 / original inverted",
+      "attribution": {
+        "name": "Tay Wipvasutt",
+        "type": "person"
+      },
+      "source_ids": [
+        "wac_official",
+        "tay_adaptation"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress inverted",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World AeroPress Championship",
+        "year": 2023,
+        "represented_country": "Thailand",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 18,
+      "water": {
+        "value": 100,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 5.5556,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 89,
+        "range_c": null,
+        "original": "89°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "1Zpresso ZP6 65 clicks",
+        "grinder": {
+          "model": "1Zpresso ZP6",
+          "setting": 65,
+          "unit": "clicks",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Nyeri, Kenya",
+        "processing": "washed",
+        "lot": "Karindundu AB / Fieldwork",
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "1 rinsed paper"
+      },
+      "water_profile": {
+        "composition_original": "Perfect Coffee Water @ 81.5% strength",
+        "reported_ppm": null
+      },
+      "target_total_time_s": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 100,
+          "coffee_present_g": 16,
+          "source_id": "wac_official",
+          "water_cumulative": 100,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 30,
+          "end_s": null,
+          "action": "stir",
+          "water_increment": null,
+          "duration_s": 5,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 45,
+          "end_s": null,
+          "action": "add_coffee",
+          "water_increment": null,
+          "coffee_increment_g": 2,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 55,
+          "end_s": null,
+          "action": "stir",
+          "water_increment": null,
+          "duration_s": 5,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "remove_air_and_cap",
+          "water_increment": null,
+          "trigger": "after second stir",
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 95,
+          "end_s": 125,
+          "action": "flip_and_press",
+          "water_increment": null,
+          "source_id": "wac_official"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "粉を16gと2gに分けて投入し、最後に常温水と温水で仕上げる構成。狙いの味はこの原典に未記載。",
+          "classification": "editorial_inference",
+          "scope": "this_recipe",
+          "tags": [
+            "staged_dose",
+            "bypass_strength_adjustment"
+          ],
+          "source_id": "wac_official"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "18gは最終総粉量。初めから全量を入れる版へ変えない。",
+        "メーカーの2025正立改変版とは手順・水量・フィルターが違う。両版を混ぜない。"
+      ],
+      "source_reported_concentrate_g_approx": 75,
+      "bypass": {
+        "steps": [
+          {
+            "action": "room_temperature_water_to_beverage_mass",
+            "target_mass_g": 115
+          },
+          {
+            "action": "hot_water_to_beverage_mass",
+            "target_mass_g_approx": 155
+          }
+        ]
+      },
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "jibbi-wac-2022-organizer",
+      "name": "WAC 2022 / organizer archive version",
+      "attribution": {
+        "name": "Jibbi Little",
+        "type": "person"
+      },
+      "source_ids": [
+        "wac_official",
+        "aeropress_winners"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress inverted",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World AeroPress Championship",
+        "year": 2022,
+        "represented_country": "Australia",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 18,
+      "water": {
+        "value": 94,
+        "unit": "mL",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 5.2222,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 90,
+        "range_c": null,
+        "original": "90°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "Timemore coarse → Kinu setting 4; sift 100–200µm fines",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Colombia",
+        "processing": "natural",
+        "lot": "Finca Juan Martin / Quietly Coffee",
+        "roast_level": null,
+        "variety": "Striped Red Bourbon"
+      },
+      "equipment_details": {
+        "filter": "1 rinsed AeroPress Classic paper",
+        "sifting": "remove 100–200µm fines as source describes"
+      },
+      "water_profile": {
+        "composition_original": "Perfect Coffee Water",
+        "reported_ppm": null
+      },
+      "target_total_time_s": {
+        "min": 130,
+        "max": 130,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 94,
+          "source_id": "wac_official",
+          "water_cumulative": 94,
+          "water_unit": "mL"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "gentle_stir_35_times",
+          "water_increment": null,
+          "trigger": "after pour",
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 80,
+          "end_s": null,
+          "action": "cap_and_remove_air",
+          "water_increment": null,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 90,
+          "end_s": null,
+          "action": "flip",
+          "water_increment": null,
+          "source_id": "wac_official"
+        },
+        {
+          "start_s": 100,
+          "end_s": 130,
+          "action": "press",
+          "water_increment": null,
+          "source_id": "wac_official"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "仕上がりTDS 1.30–1.35%を目標に希釈する指示。測定結果ではなく目標値。",
+          "classification": "source_stated_target",
+          "scope": "this_recipe",
+          "tags": [
+            "target_strength"
+          ],
+          "source_id": "wac_official"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "大会公式の90°Cとメーカー掲載92°Cが不一致。公式版90°Cを保持し自動推薦は保留。",
+        "仕上がり150gは総投入湯量150mLと解釈しない。総粉量18g、接触湯94mLと分離。"
+      ],
+      "source_reported_concentrate_g_range": [
+        58,
+        64
+      ],
+      "source_stated_target_tds_percent_range": [
+        1.3,
+        1.35
+      ],
+      "bypass": {
+        "steps": [
+          {
+            "action": "90C_water_to_beverage_mass",
+            "target_mass_g": 150
+          }
+        ]
+      },
+      "source_conflicts": [
+        {
+          "field": "temperature.value_c",
+          "values": [
+            {
+              "source_id": "wac_official",
+              "value": 90
+            },
+            {
+              "source_id": "aeropress_winners",
+              "value": 92
+            }
+          ],
+          "resolution": "keep_organizer_version_and_flag_conflict"
+        }
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "大会主催者とメーカーの掲載湯温が不一致。掲載版を比較表示する。"
+      }
+    },
+    {
+      "id": "wendelien-wac-2019",
+      "name": "WAC 2019 / winning inverted",
+      "attribution": {
+        "name": "Wendelien van Bunnik",
+        "type": "person"
+      },
+      "source_ids": [
+        "aeropress_winners"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress inverted",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "competition",
+      "competition": {
+        "name": "World AeroPress Championship",
+        "year": 2019,
+        "represented_country": "Netherlands",
+        "placing": 1,
+        "relation": "competition_recipe_as_reported",
+        "service_round": null,
+        "rules_version": "historical_year_not_current_rules"
+      },
+      "dose_g": 30,
+      "water": {
+        "value": 100,
+        "unit": "g",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 3.3333,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 92,
+        "range_c": null,
+        "original": "92°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "7/10; 1 very fine, 10 very coarse",
+        "grinder": null,
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": null,
+        "processing": null,
+        "lot": null,
+        "roast_level": null
+      },
+      "equipment_details": {
+        "filter": "rinsed Aesir"
+      },
+      "water_profile": {
+        "reported_ppm": 30,
+        "composition_original": "Spa Blauw"
+      },
+      "target_total_time_s": {
+        "min": 60,
+        "max": 60,
+        "status": "author_target_not_measurement"
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": 10,
+          "action": "pour",
+          "water_increment": 100,
+          "source_id": "aeropress_winners",
+          "water_cumulative": 100,
+          "water_unit": "g"
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "action": "stir_firmly_20_times",
+          "water_increment": null,
+          "source_id": "aeropress_winners"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "cap_and_remove_air",
+          "water_increment": null,
+          "trigger": "after stirring",
+          "source_id": "aeropress_winners"
+        },
+        {
+          "start_s": 40,
+          "end_s": 60,
+          "action": "flip_and_press",
+          "water_increment": null,
+          "source_id": "aeropress_winners"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "希釈し、味を見て好みの濃さへ調整する。",
+          "classification": "author_stated_guidance",
+          "scope": "this_recipe",
+          "tags": [
+            "taste_based_dilution"
+          ],
+          "source_id": "aeropress_winners"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "60秒は掲載の抽出時間。希釈・約60°Cへの冷却までの総時間は別。2019年の条件として保持。"
+      ],
+      "source_reported_concentrate_g_approx": 60,
+      "bypass": {
+        "steps": [
+          {
+            "action": "add_water",
+            "increment_g": 100
+          },
+          {
+            "action": "taste_and_adjust",
+            "reported_total_bypass_g": 120
+          }
+        ],
+        "note": "120gは本人の追加水合計。100+120=220gを仕上がり液量にしない。例示の仕上がりは約60+120=180g。"
+      },
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "id": "wendelien-rwanda-home-2020",
+      "name": "Favourite AeroPress / Rwanda washed",
+      "attribution": {
+        "name": "Wendelien van Bunnik",
+        "type": "person"
+      },
+      "source_ids": [
+        "wendelien_home"
+      ],
+      "version_note": "この掲載版を独立保存。大会当日版・家庭向け派生版・別年の手順を混ぜない。",
+      "brewer": "AeroPress upright",
+      "brew_family": "immersion_pressure",
+      "recipe_context": "everyday",
+      "competition": null,
+      "dose_g": 20,
+      "water": {
+        "value": 250,
+        "unit": "mL",
+        "meaning": "water_contacting_grounds_only"
+      },
+      "ratio_water_per_coffee": 12.5,
+      "ratio_basis": "接触する投入水÷総粉量。mLは1mL≒1gの近似。希釈水・仕上がり液重量を含めない。",
+      "temperature": {
+        "value_c": 95,
+        "range_c": null,
+        "original": "95°C",
+        "kind": "source_numeric"
+      },
+      "grind": {
+        "description_original": "EK43 setting 9.5",
+        "grinder": {
+          "model": "Mahlkönig EK43",
+          "setting": 9.5,
+          "unit": "dial",
+          "calibration": null
+        },
+        "particle_size_um": null,
+        "cross_grinder_conversion": "未校正。記載μm・設定値は測定法を確認するまで直接換算しない。"
+      },
+      "bean": {
+        "origin": "Gitesi, Rwanda",
+        "processing": "washed",
+        "lot": null,
+        "roast_level": null,
+        "variety": "Bourbon"
+      },
+      "equipment_details": {},
+      "water_profile": null,
+      "target_total_time_s": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "end_s": null,
+          "action": "pour",
+          "water_increment": 250,
+          "source_id": "wendelien_home",
+          "water_cumulative": 250,
+          "water_unit": "mL"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "stir_5_times",
+          "water_increment": null,
+          "trigger": "after pouring",
+          "source_id": "wendelien_home"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "insert_plunger_and_steep",
+          "water_increment": null,
+          "trigger": "after stirring",
+          "source_id": "wendelien_home"
+        },
+        {
+          "start_s": null,
+          "end_s": null,
+          "action": "press",
+          "water_increment": null,
+          "trigger": "after 45 seconds; press for 30 seconds",
+          "duration_s": 30,
+          "source_id": "wendelien_home"
+        }
+      ],
+      "claims": [
+        {
+          "text_ja": "指定したルワンダの豆について、香辛料・ブルーベリー・甘い柑橘の風味を紹介する。",
+          "classification": "publisher_reported_bean_character",
+          "scope": "Gitesi_Rwanda_washed_bourbon",
+          "tags": [
+            "spice",
+            "blueberry",
+            "sweet_citrus"
+          ],
+          "source_id": "wendelien_home"
+        }
+      ],
+      "sensory_intensity_scores": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "measured_beverage_mass_g": null,
+      "usable_as_extraction_training_label": false,
+      "usage": {
+        "coach_reference": true,
+        "unreviewed_automatic_timer_import": false,
+        "preset_candidate_after_adapter_review": false
+      },
+      "quality_notes": [
+        "2019優勝者の2020日常向け紹介。30g/100gの優勝版とは別。総時間の起点は未確定。"
+      ],
+      "is_independent_brew_observation": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    }
+  ],
+  "held_out_knowledge": [
+    {
+      "id": "pierre-intent-only",
+      "source_id": "pierre",
+      "author": "Pierre De Chanterac",
+      "claims": [
+        {
+          "text_ja": "浅煎りに対し強い短時間の分割注湯で均一性と抽出を高め、バランスを狙うという説明。",
+          "classification": "author_stated_intent",
+          "scope": "light_roast",
+          "tags": [
+            "balance",
+            "high_agitation",
+            "extraction_target"
+          ],
+          "source_id": "pierre"
+        }
+      ],
+      "exclusion": "本文に12g/200mLの5投と、20g/330mL相当の別手順が連続掲載。意図のみ参照し、自動プリセット・抽出ラベルにはしない。"
+    }
+  ],
+  "research_queue": [
+    {
+      "author": "Lance Hedrick",
+      "url": "https://www.youtube.com/watch?v=BG5Tc8MR2_4",
+      "reason": "原動画の詳細手順を直接確認できていないため未収録。二次サイト由来の数値を確定版にしない。"
+    }
+  ],
+  "usage_rules": [
+    "全レシピに投入条件と実測TDS/EYのペアがないため、抽出モデルの教師データとして扱わない。",
+    "甘さ・酸味・苦味を任意の0–100点に置換しない。sensory_intensity_scoresは未測定null。",
+    "精製不明はnull。自然精製の事例1件から、自然精製全般への最適レシピや補正係数を作らない。",
+    "本人の意図が不明な店舗レシピは「この構成に近い／この狙いの可能性」と示し、作者の心中を断定しない。",
+    "粉量を比例変更した場合、湯量は計算してよいが時刻・粒度・注湯流量を単純比例させない。",
+    "水質、紙、器具、粉量、焙煎、経時、粒度の不一致を表示する。未記載を一致扱いしない。",
+    "competitionはその大会年・その掲載版の記録。優勝者の日常版を優勝レシピへ格上げしない。",
+    "percolation、hybrid、immersion_pressureを区別。AeroPressをV60の同条件予測に流用しない。",
+    "waterは粉と接触する水。bypassは後から加える水。target_mass_gは仕上がり重量であって追加湯量ではない。",
+    "原典のppmは抽出に使う水の指標。コーヒーTDS%・硬度・アルカリ度と同一視しない。",
+    "source_stated_target_tds_percent_rangeをmeasured_tds_percentに移さない。",
+    "reportされたμmはD50か刃間隔かふるい径か未確定の場合がある。校正済み粒径として扱わない。"
+  ],
+  "change_log": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-28",
+      "added_recipe_ids": [
+        "carlos-wbrc-2023",
+        "emi-wbrc-2018-gina",
+        "gagne-v60-2018",
+        "george-wac-2024",
+        "jibbi-wac-2022-organizer",
+        "julia-washed-ecuador-origami",
+        "martin-wbrc-2024-orea",
+        "matt-natural-fivepour-interview",
+        "ply-air-s-2022",
+        "sum-washed-anaerobic-origami",
+        "tay-wac-2023-original",
+        "tim-basic-aeropress",
+        "wendelien-rwanda-home-2020",
+        "wendelien-wac-2019"
+      ],
+      "summary": "海外の著者、WBrC/WAC大会版、豆の精製条件、接触水と希釈水の分離を追加。"
+    },
+    {
+      "date": "2026-10-28",
+      "change": "豆条件の別資料15プロファイル・12調整案への参照を追加。既存24レシピは変更しない。"
+    }
+  ],
+  "related_knowledge": {
+    "bean_conditions": {
+      "file": "bean_condition_knowledge.json",
+      "profile_count": 15,
+      "conditional_guidance_count": 12,
+      "purpose": "豆・精製・焙煎・流動状態から条件付き参考例を選ぶ。既存24件とは別集計。"
+    },
+    "review": {
+      "file": "coffee_knowledge_catalog.json",
+      "purpose": "用途別の採否と制限を確認する入口。"
+    }
+  },
+  "review_summary": {
+    "reviewed_on": "2026-10-29",
+    "report_file": "coffee_knowledge_review.md",
+    "registry_file": "coffee_knowledge_catalog.json",
+    "ready_for_training": false,
+    "initial_candidate_settings_held_count": 5
+  }
+}

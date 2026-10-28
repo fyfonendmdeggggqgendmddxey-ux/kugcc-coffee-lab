@@ -1,0 +1,1902 @@
+{
+  "schema_version": "1.1.0",
+  "language": "ja",
+  "collected_on": "2026-10-28",
+  "status": "reference knowledge only; not installed or trained in Kugcc",
+  "purpose": "豆条件に近い初回レシピと、作者が説明した調整理由を検索するための追加資料。",
+  "sources": {
+    "dak": {
+      "title": "DAK — Frequently Asked",
+      "url": "https://www.dakcoffeeroasters.com/frequently-asked/",
+      "source_type": "roaster_own_guidance",
+      "verified_on": "2026-10-28",
+      "locator": "BREWING RECIPES: Washed / Natural / High density; clogging FAQ",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "20grams": {
+      "title": "20grams — April Brewer",
+      "url": "https://20gramscoffeeroastery.com/pages/april-brewer",
+      "source_type": "roaster_own_guidance",
+      "verified_on": "2026-10-28",
+      "locator": "washed 2-pour and natural 4-pour",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "rogue_pacamara": {
+      "title": "Rogue Wave / Ply — CCD Lot N21 Pacamara",
+      "url": "https://roguewavecoffee.ca/blogs/education-journal/panama-creativa-coffee-district-lot-n21-pacamara-from-agricola-geisha",
+      "source_type": "barista_own_lot_recipes",
+      "verified_on": "2026-10-28",
+      "locator": "Lot N21 / Recipes 1 and 2 / signed Ply",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "piritu": {
+      "title": "Piritu / Giovanni Lindblom — How to Brew Gesha on a V60",
+      "url": "https://www.piritucoffee.com/blogs/stories/how-to-brew-gesha-v60",
+      "source_type": "roaster_own_guidance",
+      "verified_on": "2026-10-28",
+      "locator": "The Recipe; Why 91°C; SL09 Inca; troubleshooting",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "wonderstate": {
+      "title": "Wonderstate / Jared Dennison — Kenya Limited Release Recipes",
+      "url": "https://wonderstate.com/blogs/wonderstate/kenya-special-release-recipes",
+      "source_type": "roaster_own_lot_recipes",
+      "verified_on": "2026-10-28",
+      "locator": "Kamavindi Gesha and Gamba Carbonic Washed; 2021-12-09",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "tornqvist": {
+      "title": "tōrnqvist seasonal archive",
+      "url": "https://seasonal.tornqvistcoffee.com/",
+      "source_type": "cafe_own_dial_in_archive",
+      "verified_on": "2026-10-28",
+      "locator": "S-24.11 A/B; S-24.12 B; S-26.02 B; modified Kalita 155 only",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "kurasu_decaf": {
+      "title": "Kurasu — デカフェの製法・焙煎・抽出",
+      "url": "https://jp.kurasu.kyoto/blogs/kurasu-journal/decaf",
+      "source_type": "roaster_own_guidance",
+      "verified_on": "2026-10-28",
+      "locator": "エチオピア シダモ / Mountain Water / ホットドリップ",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "rikka": {
+      "title": "Rikka Fika — Our Unconventional Pour-Over Brew Guide",
+      "url": "https://rikkafika.com/pages/pour-over-brew-guide",
+      "source_type": "cafe_own_guidance",
+      "verified_on": "2026-10-28",
+      "locator": "Factors To Consider: Resting Period / Roasting Style; April brewer",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "uman2016": {
+      "title": "Uman et al. (2016) — The effect of bean origin and temperature on grinding roasted coffee",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4834475/",
+      "source_type": "peer_reviewed_primary_research",
+      "verified_on": "2026-10-28",
+      "locator": "Methods / Coffee origin and processing / Results; DOI 10.1038/srep24483",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "onyx_hold": {
+      "title": "Onyx — Colombia La Palma Gesha Lactic Honey",
+      "url": "https://onyxcoffeelab.com/products/colombia-la-palma-gesha-lactic-honey",
+      "source_type": "roaster_own_lot_recipe",
+      "verified_on": "2026-10-28",
+      "locator": "product metadata vs title/abstract; Extraction Guides",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    },
+    "partners_hold": {
+      "title": "Partners — Santa Elisa Gesha Brew Guides",
+      "url": "https://www.partnerscoffee.com/blogs/education/brew-guides-santa-elisa-gesha",
+      "source_type": "roaster_own_lot_recipe",
+      "verified_on": "2026-10-28",
+      "locator": "Hario V60 Details vs Directions",
+      "verification": "公開本文を確認。動画全編の確認や実際の抽出試験は含まない。"
+    }
+  },
+  "profiles": [
+    {
+      "id": "dak_default",
+      "source_id": "dak",
+      "scope": "DAKの浅煎りフィルター豆。defaultはwashed以外にも使用可能。",
+      "bean": null,
+      "brewer": "V60 style",
+      "paper": null,
+      "dose_g": 15,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 16.666666666666668,
+      "temperature_c_range": [
+        95,
+        95
+      ],
+      "grind": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 50,
+          "water_increment_g": 50,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 100,
+          "water_increment_g": 50,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 250,
+          "water_increment_g": 150,
+          "source_pour_flow_g_per_s": 5,
+          "flow_kind": "source_instruction_not_measured_flow"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        180
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "原典の「250g out」は注湯累計も250g。ここでは投入水として保存し、実測の仕上がり液量にはしない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "source_applicability": {
+        "processing_label": "washed/default",
+        "roast_level": "light",
+        "measured_density": null,
+        "roaster": "DAK",
+        "processing_preferred": [
+          "washed"
+        ],
+        "processing_exclusive": false
+      },
+      "record_kind": "roaster_scoped_template",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "dak_natural_fermented",
+      "source_id": "dak",
+      "scope": "DAKの浅煎りフィルター豆。defaultはwashed以外にも使用可能。",
+      "bean": null,
+      "brewer": "V60 style",
+      "paper": null,
+      "dose_g": 16.5,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 15.151515151515152,
+      "temperature_c_range": [
+        92,
+        92
+      ],
+      "grind": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 50,
+          "water_increment_g": 50,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 120,
+          "water_increment_g": 70,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 190,
+          "water_increment_g": 70,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 90,
+          "water_cumulative_g": 250,
+          "water_increment_g": 60,
+          "source_pour_flow_g_per_s": 5,
+          "flow_kind": "source_instruction_not_measured_flow"
+        }
+      ],
+      "target_total_time_s_range": [
+        120,
+        150
+      ],
+      "intent_ja": "粉量を増やしてジューシーさと明るさを保つ、という作者の狙い。",
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "原典の「250g out」は注湯累計も250g。ここでは投入水として保存し、実測の仕上がり液量にはしない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "source_applicability": {
+        "processing_label": "natural or other fermented",
+        "roast_level": "light",
+        "measured_density": null,
+        "roaster": "DAK",
+        "processing_preferred": [
+          "natural"
+        ],
+        "other_fermented_processes_in_scope": true
+      },
+      "record_kind": "roaster_scoped_template",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "dak_dense",
+      "source_id": "dak",
+      "scope": "DAKの浅煎りフィルター豆。defaultはwashed以外にも使用可能。",
+      "bean": null,
+      "brewer": "V60 style",
+      "paper": null,
+      "dose_g": 15,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 16.666666666666668,
+      "temperature_c_range": [
+        95,
+        95
+      ],
+      "grind": null,
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 50,
+          "water_increment_g": 50,
+          "source_pour_flow_g_per_s": 8,
+          "flow_kind": "source_instruction_not_measured_flow"
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 250,
+          "water_increment_g": 200,
+          "source_pour_flow_g_per_s": 3,
+          "flow_kind": "source_instruction_not_measured_flow"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        180
+      ],
+      "intent_ja": "最後の注湯を3g/sとする低攪拌の構成。",
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "原典の「250g out」は注湯累計も250g。ここでは投入水として保存し、実測の仕上がり液量にはしない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "source_applicability": {
+        "processing_label": "high density; includes Ethiopian natural and anaerobic natural",
+        "roast_level": "light",
+        "measured_density": null,
+        "roaster": "DAK",
+        "density_context_required": "source-described high density"
+      },
+      "record_kind": "roaster_scoped_template",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "20grams_washed",
+      "source_id": "20grams",
+      "scope": "20gramsのApril plastic＋Kalita paperによる掲載レシピ。",
+      "bean": null,
+      "brewer": "April plastic",
+      "paper": "Kalita",
+      "dose_g": 12.5,
+      "contact_water_g": 200,
+      "ratio_water_per_coffee": 16.0,
+      "temperature_c_range": [
+        92,
+        95
+      ],
+      "grind": {
+        "model": "Comandante C40 MK4",
+        "setting_range": [
+          24,
+          28
+        ],
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 50,
+          "water_increment_g": 50,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "circle"
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 200,
+          "water_increment_g": 150,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "circle_50g_then_center_100g"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        160
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "原典TDS 1.20%は目標値であり実測欄へ入れない。水の約20ppmはtotal hardnessでありwater TDSではない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "source_applicability": {
+        "processing_label": "washed",
+        "roaster": "20grams",
+        "processing_preferred": [
+          "washed"
+        ],
+        "brewer": "April plastic",
+        "paper": "Kalita"
+      },
+      "record_kind": "roaster_scoped_template",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "source_stated_target_tds_percent": 1.2,
+      "water_total_hardness_ppm_reported": 20,
+      "water_total_hardness_is_approximate": true,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "20grams_natural",
+      "source_id": "20grams",
+      "scope": "20gramsのApril plastic＋Kalita paperによる掲載レシピ。",
+      "bean": null,
+      "brewer": "April plastic",
+      "paper": "Kalita",
+      "dose_g": 12.5,
+      "contact_water_g": 200,
+      "ratio_water_per_coffee": 16.0,
+      "temperature_c_range": [
+        90,
+        93
+      ],
+      "grind": {
+        "model": "Comandante C40 MK4",
+        "setting_range": [
+          24,
+          28
+        ],
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 50,
+          "water_increment_g": 50,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "circle"
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 100,
+          "water_increment_g": 50,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "low_turbulence_circle"
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 150,
+          "water_increment_g": 50,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "low_turbulence_circle"
+        },
+        {
+          "start_s": 90,
+          "water_cumulative_g": 200,
+          "water_increment_g": 50,
+          "source_pour_duration_s": 10,
+          "pour_pattern": "low_turbulence_center"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        160
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "原典TDS 1.20%は目標値であり実測欄へ入れない。水の約20ppmはtotal hardnessでありwater TDSではない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "source_applicability": {
+        "processing_label": "natural",
+        "roaster": "20grams",
+        "processing_preferred": [
+          "natural"
+        ],
+        "brewer": "April plastic",
+        "paper": "Kalita"
+      },
+      "record_kind": "roaster_scoped_template",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "source_stated_target_tds_percent": 1.2,
+      "water_total_hardness_ppm_reported": 20,
+      "water_total_hardness_is_approximate": true,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "ply_pacamara_body",
+      "source_id": "rogue_pacamara",
+      "scope": "当該N21ロットの淹れ分け。",
+      "bean": {
+        "origin": "Boquete, Panama",
+        "variety_label": "Pacamara",
+        "farm": "Agricola Geisha",
+        "lot": "Creativa Coffee District N21",
+        "processing_base": "natural",
+        "processing_label": "Intrinsic Cherry Natural",
+        "fermentation": [
+          "aerobic; source explicitly says presence of light"
+        ],
+        "roast_level": null,
+        "processing_label_original": "Intrinsic Cherry Natural",
+        "processing_base_normalized": "natural"
+      },
+      "brewer": "Origami",
+      "paper": "Kono",
+      "dose_g": 16,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 15.625,
+      "temperature_c_range": [
+        92,
+        92
+      ],
+      "grind": {
+        "model": "Comandante",
+        "setting": 24,
+        "approximate": true,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 60,
+          "water_increment_g": 60
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 160,
+          "water_increment_g": 100
+        },
+        {
+          "start_s": null,
+          "water_cumulative_g": 250,
+          "water_increment_g": 90,
+          "trigger": "after previous pour drains; author example about 95s"
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": "クリーミーなボディと甘さを狙う。",
+      "classification": "author_stated_intent_profile",
+      "notes": [
+        "最終投は排水後。作者の例では約95秒、固定タイマーではない。",
+        "同じ構成で90℃へ下げると酸が増す、という当該レシピ限定の作者コメントあり。"
+      ],
+      "water_tds_ppm_reported": 89,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "specific_lot_recommendation",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        155,
+        155
+      ],
+      "total_time_semantics": "author_reported_approximate_example",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "ply_pacamara_acidity",
+      "source_id": "rogue_pacamara",
+      "scope": "同じN21ロットだが紙・粉量・水・粒度も同時に変更。",
+      "bean": {
+        "origin": "Boquete, Panama",
+        "variety_label": "Pacamara",
+        "farm": "Agricola Geisha",
+        "lot": "Creativa Coffee District N21",
+        "processing_base": "natural",
+        "processing_label": "Intrinsic Cherry Natural",
+        "fermentation": [
+          "aerobic; source explicitly says presence of light"
+        ],
+        "roast_level": null,
+        "processing_label_original": "Intrinsic Cherry Natural",
+        "processing_base_normalized": "natural"
+      },
+      "brewer": "Origami",
+      "paper": "CAFEC Light",
+      "dose_g": 13,
+      "contact_water_g": 210,
+      "ratio_water_per_coffee": 16.153846153846153,
+      "temperature_c_range": [
+        93,
+        93
+      ],
+      "grind": {
+        "model": "Comandante",
+        "setting": 23,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 45,
+          "water_increment_g": 45
+        },
+        {
+          "start_s": 45,
+          "water_cumulative_g": 140,
+          "water_increment_g": 95
+        },
+        {
+          "start_s": 75,
+          "water_cumulative_g": 210,
+          "water_increment_g": 70,
+          "start_is_approximate": true
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": "柑橘・ラズベリーの酸、甘さを残して軽いボディを狙う。",
+      "classification": "author_stated_intent_profile",
+      "notes": [
+        "最終投の75秒は約。",
+        "原典比率1:16.3と、13g/210gからの計算値1:16.15が不一致。ここでは重量から算出。"
+      ],
+      "water_tds_ppm_reported": 80,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "specific_lot_recommendation",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        135,
+        135
+      ],
+      "total_time_semantics": "author_reported_approximate_example",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "piritu_gesha",
+      "source_id": "piritu",
+      "scope": "PirituのDwight Aguilar Masias / Finca Nueva Alianza商品向け。",
+      "bean": {
+        "origin": "Cusco, Peru",
+        "variety_label": "Yellow Gesha / Red Gesha",
+        "processing_label": null,
+        "roast_level": "light",
+        "variety_alternatives": [
+          "Yellow Gesha",
+          "Red Gesha"
+        ]
+      },
+      "brewer": "V60 01 or 02",
+      "paper": null,
+      "dose_g": 14,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 17.857142857142858,
+      "temperature_c_range": [
+        91,
+        91
+      ],
+      "grind": {
+        "description": "medium-fine",
+        "particle_size_um": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 45,
+          "water_increment_g": 45
+        },
+        {
+          "start_s": null,
+          "water_cumulative_g": 155,
+          "water_increment_g": 110,
+          "trigger": "after 30–40s bloom; reach cumulative 155g around 70s",
+          "source_approximate_end_s": 70
+        },
+        {
+          "start_s": null,
+          "water_cumulative_g": 250,
+          "water_increment_g": 95,
+          "trigger": "continue to final water after previous pour"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        180
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "蒸らし30–40秒。155gへの到達は約70秒。開始・終了を混同しないため後続投の開始時刻はnull。",
+        "加工法は当該記事から確定できず不明。品種一般への最適温度として扱わない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "roaster_product_family_profile",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "source_applicability": {
+        "roaster": "Piritu",
+        "producer": "Dwight Aguilar Masias",
+        "farm": "Finca Nueva Alianza",
+        "brewer": "V60 01 or 02"
+      },
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "piritu_sl09",
+      "source_id": "piritu",
+      "scope": "PirituのDwight Aguilar Masias / Finca Nueva Alianza商品向け。",
+      "bean": {
+        "origin": "Cusco, Peru",
+        "variety_label": "SL09 Inca",
+        "processing_label": null,
+        "roast_level": "light"
+      },
+      "brewer": "V60 01 or 02",
+      "paper": null,
+      "dose_g": 14,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 17.857142857142858,
+      "temperature_c_range": [
+        92,
+        92
+      ],
+      "grind": {
+        "description": "medium-fine",
+        "particle_size_um": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 45,
+          "water_increment_g": 45
+        },
+        {
+          "start_s": null,
+          "water_cumulative_g": 155,
+          "water_increment_g": 110,
+          "trigger": "after 30–40s bloom; reach cumulative 155g around 70s",
+          "source_approximate_end_s": 70
+        },
+        {
+          "start_s": null,
+          "water_cumulative_g": 250,
+          "water_increment_g": 95,
+          "trigger": "continue to final water after previous pour"
+        }
+      ],
+      "target_total_time_s_range": [
+        150,
+        180
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "蒸らし30–40秒。155gへの到達は約70秒。開始・終了を混同しないため後続投の開始時刻はnull。",
+        "加工法は当該記事から確定できず不明。品種一般への最適温度として扱わない。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "roaster_product_family_profile",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "source_applicability": {
+        "roaster": "Piritu",
+        "producer": "Dwight Aguilar Masias",
+        "farm": "Finca Nueva Alianza",
+        "brewer": "V60 01 or 02"
+      },
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "wonderstate_kamavindi",
+      "source_id": "wonderstate",
+      "scope": "Jared Dennisonが当該限定商品に推奨。",
+      "bean": {
+        "origin": "Kenya",
+        "lot": "Kamavindi",
+        "variety_label": "Gesha",
+        "processing_label": null
+      },
+      "brewer": "Hario V60",
+      "paper": null,
+      "dose_g": 16,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 15.625,
+      "temperature_c_range": [
+        97.77777777777777,
+        98.88888888888889
+      ],
+      "grind": {
+        "model": "Mahlkönig EK43",
+        "setting": 16.15,
+        "unit": "source dial",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 30,
+          "water_increment_g": 30
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 150,
+          "water_increment_g": 120
+        },
+        {
+          "start_s": 105,
+          "water_cumulative_g": 250,
+          "water_increment_g": 100
+        }
+      ],
+      "target_total_time_s_range": [
+        195,
+        210
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "208–210°Fを換算。加工法未記載。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "specific_lot_recommendation",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "wonderstate_gamba_washed",
+      "source_id": "wonderstate",
+      "scope": "当該Gamba Carbonic Washed商品への推奨。",
+      "bean": {
+        "origin": "Kenya",
+        "lot": "Gamba Carbonic Washed",
+        "variety_label": null,
+        "processing_base": "washed",
+        "processing_label": "Carbonic Washed",
+        "processing_label_original": "Carbonic Washed",
+        "processing_base_normalized": "washed",
+        "fermentation_label_original": "Carbonic",
+        "fermentation_duration_h": null
+      },
+      "brewer": "Hario V60",
+      "paper": null,
+      "dose_g": 20,
+      "contact_water_g": 325,
+      "ratio_water_per_coffee": 16.25,
+      "temperature_c_range": [
+        98.88888888888889,
+        98.88888888888889
+      ],
+      "grind": {
+        "model": "Mahlkönig EK43",
+        "setting": 16.15,
+        "unit": "source dial",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 40,
+          "water_increment_g": 40
+        },
+        {
+          "start_s": 60,
+          "water_cumulative_g": 150,
+          "water_increment_g": 110
+        },
+        {
+          "start_s": 105,
+          "water_cumulative_g": 225,
+          "water_increment_g": 75
+        },
+        {
+          "start_s": 120,
+          "water_cumulative_g": 280,
+          "water_increment_g": 55
+        },
+        {
+          "start_s": 135,
+          "water_cumulative_g": 325,
+          "water_increment_g": 45
+        }
+      ],
+      "target_total_time_s_range": [
+        195,
+        210
+      ],
+      "intent_ja": null,
+      "classification": "roaster_recommended_profile",
+      "notes": [
+        "210°Fを換算。品種未記載。最初は軽く攪拌、次の2投は中心の小円、残りは螺旋。"
+      ],
+      "water_tds_ppm_reported": null,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": null,
+      "ey_measurement_metadata": null,
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "specific_lot_recommendation",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": null,
+      "total_time_semantics": "source_recommended_range",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "tq_koppi_placer",
+      "source_id": "tornqvist",
+      "scope": "tōrnqvistの店舗側調整。S-24.11 A。焙煎元の公式レシピとは区別。",
+      "bean": {
+        "roaster": "Koppi",
+        "lot": "El Placer",
+        "origin": "Colombia",
+        "variety_label": "Pink Bourbon",
+        "processing_label": "Washed",
+        "roast_level": null,
+        "processing_label_original": "Washed",
+        "processing_base_normalized": "washed"
+      },
+      "brewer": "Modified Kalita Wave 155",
+      "paper": null,
+      "dose_g": 14.5,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 17.24137931034483,
+      "temperature_c_range": [
+        94,
+        94
+      ],
+      "grind": {
+        "model": null,
+        "setting": 20,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 30,
+          "water_increment_g": 30
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 120,
+          "water_increment_g": 90
+        },
+        {
+          "start_s": 50,
+          "water_cumulative_g": 190,
+          "water_increment_g": 70
+        },
+        {
+          "start_s": 80,
+          "water_cumulative_g": 250,
+          "water_increment_g": 60
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": null,
+      "classification": "cafe_reported_dial_in",
+      "notes": [
+        "クリック数に対応する当該欄のミル型番・校正は未確認。別項のComandante記述だけで全ロットへ適用しない。",
+        "EYの測定器・反復数・飲料重量は未確認。学習用実測ラベルに未昇格。"
+      ],
+      "water_tds_ppm_reported": 60,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": 21.0,
+      "ey_measurement_metadata": {
+        "instrument": null,
+        "replicates": null,
+        "beverage_mass_g": null,
+        "calculation_protocol": null
+      },
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "cafe_archive_entry",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        130,
+        130
+      ],
+      "total_time_semantics": "publisher_reported_time; measurement_vs_target_not_specified",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "tq_swerl_duwancho",
+      "source_id": "tornqvist",
+      "scope": "tōrnqvistの店舗側調整。S-24.11 B。焙煎元の公式レシピとは区別。",
+      "bean": {
+        "roaster": "Swerl",
+        "lot": "Arbergona Duwancho",
+        "origin": "Ethiopia",
+        "variety_label": "Heirloom",
+        "processing_label": "Natural",
+        "roast_level": null,
+        "processing_label_original": "Natural",
+        "processing_base_normalized": "natural"
+      },
+      "brewer": "Modified Kalita Wave 155",
+      "paper": null,
+      "dose_g": 15.5,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 16.129032258064516,
+      "temperature_c_range": [
+        92,
+        92
+      ],
+      "grind": {
+        "model": null,
+        "setting": 25,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 30,
+          "water_increment_g": 30
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 120,
+          "water_increment_g": 90
+        },
+        {
+          "start_s": 50,
+          "water_cumulative_g": 190,
+          "water_increment_g": 70
+        },
+        {
+          "start_s": 80,
+          "water_cumulative_g": 250,
+          "water_increment_g": 60
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": null,
+      "classification": "cafe_reported_dial_in",
+      "notes": [
+        "クリック数に対応する当該欄のミル型番・校正は未確認。別項のComandante記述だけで全ロットへ適用しない。",
+        "EYの測定器・反復数・飲料重量は未確認。学習用実測ラベルに未昇格。"
+      ],
+      "water_tds_ppm_reported": 60,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": 18.75,
+      "ey_measurement_metadata": {
+        "instrument": null,
+        "replicates": null,
+        "beverage_mass_g": null,
+        "calculation_protocol": null
+      },
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "cafe_archive_entry",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        150,
+        150
+      ],
+      "total_time_semantics": "publisher_reported_time; measurement_vs_target_not_specified",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "tq_dak_darling",
+      "source_id": "tornqvist",
+      "scope": "tōrnqvistの店舗側調整。S-24.12 B。焙煎元の公式レシピとは区別。",
+      "bean": {
+        "roaster": "DAK",
+        "lot": "Darling Peach",
+        "origin": "Ethiopia",
+        "variety_label": "Heirloom",
+        "processing_label": "Anerobic Washed",
+        "roast_level": null,
+        "processing_label_original": "Anerobic Washed",
+        "processing_base_normalized": "washed",
+        "fermentation_normalized": [
+          "anaerobic"
+        ],
+        "normalization_note": "原文Anerobicの綴りを保持。検索用表記のみanaerobicへ正規化。"
+      },
+      "brewer": "Modified Kalita Wave 155",
+      "paper": null,
+      "dose_g": 15,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 16.666666666666668,
+      "temperature_c_range": [
+        93,
+        93
+      ],
+      "grind": {
+        "model": null,
+        "setting": 21,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 30,
+          "water_increment_g": 30
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 120,
+          "water_increment_g": 90
+        },
+        {
+          "start_s": 50,
+          "water_cumulative_g": 190,
+          "water_increment_g": 70
+        },
+        {
+          "start_s": 80,
+          "water_cumulative_g": 250,
+          "water_increment_g": 60
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": null,
+      "classification": "cafe_reported_dial_in",
+      "notes": [
+        "クリック数に対応する当該欄のミル型番・校正は未確認。別項のComandante記述だけで全ロットへ適用しない。",
+        "EYの測定器・反復数・飲料重量は未確認。学習用実測ラベルに未昇格。"
+      ],
+      "water_tds_ppm_reported": 60,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": 22.66,
+      "ey_measurement_metadata": {
+        "instrument": null,
+        "replicates": null,
+        "beverage_mass_g": null,
+        "calculation_protocol": null
+      },
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "cafe_archive_entry",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        145,
+        145
+      ],
+      "total_time_semantics": "publisher_reported_time; measurement_vs_target_not_specified",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "id": "tq_koppi_lalia",
+      "source_id": "tornqvist",
+      "scope": "tōrnqvistの店舗側調整。S-26.02 B。焙煎元の公式レシピとは区別。",
+      "bean": {
+        "roaster": "Koppi",
+        "lot": "La Lia SL28",
+        "origin": "Costa Rica",
+        "variety_label": "SL28",
+        "processing_label": "Red Honey",
+        "roast_level": null,
+        "processing_label_original": "Red Honey",
+        "processing_base_normalized": "honey"
+      },
+      "brewer": "Modified Kalita Wave 155",
+      "paper": null,
+      "dose_g": 15.5,
+      "contact_water_g": 250,
+      "ratio_water_per_coffee": 16.129032258064516,
+      "temperature_c_range": [
+        92,
+        92
+      ],
+      "grind": {
+        "model": null,
+        "setting": 21,
+        "unit": "clicks",
+        "calibration": null
+      },
+      "steps": [
+        {
+          "start_s": 0,
+          "water_cumulative_g": 30,
+          "water_increment_g": 30
+        },
+        {
+          "start_s": 30,
+          "water_cumulative_g": 120,
+          "water_increment_g": 90
+        },
+        {
+          "start_s": 50,
+          "water_cumulative_g": 190,
+          "water_increment_g": 70
+        },
+        {
+          "start_s": 80,
+          "water_cumulative_g": 250,
+          "water_increment_g": 60
+        }
+      ],
+      "target_total_time_s_range": null,
+      "intent_ja": null,
+      "classification": "cafe_reported_dial_in",
+      "notes": [
+        "クリック数に対応する当該欄のミル型番・校正は未確認。別項のComandante記述だけで全ロットへ適用しない。",
+        "EYの測定器・反復数・飲料重量は未確認。学習用実測ラベルに未昇格。"
+      ],
+      "water_tds_ppm_reported": 60,
+      "measured_tds_percent": null,
+      "measured_ey_percent": null,
+      "publisher_reported_ey_percent": 19.72,
+      "ey_measurement_metadata": {
+        "instrument": null,
+        "replicates": null,
+        "beverage_mass_g": null,
+        "calculation_protocol": null
+      },
+      "usable_as_extraction_training_label": false,
+      "automatic_timer_import_approved": false,
+      "record_kind": "cafe_archive_entry",
+      "is_independent_brew_observation": false,
+      "temperature_precision_note": "掲載設定または単位換算。測定精度を示す桁数ではない。",
+      "source_reported_total_time_s_range": [
+        130,
+        130
+      ],
+      "total_time_semantics": "publisher_reported_time; measurement_vs_target_not_specified",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    }
+  ],
+  "conditional_guidance": [
+    {
+      "id": "dak_process_start",
+      "source_id": "dak",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "DAK",
+        "roast_level": "light",
+        "processing": [
+          "washed",
+          "natural",
+          "other fermented"
+        ],
+        "brew_family": "percolation"
+      },
+      "reference_profile_ids": [
+        "dak_default",
+        "dak_natural_fermented"
+      ],
+      "adjustment_ja": "当該ロースターの精製別出発点から候補を選ぶ。",
+      "reason_ja": "原典は精製別に別構成を示す。",
+      "exceptions": [
+        "defaultはwashed専用ではない。",
+        "高密度条件の別候補を先に確認する。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "dak_dense_override",
+      "source_id": "dak",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "DAK",
+        "roast_level": "light",
+        "density": "author-described high density, not inferred from origin alone"
+      },
+      "reference_profile_ids": [
+        "dak_dense"
+      ],
+      "adjustment_ja": "高密度向けの低攪拌構成を優先候補とする。",
+      "reason_ja": "精製分類をまたぐ別レシピが明記されている。",
+      "exceptions": [
+        "自然精製・嫌気性自然精製も含まれる。密度の数値実測はない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      },
+      "requires_positive_density_context": true,
+      "missing_density_behavior": "密度の記載がなければ高密度と判定しない。実際に詰まる場合は症状別の案内を参照。"
+    },
+    {
+      "id": "dak_clogging",
+      "source_id": "dak",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "DAK",
+        "roast_level": "light",
+        "origin": "Ethiopia",
+        "symptom": "clogging / slow drainage"
+      },
+      "reference_profile_ids": [],
+      "adjustment_ja": "少し粗く、攪拌を減らす。96–99℃・1:18〜1:20も原典の候補。",
+      "reason_ja": "このロースターの詰まりへの対処案。",
+      "exceptions": [
+        "4項目を一度に変更する自動処理にはしない。",
+        "全エチオピア豆の密度や微粉量を確定する根拠にはしない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "20grams_process",
+      "source_id": "20grams",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "20grams",
+        "brewer": "April plastic",
+        "paper": "Kalita",
+        "processing": [
+          "washed",
+          "natural"
+        ]
+      },
+      "reference_profile_ids": [
+        "20grams_washed",
+        "20grams_natural"
+      ],
+      "adjustment_ja": "温度範囲と投数を含む構成全体で比較する。",
+      "reason_ja": "精製別に掲載された別構成。",
+      "exceptions": [
+        "naturalでも投数は多い。温度だけの効果は分離されていない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "ply_same_lot_intent",
+      "source_id": "rogue_pacamara",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "lot": "CCD N21",
+        "variety_label": "Pacamara",
+        "processing_label": "Intrinsic Cherry Natural",
+        "brewer": "Origami"
+      },
+      "reference_profile_ids": [
+        "ply_pacamara_body",
+        "ply_pacamara_acidity"
+      ],
+      "adjustment_ja": "厚み・甘さか、酸・軽さかで候補を分ける。",
+      "reason_ja": "同じ豆について作者が二つの狙いを明示。",
+      "exceptions": [
+        "紙・水質・粉量・粒度・温度が同時に違う。個別変数の因果係数にはできない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "piritu_variety_lots",
+      "source_id": "piritu",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "Piritu",
+        "producer": "Dwight Aguilar Masias",
+        "farm": "Finca Nueva Alianza",
+        "variety_label": [
+          "Yellow Gesha",
+          "Red Gesha",
+          "SL09 Inca"
+        ]
+      },
+      "reference_profile_ids": [
+        "piritu_gesha",
+        "piritu_sl09"
+      ],
+      "adjustment_ja": "当該商品群では品種ラベル別の候補を使う。",
+      "reason_ja": "同じ焙煎元・生産者の商品に1℃差を明記。",
+      "exceptions": [
+        "Gesha一般の最適温度ではない。",
+        "品種だけを変えた実験ではない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "wonderstate_lot_structure",
+      "source_id": "wonderstate",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "Wonderstate",
+        "lot": [
+          "Kamavindi Gesha",
+          "Gamba Carbonic Washed"
+        ],
+        "brewer": "V60"
+      },
+      "reference_profile_ids": [
+        "wonderstate_kamavindi",
+        "wonderstate_gamba_washed"
+      ],
+      "adjustment_ja": "限定商品ごとに粉量・比率・投数を変える。",
+      "reason_ja": "同じ指導担当者・器具でもロットごとに推奨を作っている。",
+      "exceptions": [
+        "Kamavindiの精製とGambaの品種は未確認。欠落を補って精製差へ帰属しない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "tornqvist_lot_lookup",
+      "source_id": "tornqvist",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "brewer": "Modified Kalita Wave 155",
+        "data_context": "cafe dial-in archive"
+      },
+      "reference_profile_ids": [
+        "tq_koppi_placer",
+        "tq_swerl_duwancho",
+        "tq_dak_darling",
+        "tq_koppi_lalia"
+      ],
+      "adjustment_ja": "品種・精製と店舗側の調整を結びつけた近似例を検索する。",
+      "reason_ja": "豆情報と抽出条件・掲載EYが同居する資料。",
+      "exceptions": [
+        "店舗の推奨値・掲載値であり、独立変数を揃えた実験ではない。",
+        "この4件から精製別の平均温度やEY予測を作らない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "kurasu_decaf_no_forced_change",
+      "source_id": "kurasu_decaf",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "Kurasu",
+        "origin": "Ethiopia Sidamo",
+        "variety_label": "Heirloom",
+        "decaffeination": "Mountain Water",
+        "roast_level": "medium"
+      },
+      "reference_profile_ids": [],
+      "adjustment_ja": "普段のホットドリップのレシピ・挽き目を起点にできる。",
+      "reason_ja": "当該デカフェに対する公式の案内。",
+      "exceptions": [
+        "デカフェ全般に無変更を保証するものではない。",
+        "decafは元の精製とは別項目。元のwashed/naturalはここから確定しない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "rikka_roast_context",
+      "source_id": "rikka",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "brewer": "April",
+        "roast_level": "light",
+        "scope": "their selected multi-roaster coffees"
+      },
+      "reference_profile_ids": [],
+      "adjustment_ja": "より浅い焙煎には細かめ・高温・長い比率、発達した焙煎には低温・短い比率を検討。",
+      "reason_ja": "掲載者の選定豆についての経験的な調整方針。",
+      "exceptions": [
+        "国・地域だけで焙煎度や推奨を決定しない。",
+        "異なる方向の調整を一律加算しない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "rikka_rest_context",
+      "source_id": "rikka",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "brewer": "April",
+        "roast_level": "light",
+        "resting": "follow the roaster recommendation"
+      },
+      "reference_profile_ids": [],
+      "adjustment_ja": "十分に休ませた豆なら高温・細かい粒度にも対応しやすい、という掲載者の方針。",
+      "reason_ja": "豆の品種や精製以外に焙煎後日数も分岐条件としている。",
+      "exceptions": [
+        "日数を温度補正係数へ置き換えない。",
+        "保存状態と焙煎元の推奨を確認する。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    },
+    {
+      "id": "piritu_symptom_adjustment",
+      "source_id": "piritu",
+      "classification": "source_stated_guidance",
+      "applies_to": {
+        "roaster": "Piritu",
+        "profile_ids": [
+          "piritu_gesha"
+        ],
+        "symptom": "sour/thin or bitter/drying",
+        "variety_label": [
+          "Yellow Gesha",
+          "Red Gesha"
+        ]
+      },
+      "reference_profile_ids": [
+        "piritu_gesha"
+      ],
+      "adjustment_ja": "酸っぱく薄ければ細かくするか1–2℃上げる。苦く乾けば粗くするか1–2℃下げる。まず一項目。",
+      "reason_ja": "原典の当該レシピ向け調整案。",
+      "exceptions": [
+        "酸の強さだけで抽出率を判定しない。",
+        "流れが詰まる場合は流動状態の確認を先に行う。",
+        "症状別の表はGesha記事の案内。SL09への同じ反応を直接検証してはいない。"
+      ],
+      "causal_effect_identified": false,
+      "learned_coefficient": null,
+      "confidence_probability": null,
+      "automatic_application": false,
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "decision": "scoped_guidance_not_causal_rule",
+        "can_auto_apply": false,
+        "can_train_numeric_effect": false
+      }
+    }
+  ],
+  "statistics": {
+    "verified_source_count": 11,
+    "active_guidance_source_count": 8,
+    "profile_count": 15,
+    "conditional_guidance_count": 12,
+    "publisher_reported_ey_count": 4,
+    "controlled_process_comparison_brewing_study_count": 0,
+    "grinding_primary_research_count": 1,
+    "held_out_source_count": 2,
+    "record_kind_counts": {
+      "roaster_scoped_template": 5,
+      "specific_lot_recommendation": 4,
+      "roaster_product_family_profile": 2,
+      "cafe_archive_entry": 4
+    }
+  },
+  "research_limits": [
+    {
+      "source_id": "uman2016",
+      "classification": "primary_research_result",
+      "tested": "4 coffees; EK43 Turkish burrs; fixed setting; room-temperature origin comparison; laser diffraction",
+      "result_ja": "この条件では産地・精製間に明瞭な粒度分布差を認めず、挽く時の豆温度は分布に影響した。",
+      "scope_limit_ja": "全品種・全精製・全グラインダーで差がないという結論ではない。味や最適ドリップ条件を評価した試験でもない。",
+      "implementation_ja": "精製名から微粉率やμmを固定生成しない。密度はこの研究でも未測定。"
+    }
+  ],
+  "held_out": [
+    {
+      "source_id": "onyx_hold",
+      "reason": "表題はLactic Honeyだが構造化欄はBioinnovation Natural。精製ラベルを確定できない。",
+      "automatic_import_allowed": false,
+      "knowledge_use": "精製名の正規化が済むまで条件付き推奨には使わない。"
+    },
+    {
+      "source_id": "partners_hold",
+      "reason": "V60概要300mL・比率1:16.5と、最終累計280mLの手順が不一致。",
+      "automatic_import_allowed": false,
+      "knowledge_use": "Geshaでも普段のレシピを起点にでき、休ませ方・粒度を調整するという説明のみ参照可。"
+    }
+  ],
+  "matching_policy": {
+    "classification": "editorial_design_proposal_not_validated_model",
+    "candidate_order": [
+      "same roaster + exact lot + compatible brewer",
+      "same roaster + compatible roast + process + brewer",
+      "similar variety/process/roast + compatible brewer, marked analogy only",
+      "user existing recipe when no sufficiently matched source"
+    ],
+    "unknown_is_match": false,
+    "density_inferred_from_origin": false,
+    "symptom_handling": "既存ログの詰まり・速すぎ・乾く等で候補を再評価する。精製ラベルだけの推奨を優先しない。",
+    "multiple_guidance_merge": "レシピの数値を平均・加算しない。一つの構成を選び、その後は一項目ずつ調整。",
+    "same_lot_evidence": "同じ豆の淹れ分けは意図の比較に使うが、複数変数の差を単独効果にしない。"
+  },
+  "bean_fields_to_preserve": [
+    "species",
+    "variety_label",
+    "origin",
+    "producer",
+    "farm",
+    "lot",
+    "crop",
+    "processing_base",
+    "processing_label",
+    "fermentation_details",
+    "decaffeination",
+    "roaster",
+    "roast_level",
+    "roast_date",
+    "storage",
+    "rest_days",
+    "measured_density_or_null"
+  ],
+  "taxonomy_notes": [
+    "Heirloomは当該出典の集合ラベルであり単一の確定品種ではない。",
+    "washed/natural/honeyと、anaerobic/carbonic等の発酵情報を排他的な一列に潰さない。",
+    "原文の処理名を保持し、正規化不能なものは未確定とする。",
+    "本文の密度・抽出しやすさの説明は作者の解釈。精製から測定済み物性へ昇格させない。"
+  ],
+  "display_policy": {
+    "placement": "既存AIコーチ内。TDS入力は詳細設定の任意項目。",
+    "main_card": [
+      "初回候補",
+      "どの豆条件を根拠に選んだか",
+      "作者の狙い／当方の推測",
+      "次に変える一項目"
+    ],
+    "expanded": [
+      "出典",
+      "一致条件・不明条件・条件差",
+      "原典ミル目盛とKugcc換算の区別",
+      "掲載EYの測定情報不足"
+    ],
+    "labels": [
+      "ロースター推奨",
+      "特定ロットの事例",
+      "店舗掲載値",
+      "類似条件からの参考"
+    ],
+    "prohibited": [
+      "未測定の甘さ・酸味を0–100で確定",
+      "レシピからTDS/EYを実測扱い",
+      "精製別固定補正の自動追加",
+      "他店の狙いを根拠なしに断定"
+    ]
+  },
+  "remaining_gaps": [
+    "同じ生豆を分割した精製比較と、焙煎・水・粒度・投入量を揃えたドリップ実験。",
+    "各ロットのミル校正、粒度分布、焙煎発達度・密度、飲料重量、TDS、反復数。",
+    "広い品種・デカフェ方式・発酵法にまたがる再現性。",
+    "掲載EYは掲載者の値。取得時点の計測条件を補ってから数値モデルへの利用可否を判断。"
+  ],
+  "rights_note": "数値と短い独自要約のみ。出典を保持し、再配布条件は原典で確認。",
+  "review_summary": {
+    "reviewed_on": "2026-10-29",
+    "report_file": "coffee_knowledge_review.md",
+    "registry_file": "coffee_knowledge_catalog.json",
+    "ready_for_training": false,
+    "independent_brew_count_from_profiles": 0,
+    "meaning_of_count": "15はレシピ・案内の件数。15回の独立抽出や15種類の独立した豆を意味しない。"
+  }
+}

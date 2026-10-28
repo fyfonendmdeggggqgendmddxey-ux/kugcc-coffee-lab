@@ -5,6 +5,8 @@ export type RecipeStep = {
     duration: number; // seconds
     temperature?: number; // Optional step-specific temperature (Celsius)
     state?: string; // Optional step-specific state or instruction (e.g., "Switch Close", "Stir")
+    kind?: 'pour' | 'wait' | 'stir' | 'immersion';
+    pouringDurationSec?: number; // Only when stated; duration includes the following wait.
 };
 
 export type Recipe = {
@@ -20,7 +22,41 @@ export type Recipe = {
     isStarred?: boolean; // New: Favorite status for recipe
     isShopRecipe?: boolean; // New: Model/Shop recipe flag
     notes?: string; // New: Optional notes
+    reference?: {
+        id: string;
+        knowledgeVersion: string;
+        adapterVersion: string;
+        sourceUrls: string[];
+        sourceAuthor: string;
+        adaptations: string[];
+    };
     steps: RecipeStep[];
+};
+
+export type BrewMeasurements = {
+    tdsPercent?: number;
+    beverageMassG?: number;
+    actualTotalTimeSec?: number;
+    extractionYieldPercent?: number; // Derived only from measured TDS + beverage mass + dose.
+    method?: string;
+};
+
+export type BrewLog = {
+    id: string;
+    beanId?: string;
+    rating: number;
+    notes: string;
+    date: string;
+    acidity?: number;
+    bitterness?: number;
+    sweetness?: number;
+    body?: number;
+    aroma?: number;
+    image?: string;
+    flavorTags?: string[];
+    recipe?: Recipe;
+    beanSnapshot?: Bean;
+    measurements?: BrewMeasurements;
 };
 
 export type Bean = {

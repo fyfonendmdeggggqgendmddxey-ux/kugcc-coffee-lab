@@ -1,26 +1,14 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
-import { Bean, Recipe } from '@/utils/types';
+import { Bean, Recipe, BrewLog } from '@/utils/types';
+import { parseMeasurements } from '@/utils/brew-simulation';
+import BrewMeasurementFields, { EMPTY_MEASUREMENTS } from './BrewMeasurementFields';
 import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
 import RadarChart from './RadarChart';
 import ComparisonModal from './ComparisonModal';
 
-type TastingLog = {
-    id: string;
-    beanId?: string;
-    rating: number; // 1-5
-    notes: string;
-    date: string;
-    acidity?: number;
-    bitterness?: number;
-    sweetness?: number;
-    body?: number;
-    aroma?: number;
-    image?: string; // Base64 compressed image
-    flavorTags?: string[];
-    recipe?: Recipe;
-};
+type TastingLog = BrewLog;
 
 interface TastingLogProps {
     bean?: Bean;
@@ -73,6 +61,9 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
     const [rating, setRating] = useState(3);
     const [notes, setNotes] = useState('');
     const [saved, setSaved] = useState(false);
+    const [measurementFields, setMeasurementFields] = useState(EMPTY_MEASUREMENTS);
+    const [saveError, setSaveError] = useState('');
+    useEffect(() => { setMeasurementFields(EMPTY_MEASUREMENTS); setSaveError(''); }, [bean?.id]);
     const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
     const [editingLogId, setEditingLogId] = useState<string | null>(null);
     const [editNotesText, setEditNotesText] = useState('');
@@ -165,6 +156,8 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
             alert("Select a bean to link this log.");
             return;
         }
+        const measurements = parseMeasurements(measurementFields, activeRecipe?.beanWeight);
+        if (measurements.error) { setSaveError(measurements.error); return; }
         const newLog: TastingLog = {
             id: Date.now().toString(),
             beanId: bean.id,
@@ -178,12 +171,18 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
             aroma,
             image, // Add Base64 compressed image string
             flavorTags,
-            recipe: activeRecipe
+            recipe: activeRecipe ? structuredClone(activeRecipe) : undefined,
+            beanSnapshot: bean ? { ...bean, recipes: undefined, recipeOverride: undefined } : undefined,
+            measurements: measurements.value,
         };
 
         const updatedHistory = [newLog, ...history];
+        try {
+            localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
+        } catch { setSaveError('保存できませんでした。空き容量やブラウザの保存設定を確認してください。'); return; }
         setHistory(updatedHistory);
-        localStorage.setItem('kugcc_logs', JSON.stringify(updatedHistory));
+        setSaveError('');
+        setMeasurementFields(EMPTY_MEASUREMENTS);
 
         setSaved(true);
         setTimeout(() => {
@@ -535,6 +534,8 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                                 className="w-full h-20 bg-black border border-gray-800 p-3 text-xs text-white placeholder-gray-700 focus:outline-none focus:border-white transition-colors resize-none"
                             />
                         </div>
+                        <BrewMeasurementFields fields={measurementFields} onChange={setMeasurementFields} recipe={activeRecipe} />
+                        {saveError && <p className="text-xs text-amber-400 mt-3" role="alert">{saveError}</p>}
                         <div className="pt-4 mt-4">
                             <button
                                 onClick={handleSave}
@@ -760,6 +761,16 @@ export default function TastingLog({ bean, allBeans, activeRecipe, onLoadRecipe 
                                                 <p className="text-sm text-gray-600 italic">No notes recorded.</p>
                                             )}
                                         </div>
+
+                                        {log.measurements && (
+                                            <div className="border border-gray-800 p-3 text-[11px] text-gray-300 space-y-2">
+                                                <p className="text-[10px] text-gray-500">MEASURED / 実測値</p>
+                                                <p>TDS: {log.measurements.tdsPercent ?? '—'}% / 液量: {log.measurements.beverageMassG ?? '—'}g</p>
+                                                <p>実測から計算したEY: {log.measurements.extractionYieldPercent?.toFixed(2) ?? '—'}%</p>
+                                                <p>実時間: {log.measurements.actualTotalTimeSec ?? '—'}秒</p>
+                                                {log.measurements.method && <p>{log.measurements.method}</p>}
+                                            </div>
+                                        )}
 
                                         {log.recipe && (
                                             <div className="mt-2 border-t border-gray-800 pt-4">
