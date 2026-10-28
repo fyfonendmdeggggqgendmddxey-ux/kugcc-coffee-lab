@@ -43,6 +43,30 @@ export const GRINDERS: Record<string, GrinderInfo> = {
 
 export const GRINDER_LIST = Object.values(GRINDERS);
 
+// Metadata for display; preserves the legacy conversion API and its tables.
+// No invented calibration URL or distribution/fines measurement is attached.
+export function getGrindEstimate(modelId: string, setting: string) {
+    const grinder = GRINDERS[modelId];
+    if (!grinder || !setting) return null;
+    const clean = setting.trim();
+    const exact = grinder.data?.find(p => p.label === clean);
+    if (!exact) {
+        if (!/^\d+(?:\.\d+)?$/.test(clean)) return null;
+        if (grinder.data?.some(p => !/^\d+(?:\.\d+)?$/.test(p.label))) return null;
+        const settings = grinder.data?.map(p => Number(p.label));
+        if (settings?.length && (Number(clean) < Math.min(...settings) || Number(clean) > Math.max(...settings))) return null;
+    }
+    const microns = parseSettingToMicrons(modelId, clean);
+    if (microns === null || !Number.isFinite(microns) || microns <= 0) return null;
+    const measuredMedian = grinder.micronMetric === 'particle-median';
+    return { valueMicrons: microns, metric: measuredMedian ? 'particle-median' : 'virtual-gap',
+        valueOrigin: measuredMedian ? (exact ? 'reported-measured-point' : 'interpolated') : 'assumed-scale',
+        calibrationVersion: measuredMedian ? 's3-supplied-11-points-v1' : 'legacy-grinder-tables-v1',
+        measurementConditionsVerified: false, sourceUrl: null, finesMeasured: null,
+        label: measuredMedian ? (exact ? '提供された中央値の測定点' : '中央値の測定点間を補間') : '仮想尺度の目安',
+    };
+}
+
 function parseNumber(str: string): number | null {
     // Extract first valid float/int from string
     const match = str.match(/[\d.]+/);

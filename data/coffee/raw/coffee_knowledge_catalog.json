@@ -1,0 +1,874 @@
+{
+  "schema_version": "1.0.0",
+  "reviewed_on": "2026-10-29",
+  "status": "curated reference files; runtime integration pending",
+  "counts": {
+    "barista_recipes": 24,
+    "bean_profiles": 15,
+    "conditional_guidance": 12,
+    "dryad_conditions": 27,
+    "dryad_ratings": 3186,
+    "dryad_brew_batches": 162,
+    "source_pages_rechecked_in_this_audit": 16
+  },
+  "counting_note": "24+15は参照項目数。独立した抽出数や独立した豆数ではない。",
+  "source_recheck_scope": {
+    "bean_source_ids": [
+      "dak",
+      "20grams",
+      "rogue_pacamara",
+      "piritu",
+      "wonderstate",
+      "tornqvist",
+      "kurasu_decaf",
+      "rikka",
+      "uman2016",
+      "onyx_hold",
+      "partners_hold"
+    ],
+    "barista_source_ids": [
+      "martin_orea",
+      "pierre",
+      "scott",
+      "wac_official"
+    ],
+    "other": [
+      "Dryad landing page"
+    ],
+    "remaining_barista_sources": "以前の本文確認を継承。今回は全件を再取得していない。"
+  },
+  "collections": [
+    {
+      "file": "barista_recipe_knowledge.json",
+      "role": "作者の考え方・原条件比較・条件の合う初回候補",
+      "not_for": "未測定TDS/EY・味の強度の学習"
+    },
+    {
+      "file": "bean_condition_knowledge.json",
+      "role": "豆条件の照合・例外の提示・商品別の出発点",
+      "not_for": "精製・品種の数値的な因果係数"
+    },
+    {
+      "file": "coffee_taste_reference.json",
+      "role": "研究条件内の官能回答の記述集計",
+      "not_for": "任意の豆と手注ぎ手順に対する学習済み予測"
+    },
+    {
+      "file": "coffee_recipe_seeds.json",
+      "role": "以前の2件の初期シード。ID・版の対応を確認するまで別候補として重複登録しない。",
+      "not_for": "最新のレシピ全件一覧"
+    }
+  ],
+  "bean_profile_groups": {
+    "cafe_archive_entry": [
+      "tq_koppi_placer",
+      "tq_swerl_duwancho",
+      "tq_dak_darling",
+      "tq_koppi_lalia"
+    ],
+    "roaster_product_family_profile": [
+      "piritu_gesha",
+      "piritu_sl09"
+    ],
+    "roaster_scoped_template": [
+      "dak_default",
+      "dak_natural_fermented",
+      "dak_dense",
+      "20grams_washed",
+      "20grams_natural"
+    ],
+    "specific_lot_recommendation": [
+      "ply_pacamara_body",
+      "ply_pacamara_acidity",
+      "wonderstate_kamavindi",
+      "wonderstate_gamba_washed"
+    ]
+  },
+  "items": [
+    {
+      "collection": "barista",
+      "id": "tetsu-46-hario",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "james-onecup-2022",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "scott-hario-2022",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null,
+        "temperature_interpretation": "原典の摂氏97を保持。華氏97は併記の不整合として残し、校正済み実測値とはしない。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "patrik-coffeewerk-april",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "ドリッパー型式未確定。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "emi-switch-2024",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "martha-hario-2022",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "liza-switch-natural-2022",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "湯温・粒度が欠落。完全な初期設定として補完しない。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "cary-partners-switch",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "kurasu-v60-12g",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "passenger-april-cafe",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "martin-wbrc-2024-orea",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "carlos-wbrc-2023",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "注湯間隔の起点が未確定。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "emi-wbrc-2018-gina",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "matt-natural-fivepour-interview",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "湯温の数値と注湯・総時間の起点が未確定。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "gagne-v60-2018",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "ply-air-s-2022",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "julia-washed-ecuador-origami",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "sum-washed-anaerobic-origami",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "tim-basic-aeropress",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "george-wac-2024",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "tay-wac-2023-original",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "jibbi-wac-2022-organizer",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": true,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "incomplete_or_conflicting_settings",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": "大会主催者とメーカーの掲載湯温が不一致。掲載版を比較表示する。"
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "wendelien-wac-2019",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "barista",
+      "id": "wendelien-rwanda-home-2020",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "structural_validation": "passed",
+        "source_rechecked_in_this_audit": false,
+        "source_recheck_scope": "再照合した出典IDのみ。他の出典は前回確認を継承。",
+        "decision": "reference_with_scope_limits",
+        "can_explain_attributed_claims": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具・分量・掲載版の適合を確認。沸騰直後やイベント待ちを固定数値へ勝手に変えない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false,
+        "specific_limit": null
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "dak_default",
+      "record_kind": "roaster_scoped_template",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "dak_natural_fermented",
+      "record_kind": "roaster_scoped_template",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "dak_dense",
+      "record_kind": "roaster_scoped_template",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "20grams_washed",
+      "record_kind": "roaster_scoped_template",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "20grams_natural",
+      "record_kind": "roaster_scoped_template",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "ply_pacamara_body",
+      "record_kind": "specific_lot_recommendation",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "ply_pacamara_acidity",
+      "record_kind": "specific_lot_recommendation",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "piritu_gesha",
+      "record_kind": "roaster_product_family_profile",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "piritu_sl09",
+      "record_kind": "roaster_product_family_profile",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "wonderstate_kamavindi",
+      "record_kind": "specific_lot_recommendation",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "wonderstate_gamba_washed",
+      "record_kind": "specific_lot_recommendation",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": true,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": null,
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "tq_koppi_placer",
+      "record_kind": "cafe_archive_entry",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "tq_swerl_duwancho",
+      "record_kind": "cafe_archive_entry",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "tq_dak_darling",
+      "record_kind": "cafe_archive_entry",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    },
+    {
+      "collection": "bean",
+      "id": "tq_koppi_lalia",
+      "record_kind": "cafe_archive_entry",
+      "review": {
+        "reviewed_on": "2026-10-29",
+        "source_rechecked_in_this_audit": true,
+        "decision": "reference_with_scope_limits",
+        "can_explain_author_or_publisher_guidance": true,
+        "can_compare_original_conditions": true,
+        "can_suggest_initial_candidate": false,
+        "initial_candidate_requires": "器具と出典の適用範囲を照合し、不明条件と条件差を表示する。",
+        "archive_use": "ロット事例の検索・原条件比較のみ。ミル型番と計測情報の確認前は手元の数値へ移植しない。",
+        "can_train_extraction_or_process_effect": false,
+        "can_auto_import_timer": false
+      }
+    }
+  ],
+  "issues": [
+    {
+      "id": "template_vs_lot",
+      "decision": "corrected",
+      "finding_ja": "一般的な適用条件を実際の使用豆と分離。DAK・20gramsの5件をテンプレートとして分類。"
+    },
+    {
+      "id": "missing_flow_details",
+      "decision": "corrected",
+      "finding_ja": "DAKの注湯速度を工程へ明記。20gramsの注湯時間・円／中心をプロファイル別に分離。"
+    },
+    {
+      "id": "time_semantics",
+      "decision": "corrected",
+      "finding_ja": "Plyの実例時間と店舗の掲載時間を、推奨の目標時間とは別欄に移動。"
+    },
+    {
+      "id": "water_and_tds",
+      "decision": "corrected",
+      "finding_ja": "20gramsの水の硬度と、飲料TDS目標を専用欄に分離。実測欄はnull。"
+    },
+    {
+      "id": "process_taxonomy",
+      "decision": "corrected",
+      "finding_ja": "原文の精製名を残し、検索用の基本精製・発酵情報を別欄に整理。"
+    },
+    {
+      "id": "piritu_scope",
+      "decision": "narrowed",
+      "finding_ja": "Gesha記事の症状別調整をSL09へ直接広げず、品種差の因果効果とも扱わない。"
+    },
+    {
+      "id": "ply_ratio",
+      "decision": "retained_with_conflict",
+      "finding_ja": "13g/210gは計算上1:16.15。原典1:16.3の食い違いを保持。"
+    },
+    {
+      "id": "jibbi_temperature",
+      "decision": "held_for_initial_candidate",
+      "finding_ja": "主催者90℃／メーカー92℃の掲載版差を未解決として保持。"
+    },
+    {
+      "id": "pierre_mixed_method",
+      "decision": "held_for_preset",
+      "finding_ja": "200mLの手順と330mLの別手順が同居。作者の考え方のみ保持。"
+    },
+    {
+      "id": "onyx_process",
+      "decision": "held_for_process_matching",
+      "finding_ja": "表題Lactic Honeyと構造化欄Bioinnovation Naturalが不一致。"
+    },
+    {
+      "id": "partners_volume",
+      "decision": "held_for_preset",
+      "finding_ja": "概要300mL・比率1:16.5と、手順の最終280mLが不一致。"
+    },
+    {
+      "id": "rikka_arithmetic",
+      "decision": "held_for_preset",
+      "finding_ja": "累計湯量と円／中心の内訳が合わない。調整方針のみ保持。"
+    },
+    {
+      "id": "tornqvist_measurement",
+      "decision": "archive_only",
+      "finding_ja": "掲載EYとミル目盛はあるが計測手順・反復数・当該ミル型番が不足。"
+    },
+    {
+      "id": "legacy_documents",
+      "decision": "corrected",
+      "finding_ja": "2件の初期シードを最新の全件数として記述していた設計書を更新。"
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "raw_csv_md5": "0735b8d3b3302a7bc63cb96d5729f250",
+    "dryad_ey_formula_max_absolute_error_percentage_points": 4.997154690045136e-09,
+    "checks": [
+      "ID uniqueness",
+      "source references",
+      "pour increments and cumulative water",
+      "step chronology",
+      "no measured label fabricated",
+      "scoped guidance applicability",
+      "all Dryad CATA counts/JAR distributions/physical means and SD recomputed",
+      "Dryad batch deduplication and EY formula"
+    ]
+  },
+  "next_collection_priority": [
+    "同一ロット・同一器具で、作者が狙いを説明した淹れ分け。",
+    "店舗掲載EYの測定器・飲料重量・反復数・ミル型番の確認。",
+    "同じチェリーを精製へ分割し、焙煎と抽出をそろえた比較研究。"
+  ],
+  "implementation_order": [
+    "参照候補と作者の狙いをAIコーチに表示",
+    "明示した仮定の条件付き試算。仮定は任意の詳細設定で変更",
+    "外部実測データによる校正と評価の後、対象範囲だけ学習済み予測"
+  ]
+}

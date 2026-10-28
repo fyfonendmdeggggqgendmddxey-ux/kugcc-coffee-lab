@@ -1,14 +1,16 @@
 import { Bean, Recipe } from '@/utils/types';
 import { getAgingAdjustments, analyzeExtractionDynamics } from '@/utils/coffee-math';
-import { GRINDER_LIST, GRINDERS, parseSettingToMicrons, convertMicronsToSettingStr } from '@/utils/grinder-logic';
+import { GRINDER_LIST, getGrindEstimate, convertMicronsToSettingStr } from '@/utils/grinder-logic';
+import BrewReferenceCoach from './BrewReferenceCoach';
 
 interface AICoachProps {
     bean?: Bean;
     recipe?: Recipe;
     onUpdateBean?: (bean: Bean) => void;
+    onLoadRecipe?: (recipe: Recipe) => void;
 }
 
-export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
+export default function AICoach({ bean, recipe, onLoadRecipe }: AICoachProps) {
     const adjustments = bean ? getAgingAdjustments(bean) : null;
     const dynamics = bean && recipe ? analyzeExtractionDynamics(bean, recipe) : null;
 
@@ -135,6 +137,8 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                         </div>
                     </div>
 
+                    {recipe && <BrewReferenceCoach key={bean.id} bean={bean} recipe={recipe} onLoadRecipe={onLoadRecipe} />}
+
                     <div className="border-l border-white pl-4 py-1 relative">
                         <div className="absolute -left-[1px] top-0 w-[1px] h-4 bg-white"></div>
                         <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Coach Advice</p>
@@ -146,7 +150,8 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
                     {dynamics && (
                         <div className="border-l border-[#3b82f6] pl-4 py-1 relative">
                             <div className="absolute -left-[1px] top-0 w-[1px] h-4 bg-[#3b82f6]"></div>
-                            <p className="text-[10px] text-[#3b82f6] uppercase tracking-widest mb-2">Extraction Estimate / 抽出傾向の目安</p>
+                            <p className="text-[10px] text-[#3b82f6] uppercase tracking-widest mb-2">Legacy Heuristic / 既存の経験的な目安</p>
+                            <p className="text-[10px] text-gray-500">未校正のスコア。TDS・抽出率・味の実測予測ではありません。</p>
                             <p className="text-[10px] text-gray-500 mt-1">
                                 {dynamics.score === null ? '入力を確認してください' : (
                                     <>推定スコア: {dynamics.score > 0 ? '+' : ''}{dynamics.score.toFixed(1)}
@@ -185,14 +190,16 @@ export default function AICoach({ bean, recipe, onUpdateBean }: AICoachProps) {
 
                     <div className="bg-gray-900/10 p-4 border-l border-gray-800">
                         {(() => {
-                            const sourceMicrons = parseSettingToMicrons(recipe.grinderModel!, recipe.grindSize!);
-                            if (sourceMicrons === null) return <div className="text-gray-600 text-xs">Invalid or Unknown Setting</div>;
+                            const estimate = getGrindEstimate(recipe.grinderModel!, recipe.grindSize!);
+                            if (estimate === null) return <div className="text-gray-500 text-xs">設定が未登録、または換算範囲外です。</div>;
+                            const sourceMicrons = estimate.valueMicrons;
 
                             return (
                                 <div>
                                     <div className="mb-4 text-center">
-                                        <span className="text-[#3b82f6] text-[10px] font-bold tracking-widest block uppercase mb-1">Absolute Size</span>
+                                        <span className="text-[#3b82f6] text-[10px] font-bold tracking-widest block mb-1">{estimate.label}</span>
                                         <span className="text-xl font-mono text-white">{Math.round(sourceMicrons)}<span className="text-[10px] ml-1 text-gray-500">µm</span></span>
+                                        <p className="text-[10px] text-gray-400 mt-2 leading-relaxed">測定条件は未確認。機種間は尺度が異なるため近似換算です。微粉率の実測値はありません。</p>
                                     </div>
                                     <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                                         {GRINDER_LIST.map((grinder) => {

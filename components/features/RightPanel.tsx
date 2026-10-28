@@ -203,7 +203,7 @@ export default function RightPanel({
 
             {/* Content Area */}
             <div className="flex-1 min-h-0 relative">
-                {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} onUpdateBean={onUpdateBean} />}
+                {activeTab === 'coach' && <AICoach bean={bean} recipe={recipe} onUpdateBean={onUpdateBean} onLoadRecipe={onLoadRecipe} />}
                 {activeTab === 'log' && <TastingLog bean={bean} allBeans={allBeans} activeRecipe={recipe} onLoadRecipe={onLoadRecipe} />}
                 {activeTab === 'settings' && <SettingsPanel />}
                 {activeTab === 'help' && <HelpPanel />}

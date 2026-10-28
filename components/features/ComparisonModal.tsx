@@ -102,6 +102,9 @@ export default function ComparisonModal({ log1, log2, onClose, onUpdateLog }: Co
                         {renderRow('Temp', log1.recipe?.temperature, log2.recipe?.temperature, (v) => v ? `${v}°C` : '-')}
                         {renderRow('Grind', log1.recipe?.grindSize, log2.recipe?.grindSize)}
                         {renderRow('Ratio', log1.recipe?.ratio, log2.recipe?.ratio)}
+                        {renderRow('TDS 実測', log1.measurements?.tdsPercent, log2.measurements?.tdsPercent, v => v === undefined ? '—' : `${v}%`)}
+                        {renderRow('実液量', log1.measurements?.beverageMassG, log2.measurements?.beverageMassG, v => v === undefined ? '—' : `${v}g`)}
+                        {renderRow('EY 計算', log1.measurements?.extractionYieldPercent, log2.measurements?.extractionYieldPercent, v => v === undefined ? '—' : `${v.toFixed(2)}%`)}
                         
                         {/* Notes (Redesigned for better readability) */}
                         <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-gray-900">
