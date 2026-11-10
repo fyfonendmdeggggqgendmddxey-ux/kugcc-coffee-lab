@@ -29,16 +29,24 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
     const [quickFilters, setQuickFilters] = useState<string[]>(['Light', 'Dark', 'Washed', 'Natural']);
     const [sortBy, setSortBy] = useState<string>('added_desc');
     const [scannedBatch, setScannedBatch] = useState<Bean[] | null>(null);
+    const [batchFailures, setBatchFailures] = useState<{ name: string; reason: string }[]>([]);
 
     const handleBatchImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
+        const input = e.currentTarget;
+        setBatchFailures([]);
         const apiKey = getDeepSeekApiKey() || '';
+        if (!apiKey) {
+            setBatchFailures([{ name: '', reason: '設定画面にDeepSeek APIキーを入力してください。' }]);
+            input.value = '';
+            return;
+        }
 
         setIsBatchProcessing(true);
         let newlyAddedCount = 0;
-        let failedFiles: string[] = [];
+        const failures: { name: string; reason: string }[] = [];
         let tempBatch: Bean[] = [];
 
         for (let i = 0; i < files.length; i++) {
@@ -78,14 +86,13 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
                     process: extracted.process || '',
                     roastLevel: extracted.roastLevel || '',
                     flavorTags: extracted.flavorTags || [],
-                    roastDate: finalRoastDate ? new Date(finalRoastDate).toISOString() : '',
+                    roastDate: finalRoastDate && Number.isFinite(new Date(finalRoastDate).getTime()) ? new Date(finalRoastDate).toISOString() : '',
                     recipeOverride: DEFAULT_RECIPE,
                 };
                 tempBatch.push(newBean);
                 newlyAddedCount++;
             } catch (err) {
-                console.error("Batch extraction failed for image", file.name, err);
-                failedFiles.push(file.name);
+                failures.push({ name: file.name, reason: err instanceof Error ? err.message : '写真の読み取りに失敗しました。' });
             }
 
             // Keep batch uploads spaced out instead of sending simultaneous paid requests.
@@ -97,10 +104,11 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
 
         setIsBatchProcessing(false);
         setBatchProgress("");
-        e.target.value = "";
+        input.value = "";
 
-        if (failedFiles.length > 0) {
-            toast(`Analyzed ${newlyAddedCount} beans. Failed: ${failedFiles.length} images.`, 'error');
+        setBatchFailures(failures);
+        if (failures.length > 0) {
+            toast(`${newlyAddedCount}件を読み取り、${failures.length}件が失敗しました。ライブラリのエラー詳細を確認してください。`, 'error');
         }
         
         if (tempBatch.length > 0) {
@@ -394,6 +402,22 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
             </div>
 
             <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1.5 pr-2 custom-scrollbar">
+                {batchFailures.length > 0 && (
+                    <div role="alert" className="mb-3 p-3 border border-red-800 bg-red-950/30 text-xs text-red-200 break-words">
+                        <div className="flex justify-between items-start gap-2 mb-2">
+                            <strong>写真を読み取れませんでした</strong>
+                            <button type="button" onClick={() => setBatchFailures([])} aria-label="読み取りエラーを閉じる" className="shrink-0 text-red-300">×</button>
+                        </div>
+                        <ul className="space-y-2 max-h-40 overflow-y-auto">
+                            {batchFailures.map((failure, index) => (
+                                <li key={index}>
+                                    {failure.name && <span className="block text-[10px] opacity-75">{failure.name}</span>}
+                                    <span>{failure.reason}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
                 {filteredBeans.map((bean) => (
                     <div
                         key={bean.id}

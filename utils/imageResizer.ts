@@ -25,7 +25,7 @@ export async function resizeImageToBase64(file: File, maxSize: number = 800): Pr
 
                 const ctx = canvas.getContext('2d');
                 if (!ctx) {
-                    reject(new Error("Failed to get canvas context"));
+                    reject(new Error("画像の変換に失敗しました。別の写真を選んでください。"));
                     return;
                 }
 
@@ -37,10 +37,10 @@ export async function resizeImageToBase64(file: File, maxSize: number = 800): Pr
                 const data = dataUrl.split(',')[1];
                 resolve({ data, mime });
             };
-            img.onerror = () => reject(new Error("Failed to load image for resizing"));
+            img.onerror = () => reject(new Error("この画像を開けませんでした。JPEGまたはPNGに変換して再実行してください。"));
             img.src = e.target?.result as string;
         };
-        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.onerror = () => reject(new Error("画像ファイルを読み込めませんでした。選び直してください。"));
         reader.readAsDataURL(file);
     });
 }
