@@ -6,7 +6,7 @@ import { toast } from '@/components/ui/Toast';
 import BeanEntryModal from './BeanEntryModal';
 import BatchReviewModal from './BatchReviewModal';
 import { getFlavorColor } from '@/utils/flavor-wheel';
-import { analyzeCoffeeBagImage } from '@/utils/gemini';
+import { analyzeCoffeeBagImage, getDeepSeekApiKey } from '@/utils/deepseek';
 import { getAgingAdjustments } from '@/utils/coffee-math';
 import Tooltip from '../common/Tooltip';
 
@@ -34,7 +34,7 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
-        const apiKey = localStorage.getItem('kugcc_gemini_api_key') || '';
+        const apiKey = getDeepSeekApiKey() || '';
 
         setIsBatchProcessing(true);
         let newlyAddedCount = 0;
@@ -88,8 +88,7 @@ export default function BeanLibrary({ onSelect, selectedId, isActive }: BeanLibr
                 failedFiles.push(file.name);
             }
 
-            // Rate limiting: Delay to prevent Gemini API "429 Quota Exceeded" (15 RPM limit = 1 req / 4s)
-            // Using 6.5 seconds to comfortably stay under 15 RPM even with network jitter
+            // Keep batch uploads spaced out instead of sending simultaneous paid requests.
             if (i < files.length - 1) {
                 setBatchProgress(`Waiting to prevent API limits... (${i + 1}/${files.length})`);
                 await new Promise(r => setTimeout(r, 6500));

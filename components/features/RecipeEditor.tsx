@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Recipe, RecipeStep } from '@/utils/types';
 import { GRINDER_LIST, GRINDERS } from '@/utils/grinder-logic';
-import { analyzeRecipeImage } from '@/utils/gemini';
+import { analyzeRecipeImage, getDeepSeekApiKey } from '@/utils/deepseek';
 import { toast } from '@/components/ui/Toast';
 
 interface RecipeEditorProps {
@@ -34,9 +34,9 @@ export default function RecipeEditor({ initialRecipe, onSave, onCancel }: Recipe
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const apiKey = localStorage.getItem('kugcc_gemini_api_key');
+        const apiKey = getDeepSeekApiKey();
         if (!apiKey) {
-            toast('Please configure your Gemini API Key in the Settings tab first!', 'error');
+            toast('Please configure your DeepSeek API Key in the Settings tab first!', 'error');
             return;
         }
 

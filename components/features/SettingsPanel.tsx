@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Tooltip from '../common/Tooltip';
 import { useLanguage } from '@/utils/LanguageContext';
+import { getDeepSeekApiKey, normalizeApiKey, checkDeepSeekConnection } from '@/utils/deepseek';
 import { toast } from '@/components/ui/Toast';
 
 const DEFAULT_ROASTERS = ['Kurasu', 'Onibus', 'Glitch', 'Blue Bottle', 'Starbucks'];
@@ -34,7 +35,9 @@ export default function SettingsPanel() {
     const [newAccessory, setNewAccessory] = useState('');
     const [newQuickFilter, setNewQuickFilter] = useState('');
 
-    const [geminiApiKey, setGeminiApiKey] = useState('');
+    const [deepseekApiKey, setDeepSeekApiKey] = useState('');
+    const [checkingApi, setCheckingApi] = useState(false);
+    const [apiStatus, setApiStatus] = useState('');
     const [roasterDefaults, setRoasterDefaults] = useState<Record<string, number>>({});
     
     const [newDefaultRoaster, setNewDefaultRoaster] = useState('');
@@ -76,8 +79,8 @@ export default function SettingsPanel() {
         if (savedQuickFilters) setQuickFilters(JSON.parse(savedQuickFilters));
         else saveQuickFilters(['Light', 'Dark', 'Washed', 'Natural']);
 
-        const savedApiKey = localStorage.getItem('kugcc_gemini_api_key');
-        if (savedApiKey) setGeminiApiKey(savedApiKey);
+        const savedApiKey = getDeepSeekApiKey();
+        if (savedApiKey) setDeepSeekApiKey(savedApiKey);
         
         const savedRoasterDefaults = localStorage.getItem('kugcc_roaster_defaults');
         if (savedRoasterDefaults) setRoasterDefaults(JSON.parse(savedRoasterDefaults));
@@ -127,9 +130,10 @@ export default function SettingsPanel() {
         localStorage.setItem('kugcc_quick_filters', JSON.stringify(list));
     };
 
-    const saveGeminiApiKey = (val: string) => {
-        setGeminiApiKey(val);
-        localStorage.setItem('kugcc_gemini_api_key', val);
+    const saveDeepSeekApiKey = (val: string) => {
+        setDeepSeekApiKey(val);
+        setApiStatus('');
+        localStorage.setItem('kugcc_deepseek_api_key', normalizeApiKey(val));
     };
 
     const saveRoasterDefaults = (map: Record<string, number>) => {
@@ -402,25 +406,41 @@ export default function SettingsPanel() {
             <div className="mb-8 pb-6 border-b border-gray-900 border-dashed">
                 <h3 className="text-[10px] text-gray-300 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>API Integrations</span>
-                    <Tooltip content="Gemini APIキーを設定すると、写真からAIが自動で情報を抽出する機能が使えるようになります！" position="right">
+                    <Tooltip content="DeepSeek APIキーを設定すると、写真からAIが自動で情報を抽出する機能が使えるようになります！" position="right">
                         <span className="text-gray-400 cursor-help">[?]</span>
                     </Tooltip>
                     <span className="bg-blue-900/50 text-blue-400 text-[8px] px-1.5 py-0.5 rounded">NEW</span>
                 </h3>
                 <div className="flex flex-col gap-2">
-                    <label className="text-[10px] text-gray-300 leading-relaxed">
-                        <strong className="text-white">Google Gemini API Key</strong><br/>
-                        Used for "Auto-fill from Photo" feature. Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-blue-300">Google AI Studio</a>.
+                    <label htmlFor="deepseek-api-key" className="text-[10px] text-gray-300 leading-relaxed">
+                        <strong className="text-white">DeepSeek API Key</strong><br/>
+                        写真からの自動入力に使用します。キーの取得： <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-blue-300">DeepSeek Platform</a>.
                     </label>
                     <div className="flex gap-2">
                         <input 
                             type="password" 
-                            placeholder="AIzaSy..." 
-                            value={geminiApiKey}
-                            onChange={(e) => saveGeminiApiKey(e.target.value)}
+                            id="deepseek-api-key" autoComplete="off" spellCheck={false} placeholder="sk-..."
+                            value={deepseekApiKey}
+                            onChange={(e) => saveDeepSeekApiKey(e.target.value)}
                             className="flex-1 min-w-0 bg-gray-900 border-none text-[10px] p-2 text-white placeholder-gray-500 focus:ring-1 focus:ring-gray-600 rounded-sm font-sans"
                         />
                     </div>
+                    <p className="text-[10px] text-gray-400">入力は自動保存されます。写真とキーは読み取り時にDeepSeekへ送信します。API利用料がかかる場合があります。</p>
+                    <button type="button" disabled={checkingApi || !deepseekApiKey.trim()} onClick={async () => {
+                        setCheckingApi(true);
+                        setApiStatus('');
+                        try {
+                            await checkDeepSeekConnection(deepseekApiKey);
+                            setApiStatus('接続できました。写真読み取りは画像対応のDeepSeek Flashを使用します。');
+                        } catch (error) {
+                            setApiStatus(error instanceof Error ? error.message : '接続に失敗しました。');
+                        } finally {
+                            setCheckingApi(false);
+                        }
+                    }} className="border border-gray-700 p-2 text-[10px] text-white disabled:opacity-50">
+                        {checkingApi ? '確認中…' : '接続を確認'}
+                    </button>
+                    <p role="status" className="text-[10px] text-gray-300">{apiStatus}</p>
                 </div>
             </div>
 
