@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Bean, DEFAULT_RECIPE } from '@/utils/types';
 import { FLAVOR_WHEEL, getFlavorColor, FlavorCategory, CATEGORY_COLORS } from '@/utils/flavor-wheel';
-import { analyzeCoffeeBagImage } from '@/utils/gemini';
+import { analyzeCoffeeBagImage, getDeepSeekApiKey } from '@/utils/deepseek';
 import { toast } from '@/components/ui/Toast';
 
 interface BeanEntryModalProps {
@@ -142,16 +142,16 @@ export default function BeanEntryModal({
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const apiKey = localStorage.getItem('kugcc_gemini_api_key');
+        const apiKey = getDeepSeekApiKey();
         if (!apiKey) {
-            toast('Please configure your Gemini API Key in the Settings tab first!', 'error');
+            toast('Please configure your DeepSeek API Key in the Settings tab first!', 'error');
             return;
         }
 
         setIsAnalyzing(true);
         
         try {
-            // Resize and compress the image before sending to Gemini API to prevent payload too large errors
+            // Resize and compress the image before sending to DeepSeek API to prevent payload too large errors
             const { resizeImageToBase64 } = await import('@/utils/imageResizer');
             const base64Data = await resizeImageToBase64(file);
 

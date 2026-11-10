@@ -27,12 +27,12 @@ export default function HelpPanel() {
                 <section>
                     <h3 className="text-sm font-bold text-gray-300 mb-3 border-b border-gray-800 pb-1">📸 2. AIによる自動入力機能（Auto-fill）</h3>
                     <p className="mb-2">
-                        手入力の手間を省くため、コーヒー袋の写真を撮るだけでAI（Gemini）が自動で豆の名前やフレーバー、焙煎日を読み取ります！
+                        手入力の手間を省くため、コーヒー袋の写真を撮るだけでAI（DeepSeek）が自動で豆の名前やフレーバー、焙煎日を読み取ります！
                     </p>
                     <div className="bg-gray-900/50 p-3 border border-gray-800 rounded mb-2">
                         <strong className="text-gray-300 block mb-1">【設定方法】</strong>
                         <ol className="list-decimal pl-4 space-y-1">
-                            <li><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Google AI Studio</a> にアクセスし、無料のAPIキーを取得します。</li>
+                            <li><a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">DeepSeek Platform</a> にアクセスし、APIキーを取得します。</li>
                             <li>当アプリの <strong>Settingsタブ</strong> を開き、「API Integrations」の欄に取得したキーを貼り付けます。</li>
                             <li>Libraryタブの 📸 アイコンから写真をアップロードすると自動解析が始まります！</li>
                         </ol>
