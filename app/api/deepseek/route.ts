@@ -15,7 +15,9 @@ function apiError(status: number): string {
 
 export async function POST(request: Request) {
     const origin = request.headers.get('origin');
-    if (origin && origin !== new URL(request.url).origin) return json({ error: 'このサイトから実行してください。' }, 403);
+    // Next.js may build request.url with an internal hostname behind its proxy.
+    const publicHost = request.headers.get('host') || new URL(request.url).host;
+    if (origin && new URL(origin).host !== publicHost) return json({ error: 'このサイトから実行してください。' }, 403);
     const key = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '').trim();
     if (!key || !key.startsWith('sk-') || /\s/.test(key)) return json({ error: 'DeepSeekのAPIキー（sk-で始まる値）を設定してください。' }, 400);
     if (Number(request.headers.get('content-length')) > 4_000_000) return json({ error: '画像が大きすぎます。小さな画像で再実行してください。' }, 413);

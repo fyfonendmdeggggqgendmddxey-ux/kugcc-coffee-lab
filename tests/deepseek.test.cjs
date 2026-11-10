@@ -69,3 +69,13 @@ test('invalid inputs never reach upstream and truncated results cannot update fo
     global.fetch = async () => Response.json({ choices: [{ finish_reason: 'length', message: { content: '{"name":"Coffee"}' } }] });
     assert.equal((await POST(request(image))).status, 502);
 });
+
+test('same-origin browser requests survive internal Next.js URL rewriting, foreign origins are rejected', async () => {
+    global.fetch = async () => Response.json({ data: [{ id: 'deepseek-flash' }] });
+    const make = origin => new Request('http://localhost:3107/api/deepseek', {
+        method: 'POST', headers: { host: '127.0.0.1:3107', origin, authorization: 'Bearer sk-test-only' },
+        body: JSON.stringify({ kind: 'check' }),
+    });
+    assert.equal((await POST(make('http://127.0.0.1:3107'))).status, 200);
+    assert.equal((await POST(make('https://foreign.test'))).status, 403);
+});
